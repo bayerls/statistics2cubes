@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE TEI SYSTEM "statDTD.dtd" [
+  <!ENTITY % ISOlat1 PUBLIC "ISO 8879-1986//ENTITIES Added Latin 1//EN" "DRS_ENTITIES.xml"> %ISOlat1; 
+]><TEI>
+<teiHeader>
+<fileDesc>
+<titleStmt>
+<title xml:id="drsa_020_0082_068">Digitalisat der "Statistik des Deutschen Reichs" Bd. 02</title>
+<respStmt>
+<resp>creator</resp><orgName>ZBW - Deutsche Zentralbibliothek für Wirtschaftswissenschaften</orgName>
+</respStmt>
+<respStmt>
+<resp>converter to TEI</resp><orgName>Kompetenzzentrum für elektronische Erschließungs- und Publikationsverfahren Trier</orgName>
+</respStmt>
+<respStmt>
+<resp>funder</resp><orgName>DFG - Deutsche Forschungsgemeinschaft</orgName>
+</respStmt>
+</titleStmt>
+<editionStmt>
+<edition n="1.0">
+<date>2014-07-10</date>
+<note>transformed from double-keying</note>
+</edition>
+</editionStmt>
+<publicationStmt>
+<distributor>ZBW - Deutsche Zentralbibliothek für Wirtschaftswissenschaften
+<email>info@zbw.eu</email>
+<ref target="http://zbw.eu/ueber_uns/projekte/reichsstatistik.htm"/>
+</distributor>
+<availability><licence target="http://creativecommons.org/publicdomain/mark/1.0/">Public Domain Mark 1.0</licence></availability>
+</publicationStmt>
+<sourceDesc>
+<biblFull>
+<titleStmt>
+<title level="s" type="main">Statistik des Deutschen Reichs</title>
+<editor>
+<orgName ref="http://d-nb.info/gnd/35253-6"/>
+</editor>
+</titleStmt>
+<publicationStmt><p/></publicationStmt>
+</biblFull>
+</sourceDesc>
+</fileDesc>
+<encodingDesc>
+<p>XML/TEI P5</p>
+<p>Double-Key-Verfahren</p>
+</encodingDesc>
+<profileDesc>
+<langUsage><language ident="ger">German</language></langUsage>
+</profileDesc>
+</teiHeader>
+<text>
+ <body>
+<table>
+
+<row rend="height:15">
+<cell role="label" cols="6"> I. In den freien Verkehr des Deutschen Zollgebiets getretene Waaren.</cell>
+</row>
+
+<row rend="height:16.5">
+<cell role="label" rows="2" rend="border-bottom-width:3px;border-left-width:3px;border-right-width:1px;border-top-width:3px"> Nummern<lb/>der<lb/>Waaren-<lb/>ver-<lb/>zeichnisse<lb/>resp.<lb/>Tarif-<lb/>position.</cell>
+<cell role="label" rows="2" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:3px"> <hi rend="spaced">Gebietstheile.</hi></cell>
+<cell role="label" cols="3" rend="border-bottom-width:1px;border-left-width:1px;border-right-width:3px;border-top-width:3px"> <hi rend="spaced">Einfuhr</hi></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:105.75">
+<cell role="label" ss:Index="3" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:1px"> <date from="1873-01" to="1873-03">im<lb/>1. Quartal<lb/>1873</date>.</cell>
+<cell role="label" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:1px"> <date from="1872-01" to="1872-03">im<lb/>1. Quartal<lb/>1872</date>.</cell>
+<cell role="label" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:3px;border-top-width:1px"> <date from="1873-01" to="1873-03">im<lb/>1. Quartal<lb/>1873</date><lb/>mehr (+)<lb/>weniger (-).</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:42.75">
+<cell role="labelOrd" rows="9" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">379.</hi></num><lb/><num type="ordinal" value="264.">(264.)</num><lb/>Pos. <num type="ordinal">31 b.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Gemeine feste Seife.</hi> ─ <term type="weight" subtype="ztr">Ctr. brutto</term>, Zollsatz <measure type="currency" unit="thl"><num type="fraction">5/6</num> Thlr.</measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">232</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">213</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+19</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Luxemburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">236</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">823</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-587</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Sachsen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">58</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">87</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-29</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Baden</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">80</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">85</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-5</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">5756</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">5571</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+185</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">43</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">26</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+17</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">6405</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">6805</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-400</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Berechneter Zoll-<lb/>betrag, <term type="currency" subtype="thl">Thlr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">5338</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">5671</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-<hi rend="italics">333</hi></num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:55.5">
+<cell role="labelOrd" rows="7" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">380.</hi></num><lb/><num type="ordinal" value="265.">(265.)</num><lb/>Pos. <num type="ordinal">31 c.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Feine Seife (Toilettenseife).</hi> ─ <term type="weight" subtype="ztr">Ctr. netto</term>, Zollsatz <measure type="currency" unit="thl"><num type="integer">2</num> Thlr.</measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">130</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">135</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-5</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Luxemburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">34</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">2</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+32</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">64</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">93</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-29</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">49</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">53</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-4</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">277</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">283</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-6</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:17.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Berechneter Zoll-<lb/>betrag, <term type="currency" subtype="thl">Thlr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">554</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">566</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-<hi rend="italics">12</hi></num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:47.25">
+<cell role="labelOrd" rows="9" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">381.</hi></num><lb/><num type="ordinal" value="277.">(277.)</num><lb/>Pos. <num type="ordinal">31 d.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Parfümerien aller Art.</hi> ─ <term type="weight" subtype="ztr">Ctr. netto</term>, Zollsatz <measure type="currency" unit="thl"><num type="fraction">3 1/3</num> Thlr.</measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:21.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">451</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">438</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+13</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">17</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">17</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px">─</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Sachsen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">152</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">141</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+11</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Baden</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">146</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">117</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+29</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">175</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">217</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-42</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">48</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">56</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-8</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">989</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">986</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+3</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:20.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Berechneter Zoll-<lb/>betrag, <term type="currency" subtype="thl">Thlr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">3297</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">3287</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+<hi rend="italics">10</hi></num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:71.25">
+<cell role="labelOrd" rows="5" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">382.</hi></num><lb/><num type="ordinal" value="396.">(396.)</num><lb/>Pos. <num type="ordinal">32.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Spielkarten.</hi> ─ <term type="weight" subtype="ztr">Ctr. brutto</term>, Zollsatz <measure type="currency" unit="thl"><num type="integer">10</num> Thlr.</measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">5</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+4</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">16</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">22</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-6</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">21</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">23</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-2</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Berechneter Zoll-<lb/>betrag, <term type="currency" subtype="thl">Thlr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">210</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer"><hi rend="italics">230</hi></num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-<hi rend="italics">20</hi></num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:57">
+<cell role="labelOrd" rows="8" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">383.</hi></num><lb/><num type="ordinal" value="133.">(133.)</num><lb/>Pos. <num type="ordinal">33 a.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Mühlsteine, auch in Eisenreifen.</hi> ─<lb/><term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">8285</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">7429</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+856</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">2124</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">7167</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-5043</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Sachsen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1120</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">193</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+927</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Württemberg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">395</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">9</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+386</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">14749</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">8872</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+5877</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">275</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">52</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+223</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">26948</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">23722</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">+3226</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:42.75">
+<cell role="labelOrd" rows="10" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">384.</hi></num><lb/><num type="ordinal" value="134.">(134.)</num><lb/>Pos. <num type="ordinal">33 a.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Dachschiefer und Schieferplatten.</hi> ─<lb/><term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">90611</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">64784</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+25827</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Luxemburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">14483</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px">─</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+14483</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">5073</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">3605</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+1468</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Sachsen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1577</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">2388</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-811</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Württemberg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">263</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px">─</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+263</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Oldenburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">13</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">66</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-53</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">285</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">120</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+165</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:14.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">97</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px">─</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+97</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">112402</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">70963</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">+41439</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:42.75">
+<cell role="label" rows="2" rend="border-bottom-width:3px;border-left-width:3px;border-right-width:1px;border-top-width:3px"> Nummern<lb/>der<lb/>Waaren-<lb/>ver-<lb/>zeichnisse<lb/>resp.<lb/>Tarif-<lb/>position.</cell>
+<cell role="label" rows="2" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:3px"> <hi rend="spaced">Gebietstheile.</hi></cell>
+<cell role="label" cols="3" rend="border-bottom-width:1px;border-left-width:1px;border-right-width:3px;border-top-width:3px"> <hi rend="spaced">Einfuhr</hi></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:79.5">
+<cell role="label" ss:Index="3" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:1px"> <date from="1873-01" to="1873-03">im<lb/>1. Quartal<lb/>1873</date>.</cell>
+<cell role="label" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:1px;border-top-width:1px"> <date from="1872-01" to="1872-03">im<lb/>1. Quartal<lb/>1872</date>.</cell>
+<cell role="label" rend="border-bottom-width:3px;border-left-width:1px;border-right-width:3px;border-top-width:1px"> <date from="1873-01" to="1873-03">im<lb/>1. Quartal<lb/>1873</date><lb/>mehr (+)<lb/>weniger (-).</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:16.5">
+<cell role="labelOrd" rows="13" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">385.</hi></num><lb/><num type="ordinal" value="135.">(135.)</num><lb/>Pos. <num type="ordinal">33 a.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Andere rohe Steine; grobe Steinmetzarheiten etc.</hi> ─<lb/><term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">303384</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">261416</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+41968</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Luxemburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1690</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">11091</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-9401</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">93061</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">80099</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+12962</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Sachsen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">56489</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">36477</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+20012</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Württemberg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">23933</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">32907</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-8974</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Baden</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">72524</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">61282</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+11242</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Hessen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">65</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">58</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+7</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Mecklenburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">73</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">2235</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-2162</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Oldenburg</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1073</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1284</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-211</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">28145</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">348225</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-320080</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:42.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">29</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">5</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+24</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">580466</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">835079</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">-254613</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="labelOrd" rows="6" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">386.</hi></num><lb/><num type="ordinal" value="137.">(137.)</num><lb/>Pos. <num type="ordinal">33 b.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Schiefertafeln in Holzrahmen.</hi> ─ <term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">54</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">61</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-7</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px">─</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">93</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-93</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Baden</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px">─</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">15</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-15</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:68.25">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">83</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">51</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+32</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">137</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">220</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">-83</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="labelOrd" rows="7" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">387.</hi></num><lb/><num type="ordinal" value="392.">(392.)</num><lb/>Pos. <num type="ordinal">33 b.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Edelsteine, auch nachgeahmte, geschliffen; Perlen und<lb/>Korallen ohne Fassung.</hi> ─ <term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">10</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">38</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-28</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">13</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">19</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-6</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:28.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Baden</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">48</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">1</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+47</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">3</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">210</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-207</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:42.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">28</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">22</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+6</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">102</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">290</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">-188</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="labelOrd" rows="6" rend="border-left-width:3px;border-right-width:1px"><num type="ordinal"><hi rend="bold">388.</hi></num><lb/><num type="ordinal" value="136.">(136.)</num><lb/>Pos. <num type="ordinal">33 b.</num></cell>
+<cell role="labelUnit" cols="4" rend="border-left-width:1px;border-right-width:3px"> <hi rend="bold">Waaren aus Serpentinstein, Gyps und Schwefel.</hi> ─<lb/><term type="weight" subtype="ztr">Ctr. brutto</term>, zollfrei.</cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Preussen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">600</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">957</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-357</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Bayern</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">87</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">32</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+55</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:22.5">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Elsass-Lothringen</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">146</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">209</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">-63</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px"> Uebriges Zollgebiet</cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">111</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px"><measure type="weight" unit="ztr"><num type="integer">28</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px"><measure type="weight" unit="ztr"><num type="integer">+83</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+
+<row rend="height:15.75">
+<cell role="label" ss:Index="2" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"> Zusammen <term type="weight" subtype="ztr">Ctr.</term></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">944</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:1px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">1226</num></measure></cell>
+<cell role="data" rend="border-left-width:1px;border-right-width:3px;border-top-width:1px"><measure type="weight" unit="ztr"><num type="integer">-282</num></measure></cell>
+<cell role="label" rend="add"/>
+</row>
+</table>
+<linkGrp>
+<link target="drsa_020_0039_025.tei"/>
+<link target="drsa_020_0040_026.tei"/>
+<link target="drsa_020_0041_027.tei"/>
+<link target="drsa_020_0042_028.tei"/>
+<link target="drsa_020_0043_029.tei"/>
+<link target="drsa_020_0044_030.tei"/>
+<link target="drsa_020_0045_031.tei"/>
+<link target="drsa_020_0046_032.tei"/>
+<link target="drsa_020_0047_033.tei"/>
+<link target="drsa_020_0048_034.tei"/>
+<link target="drsa_020_0049_035.tei"/>
+<link target="drsa_020_0050_036.tei"/>
+<link target="drsa_020_0051_037.tei"/>
+<link target="drsa_020_0052_038.tei"/>
+<link target="drsa_020_0053_039.tei"/>
+<link target="drsa_020_0054_040.tei"/>
+<link target="drsa_020_0055_041.tei"/>
+<link target="drsa_020_0056_042.tei"/>
+<link target="drsa_020_0057_043.tei"/>
+<link target="drsa_020_0058_044.tei"/>
+<link target="drsa_020_0059_045.tei"/>
+<link target="drsa_020_0060_046.tei"/>
+<link target="drsa_020_0061_047.tei"/>
+<link target="drsa_020_0062_048.tei"/>
+<link target="drsa_020_0063_049.tei"/>
+<link target="drsa_020_0064_050.tei"/>
+<link target="drsa_020_0065_051.tei"/>
+<link target="drsa_020_0066_052.tei"/>
+<link target="drsa_020_0067_053.tei"/>
+<link target="drsa_020_0068_054.tei"/>
+<link target="drsa_020_0069_055.tei"/>
+<link target="drsa_020_0070_056.tei"/>
+<link target="drsa_020_0071_057.tei"/>
+<link target="drsa_020_0072_058.tei"/>
+<link target="drsa_020_0073_059.tei"/>
+<link target="drsa_020_0074_060.tei"/>
+<link target="drsa_020_0075_061.tei"/>
+<link target="drsa_020_0076_062.tei"/>
+<link target="drsa_020_0077_063.tei"/>
+<link target="drsa_020_0078_064.tei"/>
+<link target="drsa_020_0079_065.tei"/>
+<link target="drsa_020_0080_066.tei"/>
+<link target="drsa_020_0081_067.tei"/>
+<link target="drsa_020_0082_068.tei"/>
+<link target="drsa_020_0083_069.tei"/>
+<link target="drsa_020_0084_070.tei"/>
+<link target="drsa_020_0085_071.tei"/>
+<link target="drsa_020_0086_072.tei"/>
+<link target="drsa_020_0087_073.tei"/>
+<link target="drsa_020_0088_074.tei"/>
+<link target="drsa_020_0089_075.tei"/>
+</linkGrp>
+ </body>
+</text>
+</TEI>
