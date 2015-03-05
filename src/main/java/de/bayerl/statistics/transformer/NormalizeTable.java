@@ -20,11 +20,6 @@ public class NormalizeTable extends Transformation {
         return "normalizeTable";
     }
 
-//    public NormalizeTable(int topDims, int leftDims) {
-//        this.topDims = topDims;
-//        this.leftDims = leftDims;
-//    }
-
     @Override
     protected Table transformStep(Table table) {
 
@@ -49,8 +44,8 @@ public class NormalizeTable extends Transformation {
         // get normalized cell matrix
         List<List<Cell>> normalized = new ArrayList<>();
         normalized.add(getFacts(table));
-        normalized.addAll(getTopDims(table, normalized.get(0).size()));
-        normalized.addAll(getLeftDims(table, normalized.get(0).size()));
+        normalized.addAll(getTopDims(table));
+        normalized.addAll(getLeftDims(table));
 
         // transpose matrix and generate new table
         Table resultTable = new Table();
@@ -60,7 +55,8 @@ public class NormalizeTable extends Transformation {
             resultTable.getRows().add(row);
 
             for (int y = 0; y < normalized.size(); y++) {
-                row.getCells().add(normalized.get(y).get(i));
+                List<Cell> cells = normalized.get(y);
+                row.getCells().add(cells.get(i));
             }
         }
 
@@ -83,7 +79,7 @@ public class NormalizeTable extends Transformation {
         return facts;
     }
 
-    private List<List<Cell>> getTopDims(Table table, int factSize) {
+    private List<List<Cell>> getTopDims(Table table) {
         List<List<Cell>> dimensions = new ArrayList<>();
 
         for (int i = 0; i < topDims; i++) {
@@ -93,13 +89,8 @@ public class NormalizeTable extends Transformation {
                 dim.add(row.getCells().get(y));
             }
 
-            // Check for validity
-            if (factSize % dim.size() != 0) {
-                throw new IllegalStateException();
-            }
-
             List<Cell> expandedDim = new ArrayList<>();
-            for (int k = 0; k < factSize / dim.size(); k++) {
+            for (int k = 0; k < table.getRows().size() - topDims; k++) {
                 expandedDim.addAll(dim);
             }
 
@@ -109,7 +100,7 @@ public class NormalizeTable extends Transformation {
         return dimensions;
     }
 
-    private List<List<Cell>> getLeftDims(Table table, int factSize) {
+    private List<List<Cell>> getLeftDims(Table table) {
         List<List<Cell>> dimensions = new ArrayList<>();
 
         for (int i = 0; i < leftDims; i++) {
@@ -119,7 +110,7 @@ public class NormalizeTable extends Transformation {
             for (int y = topDims; y < table.getRows().size(); y++) {
                 Cell cell = table.getRows().get(y).getCells().get(i);
 
-                for (int k = 0; k < factSize / (table.getRows().get(0).getCells().size() - leftDims); k++) {
+                for (int k = 0; k < table.getRows().get(0).getCells().size() - leftDims; k++) {
                     dim.add(cell);
                 }
             }

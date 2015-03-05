@@ -28,7 +28,7 @@ public class TeiLoader {
 
         return tables;
     }
-    
+
     private static List<String> loadLinkGroup() {
         SAXParserImpl parser = null;
         List<String> links = new ArrayList<>();

@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 public class TeiHandler {
 
+    // TODO get metadata from TEI
+    // TODO set column headers
+    // TODO generate CUBE
+
 
     public static void handle() {
         Stopwatch stopwatch = Stopwatch.createStarted();
@@ -17,6 +21,9 @@ public class TeiHandler {
 
         // Load table
         List<Table> tables = TeiLoader.loadFiles();
+
+        // only work with a small subset
+        tables = tables.subList(0, 10);
 
         Table table = new Table();
         for (Table t : tables) {
@@ -42,7 +49,19 @@ public class TeiHandler {
         transformations.add(new DeleteMatchingRow("Soweit sie nicht unter", rows));
         transformations.add(new DeleteMatchingRow("Mit Ausn. der unter", rows));
 
-        // TODO check if correct labelUnit. candidate   row: a, b, b, b, b
+        transformations.add(new SetValue("31. (274.) Pos. 5 a.", 239, 0));
+        transformations.add(new SetValue("35. (218.) Pos. 5 c.", 268, 0));
+
+        transformations.add(new SetType("data", 410, 4));
+        transformations.add(new SetType("data", 268, 2));
+        transformations.add(new SetType("data", 476, 4));
+        transformations.add(new SetType("data", 628, 4));
+
+        transformations.add(new ResolveLabelUnits());
+        transformations.add(new DeleteRowCol(false, 4));
+        transformations.add(new NormalizeCompoundTables());
+
+        transformations.add(new SplitColumn("─", 4));
 
 //        transformations.add(new DeleteRowCol(true, 41));
 //        transformations.add(new DeleteRowCol(true, 21));
