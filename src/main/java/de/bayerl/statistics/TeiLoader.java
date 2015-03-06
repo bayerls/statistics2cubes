@@ -75,8 +75,10 @@ public class TeiLoader {
 
         if (parser != null) {
             File file = new File(FOLDER + filename);
+            table.getMetadata().getSources().add(filename);
             final Boolean[] inCell = {false};
             final Boolean[] lbFound = {false};
+            final Boolean[] inTitle = {false};
 
             try {
                 parser.parse(file, new DefaultHandler() {
@@ -118,6 +120,14 @@ public class TeiLoader {
                             cell.getValue().setNumType(a.getValue("type"));
                         } else if (name.equalsIgnoreCase("lb")) {
                             lbFound[0] = true;
+                        } else if (name.equalsIgnoreCase("title")) {
+                            inTitle[0] = true;
+                        } else if (name.equalsIgnoreCase("licence")) {
+                            table.getMetadata().setLicense(a.getValue("target"));
+                        } else if (name.equalsIgnoreCase("language")) {
+                            table.getMetadata().setLanguage(a.getValue("ident"));
+                        } else if (name.equalsIgnoreCase("ref")) {
+                            table.getMetadata().setDistributor(a.getValue("target"));
                         }
                     }
 
@@ -132,6 +142,14 @@ public class TeiLoader {
 
                     @Override
                     public void characters(char ch[], int start, int length) {
+                        String content = new String(ch, start, length);
+                        if (inTitle[0]) {
+                            // TODO hack to get first title
+                            if (table.getMetadata().getTitle() == null) {
+                                table.getMetadata().setTitle(content);
+                            }
+                            inTitle[0] = false;
+                        }
                         if (table.getRows().size() > 0) {
                             Row row = table.getRows().get(table.getRows().size() - 1);
 
@@ -142,7 +160,7 @@ public class TeiLoader {
                                         cell.getValue().setValue(cell.getValue().getValue() + PLACEHOLDER_LB);
                                         lbFound[0] = false;
                                     }
-                                    cell.getValue().setValue(cell.getValue().getValue() + new String(ch, start, length));
+                                    cell.getValue().setValue(cell.getValue().getValue() + content);
                                 }
                             }
                         }

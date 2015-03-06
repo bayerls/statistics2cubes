@@ -5,18 +5,9 @@ import java.util.List;
 
 public class Row {
 
-    private Table table;
     private String rend;
 
     private List<Cell> cells = new ArrayList<>();
-
-    public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
 
     public List<Cell> getCells() {
         return cells;

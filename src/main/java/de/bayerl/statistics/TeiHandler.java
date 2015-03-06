@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 public class TeiHandler {
 
-    // TODO get metadata from TEI
     // TODO set column headers
     // TODO generate CUBE
 
@@ -25,9 +24,11 @@ public class TeiHandler {
         // only work with a small subset
         tables = tables.subList(0, 10);
 
-        Table table = new Table();
+        // Merge tables into the first table
+        Table table = tables.remove(0);
         for (Table t : tables) {
             table.getRows().addAll(t.getRows());
+            table.getMetadata().getSources().add(t.getMetadata().getSources().get(0));
         }
 
         System.out.println(tables.size() + " Table(s) loaded in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
