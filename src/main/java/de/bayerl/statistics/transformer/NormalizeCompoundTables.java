@@ -11,6 +11,19 @@ import java.util.List;
  */
 public class NormalizeCompoundTables extends Transformation {
 
+    private String splitOnType;
+    private int fixedHeaderSize = -1;
+
+    public NormalizeCompoundTables(String splitOnType, int fixedHeaderSize) {
+        this.splitOnType = splitOnType;
+        this.fixedHeaderSize = fixedHeaderSize;
+    }
+
+    public NormalizeCompoundTables(String splitOnType) {
+        this.splitOnType = splitOnType;
+    }
+
+
     @Override
     public String getName() {
         return "normalizeCompoundTables";
@@ -22,19 +35,30 @@ public class NormalizeCompoundTables extends Transformation {
         Table tempTable = new Table();
         List<Row> headers = new ArrayList<>();
         boolean headersDone = false;
+        int rowCount = 0;
         for (Row row : table.getRows()) {
             // detect fixed header
             if (!headersDone) {
-                if (row.getCells().get(row.getCells().size() - 1).getRole().equals("label")) {
-                    headers.add(row);
+                if (fixedHeaderSize > -1) {
+                    if (rowCount < fixedHeaderSize) {
+                        headers.add(row);
+                    } else {
+                        headersDone = true;
+                    }
                 } else {
-                    headersDone = true;
+                    if (row.getCells().get(row.getCells().size() - 1).getRole().equals("label")) {
+                        headers.add(row);
+                    } else {
+                        headersDone = true;
+                    }
                 }
+
+                rowCount++;
             }
 
             // split the compound tables
             if (headersDone) {
-                if (row.getCells().get(row.getCells().size() - 1).getRole().equals("labelUnit")) {
+                if (row.getCells().get(row.getCells().size() - 1).getRole().equals(splitOnType)) {
                     splitTables.add(tempTable);
                     tempTable = new Table();
                     tempTable.getRows().addAll(headers);

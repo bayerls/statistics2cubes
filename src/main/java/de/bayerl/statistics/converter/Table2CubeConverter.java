@@ -19,7 +19,7 @@ import java.util.*;
 
 public class Table2CubeConverter {
 
-    private static final String RELATION = "TeiConverter"; // TODO github link
+    private static final String RELATION = "https://github.com/bayerls/statistics2cubes";
     private Table table;
     private Model model;
     private String id;
@@ -42,30 +42,6 @@ public class Table2CubeConverter {
         model.setNsPrefix(VA.getPrefix(), VA.getURI());
         model.setNsPrefix(PROV.getPrefix(), PROV.getURI());
     }
-
-//    public String getDataset() {
-//        return datasetResourceName;
-//    }
-
-
-//    public Model getDSD() {
-//        model = ModelFactory.createDefaultModel();
-//        Resource ds = createDataset();
-//        addProvenanceInformation(ds);
-//        createDataStructureDefinition(ds);
-//
-//        return model;
-//    }
-//
-//    public Model getObs() {
-//        Resource ds = createDataset();
-//        addProvenanceInformation(ds);
-//        List<Property> headers = createDataStructureDefinition(ds);
-//        model = ModelFactory.createDefaultModel();
-//        createObservations(headers, ds);
-//
-//        return model;
-//    }
 
     public Model convert() {
         Resource ds = createDataset();

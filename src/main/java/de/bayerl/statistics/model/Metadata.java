@@ -7,10 +7,9 @@ import java.util.List;
 
 public class Metadata {
 
-    // TODO set this stuff
-    private String label = "lalala";
-    private String description = "lelele";
-    private String importer = "impimpimp";
+    private String label;
+    private String description;
+    private String importer;
 
     private Timestamp cubeCreated = new Timestamp(new Date().getTime());
     private String title;

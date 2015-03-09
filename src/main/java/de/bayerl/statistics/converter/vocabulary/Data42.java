@@ -30,5 +30,6 @@ public class Data42 {
     
     
     public static final Resource ENTITY = m.createResource(URI + "Entity");
+    public static final String COMPONENT = URI + "Component";
 
 }

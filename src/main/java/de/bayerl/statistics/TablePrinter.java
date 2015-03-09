@@ -1,5 +1,7 @@
 package de.bayerl.statistics;
 
+import de.bayerl.statistics.instance.Config;
+import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -14,8 +16,6 @@ import java.io.UnsupportedEncodingException;
  */
 public class TablePrinter {
 
-    private static final String FOLDER_TARGET = "htmlOutput/";
-
     public static void print(Table table) {
         for (Row row : table.getRows()) {
             for (Cell cell : row.getCells()) {
@@ -26,7 +26,7 @@ public class TablePrinter {
         }
     }
 
-    public static void printHTML(Table table, String filenamePart) {
+    public static void printHTML(Table table, String filenamePart, Conversion conversion) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n" +
                 "<html><head><meta charset=\"utf-8\"/></head><body>\n");
@@ -69,20 +69,21 @@ public class TablePrinter {
 
         sb.append("</table></body></html>");
 
-        writeContent("table_" + filenamePart, sb.toString());
+        writeContent("table_" + filenamePart, sb.toString(), conversion);
     }
 
 
-    private static void writeContent(String fileName, String content) {
+    private static void writeContent(String fileName, String content, Conversion conversion) {
+        // TODO delete before print
 
-        File folder = new File(FOLDER_TARGET);
+        File folder = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
 
         if (!folder.exists()) {
             folder.mkdir();
         }
 
         fileName += ".html";
-        File file = new File(FOLDER_TARGET + fileName);
+        File file = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML + fileName);
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(file, "UTF-8");

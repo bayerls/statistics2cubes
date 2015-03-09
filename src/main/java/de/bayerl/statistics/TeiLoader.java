@@ -1,5 +1,7 @@
 package de.bayerl.statistics;
 
+import de.bayerl.statistics.instance.Config;
+import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -17,19 +19,18 @@ import java.util.stream.Collectors;
 
 public class TeiLoader {
 
-    private final static String FOLDER = "sampleData/1/";
-    private final static String FILE = "drsa_020_0040_026.tei";
-
+    private final static String FILE = "drsa_020_0032_018.tei";
     public final static String PLACEHOLDER_LB = "##lb##";
 
-    public static List<Table> loadFiles() {
-        List<String> linkGroup = loadLinkGroup();
-        List<Table> tables = linkGroup.stream().map(TeiLoader::load).collect(Collectors.toList());
+    public static List<Table> loadFiles(Conversion conversion) {
+        String folder = Config.FOLDER + conversion.getFolder() + Config.FOLDER_TEI;
+        List<String> linkGroup = loadLinkGroup(folder);
+        List<Table> tables = linkGroup.stream().map(link -> load(folder, link)).collect(Collectors.toList());
 
         return tables;
     }
 
-    private static List<String> loadLinkGroup() {
+    private static List<String> loadLinkGroup(String folder) {
         SAXParserImpl parser = null;
         List<String> links = new ArrayList<>();
 
@@ -40,7 +41,8 @@ public class TeiLoader {
         }
 
         if (parser != null) {
-            File file = new File(FOLDER + FILE);
+            // TODO use first file?
+            File file = new File(folder + FILE);
 
             try {
                 parser.parse(file, new DefaultHandler() {
@@ -63,7 +65,7 @@ public class TeiLoader {
     }
 
 
-    private static Table load(String filename) {
+    private static Table load(String folder, String filename) {
         SAXParserImpl parser = null;
         Table table = new Table();
 
@@ -74,7 +76,7 @@ public class TeiLoader {
         }
 
         if (parser != null) {
-            File file = new File(FOLDER + filename);
+            File file = new File(folder + filename);
             table.getMetadata().getSources().add(filename);
             final Boolean[] inCell = {false};
             final Boolean[] lbFound = {false};

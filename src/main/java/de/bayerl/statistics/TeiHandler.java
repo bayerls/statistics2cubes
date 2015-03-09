@@ -3,6 +3,10 @@ package de.bayerl.statistics;
 import com.google.common.base.Stopwatch;
 import com.hp.hpl.jena.rdf.model.Model;
 import de.bayerl.statistics.converter.Table2CubeConverter;
+import de.bayerl.statistics.instance.Config;
+import de.bayerl.statistics.instance.Conversion;
+import de.bayerl.statistics.instance.Example1;
+import de.bayerl.statistics.instance.Example2;
 import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.transformer.*;
 import org.apache.jena.riot.Lang;
@@ -17,20 +21,19 @@ import java.util.concurrent.TimeUnit;
 
 public class TeiHandler {
 
-    private static final String FOLDER_TARGET = "";
-
-    // TODO trim values
-    // TODO move table specific code like transformations and paths to a single class?
-
-    // TODO example 1 complete?
     // TODO example 2 020_0032_018.?
 
     public static void handle() {
+
+
+        Conversion conversion = new Example2();
+
+
         Stopwatch stopwatch = Stopwatch.createStarted();
         Stopwatch singleStepWatch = Stopwatch.createStarted();
 
         // Load table
-        List<Table> tables = TeiLoader.loadFiles();
+        List<Table> tables = TeiLoader.loadFiles(conversion);
 
         // only work with a small subset
 //        tables = tables.subList(0, 10);
@@ -46,67 +49,17 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
-        // Prepare transformations
-        List<Transformation> transformations = new ArrayList<>();
-        transformations.add(new ResolveLinebreaks());
-        transformations.add(new ResolveRowSpan());
-        transformations.add(new ResolveColSpan());
-
-        transformations.add(new DeleteRowCol(false, 5));
-        int[] rows = {0, 1, 2};
-        transformations.add(new DeleteMatchingRow("den freien Verkehr", rows));
-        transformations.add(new DeleteMatchingRow("Nummern der Waarenverzeichnisse", rows));
-        transformations.add(new DeleteMatchingRow("Die erste, laufende Nummer bezieht sich", rows));
-        transformations.add(new DeleteMatchingRow("Zusammen Ctr.", rows));
-        transformations.add(new DeleteMatchingRow("Soweit sie nicht unter", rows));
-        transformations.add(new DeleteMatchingRow("Mit Ausn. der unter", rows));
-
-
-        transformations.add(new SetValue("31. (274.) Pos. 5 a.", 239, 0));
-        transformations.add(new SetValue("35. (218.) Pos. 5 c.", 268, 0));
-
-        transformations.add(new SetType("data", 410, 4));
-        transformations.add(new SetType("data", 268, 2));
-        transformations.add(new SetType("data", 476, 4));
-        transformations.add(new SetType("data", 628, 4));
-
-        transformations.add(new DeleteRowCol(false, 4));
-
-        transformations.add(new DeleteRowCol(true, 816));
-        transformations.add(new DeleteRowCol(true, 815));
-
-
-        transformations.add(new DeleteMatchingRow("Zusammen a. Tonn.", rows));
-        transformations.add(new DeleteMatchingRow("b. Kubikmeter", rows));
-        transformations.add(new DeleteMatchingRow("Zusammen a. Ctr.", rows));
-        transformations.add(new DeleteMatchingRow("b. Hektoliter", rows));
-        transformations.add(new DeleteMatchingRow("c. Kubikmeter", rows));
-        transformations.add(new DeleteMatchingRow("c. Stück", rows));
-        transformations.add(new DeleteMatchingRow("b. Stck.", rows));
-        transformations.add(new SetValue("Berechneter Zollbetrag, Thlr.", 2348, 1));
-        transformations.add(new SetValue("426. (80.) Pos. 39 b.", 3632, 0));
-        transformations.add(new ResolveLabelUnits());
-        transformations.add(new ResolveColumnTypes());
-
-        transformations.add(new SanityNotEmpty());
-
-        transformations.add(new NormalizeCompoundTables());
-
-        // after normalization
-//        transformations.add(new SplitColumn("─", 4));
-        transformations.add(new CreateHeaders());
-
-        TablePrinter.printHTML(table, "0_original");
+        TablePrinter.printHTML(table, "0_original", conversion);
 
         int i = 0;
         // do transformations
-        for (Transformation transformer : transformations) {
+        for (Transformation transformer : conversion.getTransformations()) {
             table = transformer.transform(table);
             i++;
             System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + transformer.getName());
             singleStepWatch.reset();
             singleStepWatch.start();
-            TablePrinter.printHTML(table, "" + i + "_" + transformer.getName());
+            TablePrinter.printHTML(table, "" + i + "_" + transformer.getName(), conversion);
         }
 
         // remove line numbers
@@ -121,7 +74,7 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
-        write2File(model);
+        write2File(model, conversion);
         System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
         singleStepWatch.reset();
         singleStepWatch.start();
@@ -129,9 +82,14 @@ public class TeiHandler {
         System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
     }
 
-    private static void write2File(Model model) {
-        // TODO filname + target?
-        File output = new File(FOLDER_TARGET + "dump.n3");
+    private static void write2File(Model model, Conversion conversion) {
+        File folder = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3);
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + "dump.n3");
         try {
             FileWriter fw = new FileWriter(output);
             fw.write(convertModelToString(model));
