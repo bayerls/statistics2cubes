@@ -1,6 +1,7 @@
 package de.bayerl.statistics.instance;
 
 import de.bayerl.statistics.model.Cell;
+import de.bayerl.statistics.model.TableSliceType;
 import de.bayerl.statistics.transformer.*;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Example2 implements Conversion {
         transformations.add(new ResolveRowSpan());
         transformations.add(new ResolveColSpan());
 
-        transformations.add(new DeleteRowCol(true, 1));
+        transformations.add(new DeleteRowCol(TableSliceType.ROW, 1));
         int[] rows = {0, 1};
         transformations.add(new DeleteMatchingRow("Niederlage-Verkehr des Deutschen", rows));
         transformations.add(new DeleteMatchingRow("Im Ganzen", rows));

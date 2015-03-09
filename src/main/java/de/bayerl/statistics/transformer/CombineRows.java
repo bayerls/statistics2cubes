@@ -2,6 +2,7 @@ package de.bayerl.statistics.transformer;
 
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.TableSliceType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public class CombineRows extends Transformation {
         // delete unneeded rows
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) != targetRow) {
-                DeleteRowCol deleteRowCol = new DeleteRowCol(true, list.get(i));
+                DeleteRowCol deleteRowCol = new DeleteRowCol(TableSliceType.ROW, list.get(i));
                 table = deleteRowCol.transformStep(table);
             }
         }

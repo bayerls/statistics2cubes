@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.TableSliceType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +62,7 @@ public class DeleteMatchingRow extends Transformation {
 
         // delete rows
         for (Integer i : copy) {
-            DeleteRowCol deleteRowCol = new DeleteRowCol(true, i);
+            DeleteRowCol deleteRowCol = new DeleteRowCol(TableSliceType.ROW, i);
             table = deleteRowCol.transformStep(table);
         }
 

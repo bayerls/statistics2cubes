@@ -1,5 +1,6 @@
 package de.bayerl.statistics.instance;
 
+import de.bayerl.statistics.model.TableSliceType;
 import de.bayerl.statistics.transformer.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Example1 implements Conversion {
         transformations.add(new ResolveRowSpan());
         transformations.add(new ResolveColSpan());
 
-        transformations.add(new DeleteRowCol(false, 5));
+        transformations.add(new DeleteRowCol(TableSliceType.COLUMN, 5));
         int[] rows = {0, 1, 2};
         transformations.add(new DeleteMatchingRow("den freien Verkehr", rows));
         transformations.add(new DeleteMatchingRow("Nummern der Waarenverzeichnisse", rows));
@@ -38,9 +39,9 @@ public class Example1 implements Conversion {
         transformations.add(new SetType("data", 476, 4));
         transformations.add(new SetType("data", 628, 4));
 
-        transformations.add(new DeleteRowCol(false, 4));
-        transformations.add(new DeleteRowCol(true, 816));
-        transformations.add(new DeleteRowCol(true, 815));
+        transformations.add(new DeleteRowCol(TableSliceType.COLUMN, 4));
+        transformations.add(new DeleteRowCol(TableSliceType.ROW, 816));
+        transformations.add(new DeleteRowCol(TableSliceType.ROW, 815));
 
         transformations.add(new DeleteMatchingRow("Zusammen a. Tonn.", rows));
         transformations.add(new DeleteMatchingRow("b. Kubikmeter", rows));

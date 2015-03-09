@@ -1,38 +1,34 @@
 package de.bayerl.statistics.transformer;
 
-import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.TableSliceType;
 
 /**
  * Delete a row or column.
  */
 public class DeleteRowCol extends Transformation {
 
-    private boolean row;
+    private TableSliceType tableSliceType;
     private int number;
 
-    public DeleteRowCol(boolean row, int number) {
-        this.row = row;
+    public DeleteRowCol(TableSliceType tableSliceType, int number) {
+        this.tableSliceType = tableSliceType;
         this.number = number;
     }
 
 
     @Override
     public String getName() {
-        return "deleteRowCol_" + row + "_" + number;
+        return "deleteRowCol_" + tableSliceType + "_" + number;
     }
 
     @Override
     public Table transformStep(Table table) {
 
-        if (row) {
+        if (tableSliceType == TableSliceType.ROW) {
             table.getRows().remove(number);
         } else {
-            for (Row row : table.getRows()) {
-                if (row.getCells().size() > number) {
-                    row.getCells().remove(number);
-                }
-            }
+            table.getRows().stream().filter(row -> row.getCells().size() > number).forEach(row -> row.getCells().remove(number));
         }
 
         return table;
