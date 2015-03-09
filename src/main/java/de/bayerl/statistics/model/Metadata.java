@@ -7,8 +7,10 @@ import java.util.List;
 
 public class Metadata {
 
-    private String label;
-    private String description;
+    // TODO set this stuff
+    private String label = "lalala";
+    private String description = "lelele";
+    private String importer = "impimpimp";
 
     private Timestamp cubeCreated = new Timestamp(new Date().getTime());
     private String title;
@@ -23,6 +25,14 @@ public class Metadata {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getImporter() {
+        return importer;
+    }
+
+    public void setImporter(String importer) {
+        this.importer = importer;
     }
 
     public String getDescription() {

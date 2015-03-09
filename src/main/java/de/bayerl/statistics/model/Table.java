@@ -11,7 +11,6 @@ public class Table {
     private List<Header> headers = new ArrayList<>();
     private List<Row> rows = new ArrayList<>();
 
-
     public List<Row> getRows() {
         return rows;
     }
@@ -43,4 +42,5 @@ public class Table {
     public void setHeaders(List<Header> headers) {
         this.headers = headers;
     }
+
 }
