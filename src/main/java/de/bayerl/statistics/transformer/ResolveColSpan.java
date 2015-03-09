@@ -31,12 +31,12 @@ public class ResolveColSpan extends Transformation {
                     Cell addCell = dcUtil.deepCopy(cell);
                     Row addAtRow = table.getRows().get(i + rows);
 
-//                    if (addAtRow.getCells().size() - 1 < y) {
-//                        System.out.println(addAtRow.getCells().size() - 1 + "/" + y);
-//                    }
+                    if (addAtRow.getCells().size() == y) {
+                        addAtRow.getCells().add(addCell);
+                    } else {
+                        addAtRow.getCells().add(y, addCell);
+                    }
 
-                    // TODO hack?
-                    addAtRow.getCells().add(Math.min(y, addAtRow.getCells().size() - 1), addCell);
                     rows--;
                 }
             }
