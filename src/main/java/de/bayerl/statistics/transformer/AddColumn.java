@@ -4,6 +4,9 @@ import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
+/**
+ * Adds a column with copies of the given cell.
+ */
 public class AddColumn extends Transformation {
 
     private int colNumber;

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Checks if a value in a row matches the given term. If true the complete row is deleted.
+ */
 public class DeleteMatchingRow extends Transformation {
 
     private String term;
@@ -51,7 +54,7 @@ public class DeleteMatchingRow extends Transformation {
             }
         }
 
-        // prepare row list for deletion
+        // prepare row list for deletion: sort descending
         List<Integer> copy = Lists.newArrayList(rows);
         Collections.sort(copy);
         Collections.reverse(copy);

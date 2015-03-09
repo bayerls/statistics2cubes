@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 public class TeiLoader {
 
-    private final static String FILE = "drsa_020_0032_018.tei";
     public final static String PLACEHOLDER_LB = "##lb##";
 
     public static List<Table> loadFiles(Conversion conversion) {

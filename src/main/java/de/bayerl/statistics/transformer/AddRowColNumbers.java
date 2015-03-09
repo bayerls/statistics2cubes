@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Enumerates columns and rows.
  */
-public class AddRowColNumbers implements Transformer {
+public class AddRowColNumbers implements MetaTransformation {
 
     @Override
     public Table transform(Table table) {

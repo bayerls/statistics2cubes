@@ -5,7 +5,7 @@ import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
 /**
- * Finds empty cells.
+ * Finds empty cells and prints their coordinates.
  */
 public class SanityNotEmpty extends Transformation{
     @Override
@@ -26,7 +26,6 @@ public class SanityNotEmpty extends Transformation{
                 }
             }
         }
-
 
         return table;
     }

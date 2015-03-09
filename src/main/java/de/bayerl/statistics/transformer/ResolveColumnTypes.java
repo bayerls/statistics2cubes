@@ -4,6 +4,9 @@ import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
+/**
+ * Detects and resolves wrongly set roles. CAUTION: Implementation is depending on input tables layout!
+ */
 public class ResolveColumnTypes extends Transformation {
 
     @Override
@@ -13,11 +16,7 @@ public class ResolveColumnTypes extends Transformation {
 
     @Override
     protected Table transformStep(Table table) {
-
-        int[] cols = {2, 3};
-
-        // set unvalid cells to "data"
-
+        // set invalid cells to "data"
         for (int i = 3; i < table.getRows().size(); i++) {
             Row row = table.getRows().get(i);
 

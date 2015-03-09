@@ -3,7 +3,10 @@ package de.bayerl.statistics.transformer;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
-public class DeleteRowColNumbers implements Transformer {
+/**
+ * Removes the enumerations for rows and columns.
+ */
+public class DeleteRowColNumbers implements MetaTransformation {
 
     @Override
     public Table transform(Table table) {
