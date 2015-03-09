@@ -1,5 +1,6 @@
 package de.bayerl.statistics.transformer;
 
+import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
@@ -22,20 +23,32 @@ public class ResolveLabelUnits extends Transformation {
 
         for (int i = 0; i < table.getRows().size(); i++) {
             Row row = table.getRows().get(i);
+            String value1 = row.getCells().get(0).getValue().getValue();
+            String value2 = row.getCells().get(1).getValue().getValue();
 
-            if (row.getCells().get(0).getRole().equals("labelOrd")) {
-                boolean candidateRow = true;
-                for (int y = 1; y < row.getCells().size(); y++) {
-                    if (!row.getCells().get(y).getRole().equals("label")) {
+            boolean candidateRow = true;
+
+                for (int y = 2; y < row.getCells().size(); y++) {
+                    String value = row.getCells().get(y).getValue().getValue();
+                    if (!(!value.equals(value1) && value.equals(value2))) {
                         candidateRow = false;
                         break;
                     }
                 }
 
+//            if (row.getCells().get(0).getRole().equals("labelOrd")) {
+//                boolean candidateRow = true;
+//                for (int y = 1; y < row.getCells().size(); y++) {
+//                    if (!row.getCells().get(y).getRole().equals("label")) {
+//                        candidateRow = false;
+//                        break;
+//                    }
+//                }
+//
                 if (candidateRow) {
                     rows.add(i);
                 }
-            }
+//            }
         }
 
         // set the correct roles

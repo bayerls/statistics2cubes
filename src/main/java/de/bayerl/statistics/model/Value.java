@@ -9,11 +9,20 @@ public class Value implements Serializable {
     private String measureType;
     private String measureUnit;
 
+    private String url;
 
     private boolean isNum = false;
     private String numType;
 
     private String value = "";
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public boolean isMeasure() {
         return isMeasure;
