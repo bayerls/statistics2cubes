@@ -26,7 +26,11 @@ public class AddColumn extends Transformation {
     protected Table transformStep(Table table) {
         DeepCopyUtil deepCopyUtil = new DeepCopyUtil();
         for (Row row : table.getRows()) {
-            row.getCells().add(colNumber, deepCopyUtil.deepCopy(cell));
+            if (colNumber == row.getCells().size()) {
+                row.getCells().add(deepCopyUtil.deepCopy(cell));
+            } else {
+                row.getCells().add(colNumber, deepCopyUtil.deepCopy(cell));
+            }
         }
 
         return table;
