@@ -74,8 +74,6 @@ public class TablePrinter {
 
 
     private static void writeContent(String fileName, String content, Conversion conversion) {
-        // TODO delete before print
-
         File folder = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
 
         if (!folder.exists()) {

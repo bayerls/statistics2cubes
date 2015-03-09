@@ -41,8 +41,9 @@ public class TeiLoader {
         }
 
         if (parser != null) {
-            // TODO use first file?
-            File file = new File(folder + FILE);
+            // use the first file in the folder to grab the link group
+            File directory = new File(folder);
+            File file = directory.listFiles()[0];
 
             try {
                 parser.parse(file, new DefaultHandler() {
