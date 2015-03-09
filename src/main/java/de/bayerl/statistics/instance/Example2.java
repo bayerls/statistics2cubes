@@ -11,7 +11,7 @@ public class Example2 implements Conversion {
 
     @Override
     public String getFolder() {
-        return "2/";
+        return "2";
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Example2 implements Conversion {
 
         String[] headerLabels = {"Anzahl", "Kategorie", "Bestand (Änderung)", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet"};
         transformations.add(new CreateHeaders(headerLabels));
-        transformations.add(new AddMetadata("iederlage-Verkehr des Deutschen Zollgebiets",
+        transformations.add(new AddMetadata("Niederlage-Verkehr des Deutschen Zollgebiets",
                 "Niederlage-Verkehr des Deutschen Zollgebiets mit den wichtigeren Niederlagegütern im ersten Quartal 1873",
                 "https://github.com/bayerls"));
 

@@ -9,7 +9,7 @@ public class Example1 implements Conversion {
 
     @Override
     public String getFolder() {
-        return "1/";
+        return "1";
     }
 
     @Override

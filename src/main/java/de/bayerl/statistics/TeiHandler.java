@@ -21,12 +21,18 @@ import java.util.concurrent.TimeUnit;
 
 public class TeiHandler {
 
-    // TODO example 2 020_0032_018.?
-
     public static void handle() {
 
+        //  ******************************************************
+        //  ******************************************************
+        //  ******************************************************
 
+        // Instantiate the correct conversion class
         Conversion conversion = new Example2();
+
+        //  ******************************************************
+        //  ******************************************************
+        //  ******************************************************
 
 
         Stopwatch stopwatch = Stopwatch.createStarted();
@@ -49,13 +55,19 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
+        // delete old html files before printing new ones
+        File dir = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
+        for(File file: dir.listFiles()) {
+            file.delete();
+        }
+
         TablePrinter.printHTML(table, "0_original", conversion);
 
         int i = 0;
         // do transformations
         for (Transformation transformer : conversion.getTransformations()) {
-            table = transformer.transform(table);
             i++;
+            table = transformer.transform(table);
             System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + transformer.getName());
             singleStepWatch.reset();
             singleStepWatch.start();
@@ -66,7 +78,7 @@ public class TeiHandler {
         DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
         table = deleteRowColNumbers.transform(table);
 
-        // TODO this can be a transformation?
+        // convert to rdf
         Table2CubeConverter table2CubeConverter = new Table2CubeConverter(table);
         Model model = table2CubeConverter.convert();
 
@@ -74,11 +86,9 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
+        // write to file
         write2File(model, conversion);
         System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-        singleStepWatch.reset();
-        singleStepWatch.start();
-
         System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
     }
 
@@ -90,6 +100,7 @@ public class TeiHandler {
         }
 
         File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + "dump.n3");
+
         try {
             FileWriter fw = new FileWriter(output);
             fw.write(convertModelToString(model));
