@@ -19,7 +19,10 @@ public abstract class Transformation {
 
         // do the actual transformation step
         table = transformStep(table);
-        table = addRowColNumbers.transform(table);
+
+        if (!table.isNumbered()) {
+            table = addRowColNumbers.transform(table);
+        }
 
         return table;
     }

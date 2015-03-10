@@ -28,7 +28,7 @@ public class TeiHandler {
         //  ******************************************************
 
         // Instantiate the correct conversion class
-        Conversion conversion = new Example2();
+        Conversion conversion = new Example1();
 
         //  ******************************************************
         //  ******************************************************
@@ -74,22 +74,26 @@ public class TeiHandler {
             TablePrinter.printHTML(table, "" + i + "_" + transformer.getName(), conversion);
         }
 
-        // remove line numbers
-        DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
-        table = deleteRowColNumbers.transform(table);
+        if (table.getHeaders().size() == 0) {
+            System.out.println("Headers are not set. Necessary for triplification.");
+        } else {
+            // remove line numbers
+            DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
+            table = deleteRowColNumbers.transform(table);
 
-        // convert to rdf
-        Table2CubeConverter table2CubeConverter = new Table2CubeConverter(table);
-        Model model = table2CubeConverter.convert();
+            // convert to rdf
+            Table2CubeConverter table2CubeConverter = new Table2CubeConverter(table);
+            Model model = table2CubeConverter.convert();
 
-        System.out.println("Table converted in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-        singleStepWatch.reset();
-        singleStepWatch.start();
+            System.out.println("Table converted in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+            singleStepWatch.reset();
+            singleStepWatch.start();
 
-        // write to file
-        write2File(model, conversion);
-        System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-        System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+            // write to file
+            write2File(model, conversion);
+            System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+            System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+        }
     }
 
     private static void write2File(Model model, Conversion conversion) {

@@ -163,7 +163,7 @@ public class Table2CubeConverter {
 
                 if (i < getMeasureCount()) {
                     // TODO use more data types
-                    XSDDatatype xsdDatatype = XSDDatatype.XSDstring;
+                    XSDDatatype xsdDatatype = XSDDatatype.XSDdouble;
                     Literal literal = model.createTypedLiteral(cell.getValue().getValue(), xsdDatatype);
                     obs.addProperty(headers.get(i), literal);
                 } else {

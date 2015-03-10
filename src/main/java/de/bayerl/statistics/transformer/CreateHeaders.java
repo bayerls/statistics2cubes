@@ -26,7 +26,7 @@ public class CreateHeaders extends Transformation {
     @Override
     protected Table transformStep(Table table) {
         Row row = table.getRows().get(0);
-        for (int i = 0; i < row.getCells().size(); i++) {
+        for (int i = 0; i < headerLabels.length; i++) {
             Cell cell = row.getCells().get(i);
             Header header = new Header();
             header.setLabel(headerLabels[i]);
