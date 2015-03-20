@@ -5,6 +5,10 @@ import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
+/**
+ * Ensures, that the fact column can be cast to double values. It at least one cell fails this conversion a new
+ * column is introduced, containing all parts of the cell, which cannot be casted.
+ */
 public class CleanFacts extends Transformation {
 
     @Override

@@ -54,8 +54,7 @@ public class NormalizeTable extends Transformation {
             Row row = new Row();
             resultTable.getRows().add(row);
 
-            for (int y = 0; y < normalized.size(); y++) {
-                List<Cell> cells = normalized.get(y);
+            for (List<Cell> cells : normalized) {
                 row.getCells().add(cells.get(i));
             }
         }

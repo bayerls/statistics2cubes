@@ -19,6 +19,8 @@ import java.util.*;
 
 public class Table2CubeConverter {
 
+    // TODO implement converter for version 1.1
+
     private static final String RELATION = "https://github.com/bayerls/statistics2cubes";
     private Table table;
     private Model model;

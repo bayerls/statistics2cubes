@@ -6,16 +6,15 @@ import de.bayerl.statistics.converter.Table2CubeConverter;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.instance.Example1;
-import de.bayerl.statistics.instance.Example2;
 import de.bayerl.statistics.model.Table;
-import de.bayerl.statistics.transformer.*;
+import de.bayerl.statistics.transformer.DeleteRowColNumbers;
+import de.bayerl.statistics.transformer.Transformation;
 import org.apache.jena.riot.Lang;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

@@ -1,11 +1,10 @@
 package de.bayerl.statistics.transformer;
 
-
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
 
 /**
- * Sets new values for a interval of a column. Interval boarders are included.
+ * Sets new values for an interval in a column. Interval boarders are included.
  */
 public class SetValueIntervalColumn extends Transformation {
 

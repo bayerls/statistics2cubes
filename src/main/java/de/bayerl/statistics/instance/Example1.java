@@ -69,8 +69,6 @@ public class Example1 implements Conversion {
                 "In den freien Verkehr des Deutschen Zollgebiets getretene Waaren; Einfuhr; 1. Quartal 1873 und 1872",
                 "https://github.com/bayerls"));
 
-
-
         return transformations;
     }
 

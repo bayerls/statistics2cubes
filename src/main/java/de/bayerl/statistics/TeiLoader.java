@@ -24,9 +24,8 @@ public class TeiLoader {
     public static List<Table> loadFiles(Conversion conversion) {
         String folder = Config.FOLDER + conversion.getFolder() + Config.FOLDER_TEI;
         List<String> linkGroup = loadLinkGroup(folder);
-        List<Table> tables = linkGroup.stream().map(link -> load(folder, link)).collect(Collectors.toList());
 
-        return tables;
+        return linkGroup.stream().map(link -> load(folder, link)).collect(Collectors.toList());
     }
 
     private static List<String> loadLinkGroup(String folder) {
@@ -54,9 +53,7 @@ public class TeiLoader {
                         }
                     }
                 });
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SAXException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -65,7 +62,7 @@ public class TeiLoader {
     }
 
 
-    private static Table load(String folder, String filename) {
+    public static Table load(String folder, String filename) {
         SAXParserImpl parser = null;
         Table table = new Table();
 
@@ -168,9 +165,7 @@ public class TeiLoader {
                         }
                     }
                 });
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (SAXException | IOException e) {
                 e.printStackTrace();
             }
         }

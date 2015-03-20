@@ -2,6 +2,9 @@ package de.bayerl.statistics.transformer;
 
 import de.bayerl.statistics.model.Table;
 
+/**
+ * Adds external metadata to the table, which are not already part of the table.
+ */
 public class AddMetadata extends Transformation {
 
     private String label;

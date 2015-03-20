@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Normalizes tables that are compounded with labelUnit rows.
+ * Normalizes compounded tables.
  */
 public class NormalizeCompoundTables extends Transformation {
 

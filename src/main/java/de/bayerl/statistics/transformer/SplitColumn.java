@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Splits a column based on a regex expression.
+ */
 public class SplitColumn extends Transformation {
 
     private String regex;

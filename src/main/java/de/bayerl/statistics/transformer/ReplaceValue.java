@@ -4,6 +4,9 @@ import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
+/**
+ * Replaces every occurrence of a value fragment with a new value fragment.
+ */
 public class ReplaceValue extends Transformation {
 
     private String target;

@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Combine multiple rows into a single one
+ * Combine multiple rows into a single one.
  */
 public class CombineRows extends Transformation {
 

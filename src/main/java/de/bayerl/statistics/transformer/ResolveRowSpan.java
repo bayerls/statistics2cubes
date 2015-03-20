@@ -5,7 +5,7 @@ import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
 
 /**
- * Introduce redundancy to resolve row spans
+ * Introduce redundancy to resolve row spans.
  */
 public class ResolveRowSpan extends Transformation {
 
