@@ -5,10 +5,8 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
-import de.bayerl.statistics.converter.vocabulary.Data42;
-import de.bayerl.statistics.converter.vocabulary.PROV;
-import de.bayerl.statistics.converter.vocabulary.QB;
-import de.bayerl.statistics.converter.vocabulary.VA;
+import de.bayerl.statistics.converter.vocabulary.*;
+import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Header;
 import de.bayerl.statistics.model.Row;
@@ -25,9 +23,19 @@ public class Table2CubeConverter {
     private Table table;
     private Model model;
     private String id;
-    private final static String VERSION = "codeCube/1.2";
+    private final static String VERSION_1_2 = "codeCube/1.2";
+    private final static String VERSION_1_1 = "codeCube/1.1";
+
+    private LocalNS localNS;
+
+
 
     public Table2CubeConverter(Table table) {
+        if (Config.GENERATE_1_2) {
+            localNS = new Data42();
+        } else {
+            localNS = new CODE();
+        }
         this.id = UUID.randomUUID().toString();
         this.table = table;
         this.model = ModelFactory.createDefaultModel();
@@ -38,11 +46,12 @@ public class Table2CubeConverter {
     private void setNamespaces() {
         model.setNsPrefix("dc", DC.getURI());
         model.setNsPrefix(QB.getPrefix(), QB.getURI());
-        model.setNsPrefix(Data42.getPrefix(), Data42.getURI());
         model.setNsPrefix("rdf", RDF.getURI());
         model.setNsPrefix("rdfs", RDFS.getURI());
         model.setNsPrefix(VA.getPrefix(), VA.getURI());
         model.setNsPrefix(PROV.getPrefix(), PROV.getURI());
+        model.setNsPrefix(localNS.getPrefix(), localNS.getURI());
+
     }
 
     public Model convert() {
@@ -55,12 +64,17 @@ public class Table2CubeConverter {
     }
 
     private Resource createDataset() {
-        Resource ds = model.createResource(Data42.DATASET + "-" + id);
+        Resource ds = model.createResource(localNS.DATASET + "-" + id);
         ds.addProperty(RDF.type, QB.DATASET);
         ds.addProperty(RDFS.label, table.getMetadata().getLabel());
         ds.addProperty(RDFS.comment, table.getMetadata().getDescription());
-        ds.addProperty(DC.format, VERSION);
         ds.addProperty(DC.relation, RELATION);
+
+        if (Config.GENERATE_1_2) {
+            ds.addProperty(DC.format, VERSION_1_2);
+        } else {
+            ds.addProperty(DC.format, VERSION_1_2);
+        }
 
         for (String source : table.getMetadata().getSources()) {
             ds.addProperty(DC.source, source);
@@ -73,10 +87,10 @@ public class Table2CubeConverter {
     }
 
     private void addProvenanceInformation(Resource dataset) {
-        Resource importerAgent = model.createResource(Data42.IMPORTER + "-" + id);
+        Resource importerAgent = model.createResource(localNS.IMPORTER + "-" + id);
         importerAgent.addLiteral(RDFS.label, table.getMetadata().getImporter());
 
-        Resource importActivity = model.createResource(Data42.IMPORT + "-" + id);
+        Resource importActivity = model.createResource(localNS.IMPORT + "-" + id);
         importActivity.addProperty(PROV.WAS_STARTED_BY, importerAgent);
 
         dataset.addProperty(PROV.WAS_GENERATED_BY, importActivity);
@@ -101,7 +115,7 @@ public class Table2CubeConverter {
         List<Property> headerProperties = new ArrayList<>();
         List<Header> headers = table.getHeaders();
 
-        Resource dsd = model.createResource(Data42.DSD + "-" + id);
+        Resource dsd = model.createResource(localNS.DSD + "-" + id);
         ds.addProperty(QB.STRUCTURE, dsd);
         dsd.addProperty(RDF.type, QB.DSD);
 
@@ -128,6 +142,7 @@ public class Table2CubeConverter {
     private HashMap<Integer, HashMap<String, Resource>> createEntities() {
         HashMap<Integer, HashMap<String, Resource>> entities = new HashMap<>();
 
+        // generate entity map for every dimension column
         for (int i = getMeasureCount(); i < table.getRows().get(0).getCells().size(); i++) {
             entities.put(i, new HashMap<>());
         }
@@ -137,15 +152,19 @@ public class Table2CubeConverter {
             for (int y = 0; y < table.getRows().size(); y++) {
                 Cell cell = table.getRows().get(y).getCells().get(i);
                 String id = UUID.randomUUID().toString();
-                Resource res = model.createResource(Data42.ENTITY + "_" + id);
 
-                // TODO use more data types
-                XSDDatatype xsdDatatype = XSDDatatype.XSDstring;
-                Literal literal = model.createTypedLiteral(cell.getValue().getValue(), xsdDatatype);
-                res.addLiteral(RDFS.label, literal);
-                res.addProperty(RDFS.isDefinedBy, model.createResource(cell.getValue().getUrl()));
-                res.addProperty(RDF.type, Data42.ENTITY);
-                dimEntities.put(cell.getValue().getValue(), res);
+                if (!dimEntities.keySet().contains(cell.getValue().getValue())) {
+                    Resource res = model.createResource(localNS.ENTITY + "_" + id);
+
+                    // TODO use more data types
+                    XSDDatatype xsdDatatype = XSDDatatype.XSDstring;
+                    Literal literal = model.createTypedLiteral(cell.getValue().getValue(), xsdDatatype);
+                    res.addLiteral(RDFS.label, literal);
+                    res.addProperty(RDFS.isDefinedBy, model.createResource(cell.getValue().getUrl()));
+                    res.addProperty(RDF.type, localNS.ENTITY);
+                    dimEntities.put(cell.getValue().getValue(), res);
+                }
+
             }
         }
 
@@ -154,7 +173,7 @@ public class Table2CubeConverter {
 
     private void createObservations(List<Property> headers, Resource ds) {
         HashMap<Integer, HashMap<String, Resource>> entities = createEntities();
-        String obsPrefix = Data42.DATASET + "-" + id + "/" + Data42.OBS_NAME + "-";
+        String obsPrefix = localNS.DATASET + "-" + id + "/" + localNS.OBS_NAME + "-";
 
         for (Row row : table.getRows()) {
             Resource obs = model.createResource(obsPrefix + UUID.randomUUID()).addProperty(RDF.type, QB.OBSERVATION);

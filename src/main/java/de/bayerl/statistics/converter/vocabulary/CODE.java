@@ -1,9 +1,9 @@
 package de.bayerl.statistics.converter.vocabulary;
 
-public class Data42 extends LocalNS{
+public class CODE extends LocalNS {
 
-	protected static final String PREFIX = "data42";
-    protected static final String URI = "http://42-data.org/resource/";
+    protected static final String PREFIX = "code";
+    protected static final String URI = "http://code-research.eu/resource/";
 
     @Override
     public String getPrefix() {

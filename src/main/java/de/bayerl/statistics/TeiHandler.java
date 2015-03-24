@@ -6,6 +6,7 @@ import de.bayerl.statistics.converter.Table2CubeConverter;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.instance.Example1;
+import de.bayerl.statistics.instance.Example2;
 import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.transformer.DeleteRowColNumbers;
 import de.bayerl.statistics.transformer.Transformation;
@@ -27,7 +28,7 @@ public class TeiHandler {
         //  ******************************************************
 
         // Instantiate the correct conversion class
-        Conversion conversion = new Example1();
+        Conversion conversion = new Example2();
 
         //  ******************************************************
         //  ******************************************************
@@ -101,8 +102,16 @@ public class TeiHandler {
         if (!folder.exists()) {
             folder.mkdir();
         }
+        String filename = "dump";
+        if (Config.GENERATE_1_2) {
+            filename += "_1.2";
+        } else {
+            filename += "_1.1";
+        }
 
-        File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + "dump.n3");
+        filename += ".n3";
+
+        File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + filename);
 
         try {
             FileWriter fw = new FileWriter(output);

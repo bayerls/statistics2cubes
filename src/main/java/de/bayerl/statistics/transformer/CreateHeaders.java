@@ -1,7 +1,10 @@
 package de.bayerl.statistics.transformer;
 
+import de.bayerl.statistics.converter.vocabulary.CODE;
 import de.bayerl.statistics.converter.vocabulary.Data42;
+import de.bayerl.statistics.converter.vocabulary.LocalNS;
 import de.bayerl.statistics.converter.vocabulary.VA;
+import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Header;
 import de.bayerl.statistics.model.Row;
@@ -25,12 +28,19 @@ public class CreateHeaders extends Transformation {
 
     @Override
     protected Table transformStep(Table table) {
+        LocalNS localNS;
+        if (Config.GENERATE_1_2) {
+            localNS = new Data42();
+        } else {
+            localNS = new CODE();
+        }
+
         Row row = table.getRows().get(0);
         for (int i = 0; i < headerLabels.length; i++) {
             Cell cell = row.getCells().get(i);
             Header header = new Header();
             header.setLabel(headerLabels[i]);
-            header.setUrl(Data42.COMPONENT + "-" + i);
+            header.setUrl(localNS.COMPONENT + "-" + i);
             String range = VA.getURI() + "cubeDimensionNominal";
 
             if (cell.getRole().equals("data")) {
