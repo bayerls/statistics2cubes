@@ -8,6 +8,7 @@ public class Config {
 
     public final static boolean GENERATE_1_2 = false;
     // set path to the root folder
+    public final static Conversion CONVERSION = new Example2();
     public static final String FOLDER = "/Users/sebastianbayerl/Desktop/teiConversion/";
 //    public static final String FOLDER = "/Users/sebastianbayerl/Desktop/teiPreview/";
 

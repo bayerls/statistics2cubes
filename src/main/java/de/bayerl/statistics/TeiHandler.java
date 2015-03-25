@@ -22,19 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class TeiHandler {
 
     public static void handle() {
-
-        //  ******************************************************
-        //  ******************************************************
-        //  ******************************************************
-
-        // Instantiate the correct conversion class
-        Conversion conversion = new Example2();
-
-        //  ******************************************************
-        //  ******************************************************
-        //  ******************************************************
-
-
+        Conversion conversion = Config.CONVERSION;
         Stopwatch stopwatch = Stopwatch.createStarted();
         Stopwatch singleStepWatch = Stopwatch.createStarted();
 
@@ -110,14 +98,12 @@ public class TeiHandler {
         }
 
         filename += ".n3";
-
         File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + filename);
-
-        try {
-            FileWriter fw = new FileWriter(output);
+        
+        try (FileWriter fw = new FileWriter(output)) {
             fw.write(convertModelToString(model));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 
