@@ -30,7 +30,9 @@ public class TeiHandler {
         List<Table> tables = TeiLoader.loadFiles(conversion);
 
         // only work with a small subset
-//        tables = tables.subList(0, 10);
+        if (Config.LIMIT > 0) {
+            tables = tables.subList(0, Config.LIMIT);
+        }
 
         // Merge tables into the first table
         Table table = tables.remove(0);
@@ -45,7 +47,7 @@ public class TeiHandler {
 
         // delete old html files before printing new ones
         File dir = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
-        for(File file: dir.listFiles()) {
+        for(File file : dir.listFiles()) {
             file.delete();
         }
 
@@ -99,7 +101,7 @@ public class TeiHandler {
 
         filename += ".n3";
         File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + filename);
-        
+
         try (FileWriter fw = new FileWriter(output)) {
             fw.write(convertModelToString(model));
         } catch (IOException e1) {

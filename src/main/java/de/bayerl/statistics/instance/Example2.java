@@ -43,7 +43,14 @@ public class Example2 implements Conversion {
         transformations.add(new TrimValues());
         transformations.add(new SanityNotEmpty());
 
-        String[] headerLabels = {"Anzahl", "Kategorie", "Bestand (Änderung)", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet"};
+        // TODO hack to get a second measure
+        cell = new Cell();
+        cell.setRole("data");
+        cell.getValue().setValue("1");
+        transformations.add(new AddColumn(0, cell));
+        transformations.add(new SetValueColumn(0));
+
+        String[] headerLabels = {"Random", "Anzahl", "Kategorie", "Bestand (Änderung)", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet"};
         transformations.add(new CreateHeaders(headerLabels));
         transformations.add(new AddMetadata("Niederlage-Verkehr des Deutschen Zollgebiets",
                 "Niederlage-Verkehr des Deutschen Zollgebiets mit den wichtigeren Niederlagegütern im ersten Quartal 1873",
