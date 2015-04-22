@@ -1,4 +1,4 @@
-package de.bayerl.statistics.utility;
+package de.bayerl.statistics.analytics;
 
 
 import de.bayerl.statistics.instance.Config;

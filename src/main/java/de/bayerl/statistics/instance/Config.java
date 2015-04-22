@@ -7,10 +7,9 @@ public class Config {
     //  ******************************************************
 
     public final static boolean GENERATE_1_2 = false;
-    // set path to the root folder
-    public final static Conversion CONVERSION = new Example2();
-    public static final String FOLDER = "/Users/sebastianbayerl/Desktop/teiConversion/";
-//    public static final String FOLDER = "/Users/sebastianbayerl/Desktop/teiPreview/";
+    public final static Conversion CONVERSION = new Example3();
+//    public final static String FOLDER = "/Users/sebastianbayerl/Desktop/Work/6_Reichsstatistik/teiConversion/";
+    public final static int LIMIT = 0;
 
 
     //  ******************************************************
@@ -21,7 +20,7 @@ public class Config {
     public static final String FOLDER_N3 = "/n3/";
     public static final String FOLDER_HTML = "/html/";
 
-
+        public static final String FOLDER = "/Users/sebastianbayerl/Desktop/Work/6_Reichsstatistik/teiPreview/";
     public  static final String FOLDER_ZIP = "/Users/sebastianbayerl/Desktop/tei/";
-    public static final String FOLDER_UNZIP = "/Users/sebastianbayerl/Desktop/teiUnzip/";
+    public static final String FOLDER_UNZIP = "/Users/sebastianbayerl/Desktop//Work/6_Reichsstatistik/teiUnzip/";
 }

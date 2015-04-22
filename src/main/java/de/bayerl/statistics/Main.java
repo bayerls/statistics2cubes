@@ -1,15 +1,16 @@
 package de.bayerl.statistics;
 
-import de.bayerl.statistics.utility.Analytics;
+import de.bayerl.statistics.analytics.Analytics;
 
 public class Main {
 
     public static void main(String[] args) {
         TeiHandler.handle();
 
-//        Analytics a = new Analytics();
+        Analytics a = new Analytics();
 //        a.getPreview();
 //        a.computeValues();
+        a.computeSimilarLinkGroups();
     }
 
 }

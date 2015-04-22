@@ -63,7 +63,10 @@ public class Example1 implements Conversion {
         transformations.add(new ReplaceValue("†", "† "));
         transformations.add(new CleanFacts());
         transformations.add(new TrimValues());
-        String[] headerLabels = {"Anzahl", "Kategorie", "Einfuhr oder Ausfuhr", "Quartal", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet", "Fakten Info"};
+
+        transformations.add((new DeleteRowCol(TableSliceType.COLUMN, 1)));
+
+        String[] headerLabels = {"Anzahl", "Einfuhr oder Ausfuhr", "Quartal", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet", "Fakten Info"};
         transformations.add(new CreateHeaders(headerLabels));
         transformations.add(new AddMetadata("In den freien Verkehr des Deutschen Zollgebiets getretene Waaren",
                 "In den freien Verkehr des Deutschen Zollgebiets getretene Waaren; Einfuhr; 1. Quartal 1873 und 1872",

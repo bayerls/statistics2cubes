@@ -29,8 +29,8 @@ public class TablePrinter {
     public static void printHTML(Table table, String filenamePart, Conversion conversion) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n" +
-                "<html><head><meta charset=\"utf-8\"/></head><body>\n");
-        sb.append("<table border=\"1\">");
+                "<html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
+        sb.append("<table>");
 
         for (Row row : table.getRows()) {
             sb.append("<tr>");
@@ -42,7 +42,7 @@ public class TablePrinter {
                 String value = cell.getRole();
 
                 if (value.equals("data")) {
-                    sb.append("style=\"background-color: #E6FEE6\"");
+                    sb.append("style=\"background-color: #E6F5CC\"");
                 } else if (value.equals("label")) {
                     sb.append("style=\"background-color: #6495ED\"");
                 } else if (value.equals("dataRes")) {

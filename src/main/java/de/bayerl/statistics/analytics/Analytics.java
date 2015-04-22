@@ -1,4 +1,4 @@
-package de.bayerl.statistics.utility;
+package de.bayerl.statistics.analytics;
 
 import de.bayerl.statistics.TablePrinter;
 import de.bayerl.statistics.TeiLoader;
@@ -66,14 +66,45 @@ public class Analytics {
         System.out.println("#link groups with different size: " + grouped.size());
     }
 
+    public void computeSimilarLinkGroups() {
+        Map<Path, Map<Path, Integer>> filtered = filterFolders();
+        List<String> titles = new ArrayList<>();
+
+        for (Path folder : filtered.keySet()) {
+            //System.out.println("Folder: " + folder);
+
+            for (Path file : filtered.get(folder).keySet()) {
+                //System.out.println(filtered.get(folder).get(file) + " - " + file.getFileName().toString());
+                Table table = TeiLoader.load(folder.toString() + "/", file.getFileName().toString());
+                Conversion conversion = new Preview();
+
+                for (Transformation transformer : conversion.getTransformations()) {
+                    table = transformer.transform(table);
+                }
+
+                MetaTable metaTable = new MetaTable();
+                metaTable.setFile(file.getFileName().toString());
+                metaTable.setLinkGroupSize(filtered.get(folder).get(file));
+                metaTable.setTitle(table.getRows().get(1).getCells().get(1).getValue().getValue());
+
+
+                titles.add(table.getRows().get(1).getCells().get(1).getValue().getValue());
+            }
+        }
+
+
+        Collections.sort(titles);
+        titles.forEach(s -> System.out.println(s));
+    }
+
     public void getPreview() {
         Map<Path, Map<Path, Integer>> filtered = filterFolders();
 
         for (Path folder : filtered.keySet()) {
-            System.out.println("Folder: " + folder);
+            //System.out.println("Folder: " + folder);
 
             for (Path file : filtered.get(folder).keySet()) {
-                System.out.println(filtered.get(folder).get(file) + " - " + file.getFileName().toString());
+                //System.out.println(filtered.get(folder).get(file) + " - " + file.getFileName().toString());
                 Table table = TeiLoader.load(folder.toString() + "/", file.getFileName().toString());
                 Conversion conversion = new Preview();
 
