@@ -35,6 +35,12 @@
             <artifactId>lombok</artifactId>
             <version>1.16.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9</version>
+        </dependency>
+
 
     </dependencies>
 
