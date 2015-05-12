@@ -1,8 +1,8 @@
 package de.bayerl.statistics.transformer;
 
-import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.Cell;
 
 /**
  * Created by sebastianbayerl on 08/04/15.
@@ -11,7 +11,7 @@ public class ResolveWrongLabels extends Transformation {
 
     private int columnOffset;
 
-    public ResolveWrongLabels(int columnOffset) {
+    public ResolveWrongLabels(@NameAnnotation(name = "column offset") int columnOffset) {
         this.columnOffset = columnOffset;
     }
 

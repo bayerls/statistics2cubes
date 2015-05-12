@@ -11,7 +11,7 @@ import java.util.Random;
 public class SetValueColumn extends Transformation {
     private int colNumber;
 
-    public SetValueColumn(int colNumber) {
+    public SetValueColumn(@NameAnnotation(name = "col") int colNumber) {
         this.colNumber = colNumber;
     }
 

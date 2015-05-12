@@ -1,4 +1,4 @@
-package de.bayerl.statistics;
+package de.bayerl.statistics.gui.controller;
 
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Generates a HTML representation of the table or prints it to standard out.
  */
-public class TablePrinter {
+public class Printer {
 
     public static void print(Table table) {
         for (Row row : table.getRows()) {
@@ -26,7 +26,7 @@ public class TablePrinter {
         }
     }
 
-    public static void printHTML(Table table, String filenamePart, Conversion conversion) {
+    public static void printHTML(Table table, String filenamePart, String htmlLocation) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE de.bayerl.statistics.gui.html>\n" +
                 "<de.bayerl.statistics.gui.html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
@@ -69,19 +69,19 @@ public class TablePrinter {
 
         sb.append("</table></body></de.bayerl.statistics.gui.html>");
 
-        writeContent("table_" + filenamePart, sb.toString(), conversion);
+        writeContent("table_" + filenamePart, sb.toString(), htmlLocation);
     }
 
 
-    private static void writeContent(String fileName, String content, Conversion conversion) {
-        File folder = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
+    private static void writeContent(String fileName, String content, String htmlLocation) {
+        File folder = new File(htmlLocation);
 
         if (!folder.exists()) {
             folder.mkdir();
         }
 
-        fileName += ".de.bayerl.statistics.gui.html";
-        File file = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML + fileName);
+        fileName += ".html";
+        File file = new File(folder.getAbsolutePath() + "\\" + fileName);
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(file, "UTF-8");

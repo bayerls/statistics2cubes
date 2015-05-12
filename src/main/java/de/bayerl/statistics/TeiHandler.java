@@ -5,8 +5,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import de.bayerl.statistics.converter.Table2CubeConverter;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.instance.Conversion;
-import de.bayerl.statistics.instance.Example1;
-import de.bayerl.statistics.instance.Example2;
 import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.transformer.DeleteRowColNumbers;
 import de.bayerl.statistics.transformer.Transformation;
@@ -45,7 +43,7 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
-        // delete old html files before printing new ones
+        // delete old de.bayerl.statistics.gui.html files before printing new ones
         File dir = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
         for(File file : dir.listFiles()) {
             file.delete();

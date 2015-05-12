@@ -12,7 +12,7 @@ public class AddColumn extends Transformation {
     private int colNumber;
     private Cell cell;
 
-    public AddColumn(int colNumber, Cell cell) {
+    public AddColumn(@NameAnnotation(name = "col") int colNumber, Cell cell) {
         this.colNumber = colNumber;
         this.cell = cell;
     }

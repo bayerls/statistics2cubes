@@ -11,7 +11,7 @@ public class AddMetadata extends Transformation {
     private String description;
     private String importer;
 
-    public AddMetadata(String label, String description, String importer) {
+    public AddMetadata(@NameAnnotation(name = "label") String label, @NameAnnotation(name = "description") String description, @NameAnnotation(name = "importer") String importer) {
         this.label = label;
         this.description = description;
         this.importer = importer;

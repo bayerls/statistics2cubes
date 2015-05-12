@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Example3 implements Conversion {
 
-    // table_178-drsa_380_0240_48.tei.html
+    // table_178-drsa_380_0240_48.tei.de.bayerl.statistics.gui.html
 
     @Override
     public String getFolder() {

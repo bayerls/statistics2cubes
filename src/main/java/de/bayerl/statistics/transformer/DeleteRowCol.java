@@ -11,7 +11,7 @@ public class DeleteRowCol extends Transformation {
     private TableSliceType tableSliceType;
     private int number;
 
-    public DeleteRowCol(TableSliceType tableSliceType, int number) {
+    public DeleteRowCol(TableSliceType tableSliceType, @NameAnnotation(name = "number") int number) {
         this.tableSliceType = tableSliceType;
         this.number = number;
     }

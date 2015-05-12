@@ -1,7 +1,8 @@
 package de.bayerl.statistics.gui.controller;
-import de.bayerl.statistics.TeiHandler;
+import de.bayerl.statistics.gui.model.Parameter;
 import de.bayerl.statistics.gui.model.TransformationModel;
 import de.bayerl.statistics.transformer.MetaTransformation;
+import de.bayerl.statistics.transformer.NameAnnotation;
 import de.bayerl.statistics.transformer.Transformation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,9 +16,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import org.reflections.Reflections;
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.List;
 
@@ -31,13 +34,15 @@ public class MainViewController {
     @FXML
     private HBox task;
     private MainApp mainApp;
-    private TeiHandler handler;
-    private TextField[] parameters;
+    private List<Control> parameters;
     private Reflections reflections = new Reflections("de.bayerl.statistics.transformer");
     @FXML
     private ListView<TransformationModel> transformationListing;
     @FXML
     private TextArea consoleOutput;
+    @FXML
+    private WebView webView;
+    private static final String SPLITTER = "~#~LB~#~";
 
     @FXML
     private void initialize() {
@@ -50,9 +55,10 @@ public class MainViewController {
         consoleOutput.setStyle("-fx-color: black; -fx-text-fill: white;");
         Console console = new Console(consoleOutput);
         PrintStream ps = new PrintStream(console, true);
-        System.setOut(ps);
-        System.setErr(ps);
+//        System.setOut(ps);
+//        System.setErr(ps);
         List<String> trans = getTransformationNames();
+        Collections.sort(trans);
         for(String tr : trans) {
             transformationChoice.getItems().add(tr);
         }
@@ -61,24 +67,85 @@ public class MainViewController {
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 parameters = parameters(task, newValue);
                 if (parameters != null) {
-                    for (int i = 0; i < parameters.length; i++) {
-                        task.getChildren().add(parameters[i]);
+                    for (int i = 0; i < parameters.size(); i++) {
+                        task.getChildren().add(parameters.get(i));
                     }
                 }
             }
         });
     }
 
+    public void updateWebView(String fileName) {
+        if(fileName.equals("table_0_original.html")) {
+            showOriginal();
+        } else {
+            webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + fileName);
+        }
+    }
+
     @FXML
     private void handleOk() {
         boolean ok = true;
-        List<String> parameterValues = new ArrayList<String>();
+        List<Object> tempValues = new ArrayList<>();
         String name = transformationChoice.getValue().toString();
-        for(TextField textField : parameters) {
-            if(!textField.getText().equals("")) {
-                parameterValues.add(textField.getText());
+        for(int i = 0; i< parameters.size(); i++) {
+            if(parameters.get(i) instanceof TextField) {
+                if (((TextField) parameters.get(i)).getPromptText().equals("Role")) {
+                    tempValues.add(new String[]{((TextField) parameters.get(i)).getText(),
+                            ((TextField) parameters.get(i + 1)).getText()});
+                    ++i;
+                } else {
+                    tempValues.add(((TextField) parameters.get(i)).getText());
+                }
             } else {
-                ok = false;
+                tempValues.add(((ComboBox) parameters.get(i)).getValue());
+            }
+        }
+
+        String path = "de.bayerl.statistics.transformer." + name;
+        Class c = null;
+        try {
+            c = Class.forName(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Parameter> parameterValues = new ArrayList<>();
+        for(int i = 0; i < tempValues.size(); i++){
+            if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")) {
+                String[] str = ((String) tempValues.get(i)).split(",");
+                List<String> list = new ArrayList<>();
+                for(String s : str) {
+                    list.add(s);
+                }
+                Set<String> set = new LinkedHashSet<>(list);
+                list = new ArrayList<>(set);
+                parameterValues.add(new Parameter(list));
+            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
+                String[] str = ((String) tempValues.get(i)).replaceAll(" ", "").split(",");
+                List<Integer> ints = new ArrayList<>();
+                for(String s : str) {
+                    if(!s.contains("-")) {
+                        ints.add(Integer.parseInt(s));
+                    } else {
+                        String[] temp = s.split("-");
+                        int start = Integer.parseInt(temp[0]);
+                        int end = Integer.parseInt(temp[1]);
+                        if(start >= end) {
+                            int tempValue = start;
+                            start = end;
+                            end = tempValue;
+                        }
+                        for(int j = 0; j < end - start + 1; j++) {
+                            ints.add(start + j);
+                        }
+                    }
+                }
+                Collections.sort(ints);
+                parameterValues.add(new Parameter(ints));
+            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int")){
+                parameterValues.add(new Parameter(Integer.parseInt((String) tempValues.get(i))));
+            } else {
+                parameterValues.add(new Parameter((String) tempValues.get(i)));
             }
         }
 
@@ -89,24 +156,48 @@ public class MainViewController {
         }
     }
 
-    private TextField[] parameters(HBox task, Object newValue) {
+    @FXML
+    private void transform() {
+        mainApp.transform();
+    }
+
+    @FXML
+    private void showOriginal() {
+        webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + "table_0_original.html");
+    }
+
+    private List<Control> parameters(HBox task, Object newValue) {
+
         task.getChildren().remove(0, task.getChildren().size());
         Set<Class<? extends Transformation>> classes = reflections.getSubTypesOf(Transformation.class);
         Iterator<Class<? extends Transformation>> it = classes.iterator();
         Class<? extends Transformation> cl;
-        TextField[] parameters = null;
+        List<Control> parameters = new ArrayList<>();
         while (it.hasNext()) {
             cl = it.next();
             if (cl.getSimpleName().equals(newValue)) {
                 int params = cl.getConstructors()[0].getParameterCount();
-                parameters = new TextField[params];
                 for (int i = 0; i < params; i++) {
-                    parameters[i] = new TextField();
-                    if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int")
-                            || cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Integer")) {
-                        parameters[i].setMaxWidth(30);
+                    if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Cell")) {
+                        TextField param = new TextField();
+                        TextField param2 = new TextField();
+                        param.setPromptText("Role");
+                        param2.setPromptText("Value");
+                        parameters.add(param);
+                        parameters.add(param2);
+                    } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("TableSliceType")) {
+                        ComboBox<String> combo = new ComboBox<>();
+                        combo.getItems().addAll("Row","Column");
+                        combo.getSelectionModel().select(0);
+                        parameters.add(combo);
                     } else {
-                        parameters[i].setPromptText("param " + i);
+                        TextField param = new TextField();
+                        Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
+                        param.setPromptText(((NameAnnotation) ann[0]).name());
+                        if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")){
+                            param.setPromptText(param.getPromptText() + "[]");
+                        }
+                        parameters.add(param);
                     }
                 }
             }
@@ -148,6 +239,7 @@ public class MainViewController {
         private Button delete = new Button(" - ");
         private Pane pane ;
         private HBox hbox;
+        private String secretText;
 
         public MovableCell() {
             ListCell thisCell = this;
@@ -161,14 +253,16 @@ public class MainViewController {
                     return;
                 }
 
-                ObservableList<TransformationModel> items = getListView().getItems();
-
                 Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
                 content.putString(getItem().getName());
                 dragboard.setContent(content);
 
                 event.consume();
+            });
+
+            setOnMouseClicked(event -> {
+                System.out.println(label.getText());
             });
 
             setOnDragOver(event -> {
@@ -204,7 +298,6 @@ public class MainViewController {
 
                 if (db.hasString()) {
                     ObservableList<TransformationModel> items = getListView().getItems();
-                    System.out.println(db.getString());
                     int draggedIdx = 0;
                     for(int i = 0; i < items.size(); i++) {
                         if(items.get(i).getName().equals(db.getString())) {
@@ -214,12 +307,12 @@ public class MainViewController {
                     }
                     int thisIdx = items.indexOf(getItem());
 
-                    System.out.println(draggedIdx);
-                    System.out.println(thisIdx);
-
                     TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
+                    String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
                     mainApp.getTransformations().set(draggedIdx, mainApp.getTransformations().get(thisIdx));
+                    mainApp.getCorrespondingFileNames().set(draggedIdx, mainApp.getCorrespondingFileNames().get(thisIdx));
                     mainApp.getTransformations().set(thisIdx, temp);
+                    mainApp.getCorrespondingFileNames().set(thisIdx, tempString);
 
                     success = true;
                 }
@@ -243,11 +336,46 @@ public class MainViewController {
                         mainApp.getTransformations().remove(item);
                     }
                 });
-                StringBuilder transformation = new StringBuilder(item.getName() + "   ");
-                for(String s : item.getAttributes()) {
-                    transformation.append(" " + s);
+                StringBuilder transformation = new StringBuilder(item.getName());
+                List<Parameter> attributes = item.getAttributes();
+                for(Parameter att : attributes) {
+                    if(att.hasString()) {
+                        transformation.append(SPLITTER + att.getValue());
+                    } else if(att.hasIntValue()) {
+                        transformation.append(SPLITTER + att.getIntValue());
+                    } else if(att.hasIntList() && att.getIntList().size() > 0){
+                        transformation.append(SPLITTER + "{");
+                        transformation.append(att.getIntList().get(0));
+                        if(att.getIntList().size() > 1) {
+                            transformation.append(",");
+                        }
+                        for(int i = 1; i < att.getIntList().size() - 1; i++) {
+                            transformation.append(att.getIntList().get(i) + ",");
+                        }
+                        if(att.getIntList().size() > 1) {
+                            transformation.append(att.getIntList().get(att.getIntList().size() - 1));
+                        }
+                        transformation.append("}");
+                    } else if(att.hasStringList() && att.getStringList().size() > 0){
+                        System.out.println(att.getStringList().size());
+                        transformation.append(SPLITTER + "{");
+                        transformation.append(att.getStringList().get(0));
+                        if(att.getStringList().size() > 1) {
+                            transformation.append(",");
+                        }
+                        for(int i = 1; i < att.getStringList().size() - 1; i++) {
+                            transformation.append(att.getStringList().get(i) + ",");
+                        }
+                        if(att.getStringList().size() > 1) {
+                            transformation.append(att.getStringList().get(att.getStringList().size() - 1));
+                        }
+                        transformation.append("}");
+                    }
                 }
-                label.setText(item != null ? transformation.toString() : "<null>");
+                secretText = transformation.toString();
+                System.out.println(secretText);
+                label.setText(item != null ? secretText.replaceAll(SPLITTER, "  ") : "<null>");
+                label.setText(item != null ? secretText.replaceAll(SPLITTER, "  ") : "<null>");
                 setGraphic(hbox);
             }
         }

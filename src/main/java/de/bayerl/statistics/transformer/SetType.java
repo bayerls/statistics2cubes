@@ -11,7 +11,7 @@ public class SetType extends Transformation {
     private int row;
     private int col;
 
-    public SetType(String type, int row, int col) {
+    public SetType(@NameAnnotation(name = "type") String type, @NameAnnotation(name = "row") int row, @NameAnnotation(name = "col") int col) {
         this.type = type;
         this.row = row;
         this.col = col;

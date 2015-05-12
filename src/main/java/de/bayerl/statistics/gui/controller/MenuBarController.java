@@ -1,6 +1,7 @@
 package de.bayerl.statistics.gui.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -28,12 +29,13 @@ public class MenuBarController {
 
         // Show save file dialog
         List<File> list = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
-
         if (list != null) {
             for (File file : list) {
                 mainApp.openTables(file);
             }
+            mainApp.load();
         }
+        mainApp.updateWebView("table_0_original.html");
     }
 
     @FXML

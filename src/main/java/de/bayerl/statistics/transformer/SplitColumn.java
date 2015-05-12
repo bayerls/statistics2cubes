@@ -1,8 +1,8 @@
 package de.bayerl.statistics.transformer;
 
-import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.Cell;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +16,7 @@ public class SplitColumn extends Transformation {
     private String regex;
     private int colNumber;
 
-    public SplitColumn(String regex, int colNumber) {
+    public SplitColumn(@NameAnnotation(name = "splitter") String regex, @NameAnnotation(name = "col") int colNumber) {
         this.regex = regex;
         this.colNumber = colNumber;
     }

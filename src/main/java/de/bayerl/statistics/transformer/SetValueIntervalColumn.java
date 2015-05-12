@@ -13,7 +13,7 @@ public class SetValueIntervalColumn extends Transformation {
     private int to;
     private String value;
 
-    public SetValueIntervalColumn(int colNumber, int from, int to, String value) {
+    public SetValueIntervalColumn(@NameAnnotation(name = "col") int colNumber, @NameAnnotation(name = "from") int from, @NameAnnotation(name = "to") int to, @NameAnnotation(name = "value") String value) {
         this.colNumber = colNumber;
         this.from = from;
         this.to = to;

@@ -18,7 +18,7 @@ public class DeleteMatchingRow extends Transformation {
     private String term;
     private int[] protectedRows;
 
-    public DeleteMatchingRow(String term, int[] protectedRows) {
+    public DeleteMatchingRow(@NameAnnotation(name = "term") String term, @NameAnnotation(name = "protected") int[] protectedRows) {
         this.term = term;
         this.protectedRows = protectedRows;
     }

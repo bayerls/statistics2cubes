@@ -1,8 +1,8 @@
 package de.bayerl.statistics.transformer;
 
-import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.model.Cell;
 
 import java.util.ArrayList;
 import java.util.List;

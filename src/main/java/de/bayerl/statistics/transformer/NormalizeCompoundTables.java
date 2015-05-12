@@ -14,7 +14,7 @@ public class NormalizeCompoundTables extends Transformation {
     private String splitOnType;
     private int fixedHeaderSize = -1;
 
-    public NormalizeCompoundTables(String splitOnType, int fixedHeaderSize) {
+    public NormalizeCompoundTables(@NameAnnotation(name = "splitOnType") String splitOnType, @NameAnnotation(name = "fixed headersize") int fixedHeaderSize) {
         this.splitOnType = splitOnType;
         this.fixedHeaderSize = fixedHeaderSize;
     }

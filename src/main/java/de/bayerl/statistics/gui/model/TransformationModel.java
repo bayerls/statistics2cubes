@@ -11,17 +11,17 @@ import java.util.List;
 public class TransformationModel {
 
     private final StringProperty name;
-    private ListProperty<String> attributes;
+    private ListProperty<Parameter> attributes;
 
     public TransformationModel() {
         this.name = new SimpleStringProperty();
         this.attributes = new SimpleListProperty<>();
     }
 
-    public TransformationModel(String name, List<String> attributes) {
+    public TransformationModel(String name, List<Parameter> attributes) {
         this.name = new SimpleStringProperty(name);
-        ObservableList<String> obs = FXCollections.observableArrayList(attributes);
-        this.attributes = new SimpleListProperty<String>(obs);
+        ObservableList<Parameter> obs = FXCollections.observableArrayList(attributes);
+        this.attributes = new SimpleListProperty<>(obs);
     }
 
     public String getName() {
@@ -36,15 +36,15 @@ public class TransformationModel {
         this.name.set(name);
     }
 
-    public ObservableList<String> getAttributes() {
+    public ObservableList<Parameter> getAttributes() {
         return attributes.get();
     }
 
-    public ListProperty<String> attributesProperty() {
+    public ListProperty<Parameter> attributesProperty() {
         return attributes;
     }
 
-    public void setAttributes(ObservableList<String> attributes) {
+    public void setAttributes(ObservableList<Parameter> attributes) {
         this.attributes.set(attributes);
     }
 }

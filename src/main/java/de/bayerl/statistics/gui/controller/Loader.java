@@ -1,7 +1,4 @@
-package de.bayerl.statistics;
-
-import de.bayerl.statistics.instance.Config;
-import de.bayerl.statistics.instance.Conversion;
+package de.bayerl.statistics.gui.controller;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -17,19 +14,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TeiLoader {
+public class Loader {
 
     public final static String PLACEHOLDER_LB = "##lb##";
 
-    public static List<Table> loadFiles(Conversion conversion) {
-        String folder = Config.FOLDER + conversion.getFolder() + Config.FOLDER_TEI;
-        List<String> linkGroup = loadLinkGroup(folder);
+    public static List<Table> loadFiles(List<File> tables) {
+        List<String> linkGroup = loadLinkGroup(tables);
 
-        return linkGroup.stream().map(link -> load(folder, link)).collect(Collectors.toList());
+        return linkGroup.stream().map(link -> load(tables.get(0).getAbsolutePath(), link)).collect(Collectors.toList());
     }
 
-    private static List<String> loadLinkGroup(String folder) {
+    private static List<String> loadLinkGroup(List<File> tables) {
         SAXParserImpl parser = null;
+        List <File> files = tables;
         List<String> links = new ArrayList<>();
 
         try {
@@ -39,16 +36,12 @@ public class TeiLoader {
         }
 
         if (parser != null) {
-            // use the first file in the folder to grab the link group
-            File directory = new File(folder);
-            File file = directory.listFiles()[0];
 
             try {
-                parser.parse(file, new DefaultHandler() {
+                parser.parse(tables.get(0), new DefaultHandler() {
                     @Override
                     public void startElement(String uri, String localName,  String name, Attributes a) {
                         if (name.equalsIgnoreCase("link")) {
-
                             String link = a.getValue("target");
                             links.add(link);
                         }
@@ -62,7 +55,6 @@ public class TeiLoader {
         return links;
     }
 
-
     public static Table load(String folder, String filename) {
         SAXParserImpl parser = null;
         Table table = new Table();
@@ -74,7 +66,7 @@ public class TeiLoader {
         }
 
         if (parser != null) {
-            File file = new File(folder + filename);
+            File file = new File(folder);
             table.getMetadata().getSources().add(filename);
             final Boolean[] inCell = {false};
             final Boolean[] lbFound = {false};

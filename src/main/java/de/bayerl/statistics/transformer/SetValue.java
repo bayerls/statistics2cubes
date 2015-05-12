@@ -11,7 +11,7 @@ public class SetValue extends Transformation {
     private int row;
     private int col;
 
-    public SetValue(String value, int row, int col) {
+    public SetValue(@NameAnnotation(name = "value") String value, @NameAnnotation(name = "row") int row, @NameAnnotation(name = "col") int col) {
         this.value = value;
         this.row = row;
         this.col = col;

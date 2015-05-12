@@ -1,8 +1,8 @@
 package de.bayerl.statistics.transformer;
 
+import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
-import de.bayerl.statistics.model.Table;
 
 /**
  * Replaces every occurrence of a value fragment with a new value fragment.
@@ -12,7 +12,7 @@ public class ReplaceValue extends Transformation {
     private String target;
     private String replacement;
 
-    public ReplaceValue(String target, String replacement) {
+    public ReplaceValue(@NameAnnotation(name = "target") String target, @NameAnnotation(name = "replacement") String replacement) {
         this.target = target;
         this.replacement = replacement;
     }

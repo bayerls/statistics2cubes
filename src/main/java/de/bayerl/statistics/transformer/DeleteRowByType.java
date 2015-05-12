@@ -16,7 +16,7 @@ public class DeleteRowByType extends Transformation {
 
     private String type;
 
-    public DeleteRowByType(String type) {
+    public DeleteRowByType(@NameAnnotation(name = "type") String type) {
         this.type = type;
     }
 

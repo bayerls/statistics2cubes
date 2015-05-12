@@ -4,11 +4,11 @@ import de.bayerl.statistics.converter.vocabulary.CODE;
 import de.bayerl.statistics.converter.vocabulary.Data42;
 import de.bayerl.statistics.converter.vocabulary.LocalNS;
 import de.bayerl.statistics.converter.vocabulary.VA;
+import de.bayerl.statistics.model.Header;
+import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.model.Cell;
-import de.bayerl.statistics.model.Header;
 import de.bayerl.statistics.model.Row;
-import de.bayerl.statistics.model.Table;
 
 /**
  * Creates the headers for the columns. Apply to normalized table. Necessary for triplification.
@@ -17,7 +17,7 @@ public class CreateHeaders extends Transformation {
 
     private String[] headerLabels;
 
-    public CreateHeaders(String[] headerLabels) {
+    public CreateHeaders(@NameAnnotation(name = "headers") String[] headerLabels) {
         this.headerLabels = headerLabels;
     }
 

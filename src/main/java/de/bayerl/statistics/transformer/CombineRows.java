@@ -17,7 +17,7 @@ public class CombineRows extends Transformation {
     private final static String DIVIDER = " - ";
     private int[] rows;
 
-    public CombineRows(int[] rows) {
+    public CombineRows(@NameAnnotation(name = "rows") int[] rows) {
         this.rows = rows;
     }
 
