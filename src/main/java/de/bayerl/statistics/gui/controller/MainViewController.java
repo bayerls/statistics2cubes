@@ -43,6 +43,7 @@ public class MainViewController {
     @FXML
     private WebView webView;
     private static final String SPLITTER = "~#~LB~#~";
+    private int dragStart;
 
     @FXML
     private void initialize() {
@@ -55,8 +56,8 @@ public class MainViewController {
         consoleOutput.setStyle("-fx-color: black; -fx-text-fill: white;");
         Console console = new Console(consoleOutput);
         PrintStream ps = new PrintStream(console, true);
-//        System.setOut(ps);
-//        System.setErr(ps);
+        System.setOut(ps);
+        System.setErr(ps);
         List<String> trans = getTransformationNames();
         Collections.sort(trans);
         for(String tr : trans) {
@@ -151,6 +152,7 @@ public class MainViewController {
 
         if(ok) {
             mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
+            mainApp.getCorrespondingFileNames().add(null);
         } else {
             System.out.println("Please fill all parameters");
         }
@@ -159,6 +161,7 @@ public class MainViewController {
     @FXML
     private void transform() {
         mainApp.transform();
+        transformationListing.getSelectionModel().select(null);
     }
 
     @FXML
@@ -253,6 +256,8 @@ public class MainViewController {
                     return;
                 }
 
+                dragStart = transformationListing.getSelectionModel().getSelectedIndex();
+
                 Dragboard dragboard = startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
                 content.putString(getItem().getName());
@@ -262,7 +267,15 @@ public class MainViewController {
             });
 
             setOnMouseClicked(event -> {
-                System.out.println(label.getText());
+                if(mainApp.getCorrespondingFileNames().get(transformationListing.getSelectionModel().getSelectedIndex()) != null) {
+                    File[] dir = (new File(mainApp.getHtmlFolder())).listFiles();
+                    for (File file : dir) {
+                        if (file.getName().contains(mainApp.getCorrespondingFileNames()
+                                .get(transformationListing.getSelectionModel().getSelectedIndex()))) {
+                            updateWebView(file.getName());
+                        }
+                    }
+                }
             });
 
             setOnDragOver(event -> {
@@ -298,15 +311,8 @@ public class MainViewController {
 
                 if (db.hasString()) {
                     ObservableList<TransformationModel> items = getListView().getItems();
-                    int draggedIdx = 0;
-                    for(int i = 0; i < items.size(); i++) {
-                        if(items.get(i).getName().equals(db.getString())) {
-                            draggedIdx = i;
-                            break;
-                        }
-                    }
+                    int draggedIdx = dragStart;
                     int thisIdx = items.indexOf(getItem());
-
                     TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
                     String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
                     mainApp.getTransformations().set(draggedIdx, mainApp.getTransformations().get(thisIdx));
@@ -333,6 +339,15 @@ public class MainViewController {
                 delete.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+
+                        System.out.println(label.getText() + " removed");
+                        int index = 0;
+                        for(int i = 0; i < mainApp.getTransformations().size(); i++) {
+                            if(mainApp.getTransformations().get(i) == item) {
+                                index = i;
+                            }
+                        }
+                        mainApp.getCorrespondingFileNames().remove(index);
                         mainApp.getTransformations().remove(item);
                     }
                 });
@@ -357,7 +372,6 @@ public class MainViewController {
                         }
                         transformation.append("}");
                     } else if(att.hasStringList() && att.getStringList().size() > 0){
-                        System.out.println(att.getStringList().size());
                         transformation.append(SPLITTER + "{");
                         transformation.append(att.getStringList().get(0));
                         if(att.getStringList().size() > 1) {
@@ -373,8 +387,6 @@ public class MainViewController {
                     }
                 }
                 secretText = transformation.toString();
-                System.out.println(secretText);
-                label.setText(item != null ? secretText.replaceAll(SPLITTER, "  ") : "<null>");
                 label.setText(item != null ? secretText.replaceAll(SPLITTER, "  ") : "<null>");
                 setGraphic(hbox);
             }

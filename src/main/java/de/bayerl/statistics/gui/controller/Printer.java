@@ -28,7 +28,7 @@ public class Printer {
 
     public static void printHTML(Table table, String filenamePart, String htmlLocation) {
         final StringBuilder sb = new StringBuilder();
-        sb.append("<!DOCTYPE de.bayerl.statistics.gui.html>\n" +
+        sb.append("<!DOCTYPE html>\n" +
                 "<de.bayerl.statistics.gui.html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
         sb.append("<table>");
 
@@ -67,7 +67,7 @@ public class Printer {
             sb.append("</tr>");
         }
 
-        sb.append("</table></body></de.bayerl.statistics.gui.html>");
+        sb.append("</table></body></html>");
 
         writeContent("table_" + filenamePart, sb.toString(), htmlLocation);
     }

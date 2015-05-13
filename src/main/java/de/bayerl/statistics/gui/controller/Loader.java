@@ -1,4 +1,7 @@
 package de.bayerl.statistics.gui.controller;
+
+import de.bayerl.statistics.instance.Config;
+import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -18,15 +21,14 @@ public class Loader {
 
     public final static String PLACEHOLDER_LB = "##lb##";
 
-    public static List<Table> loadFiles(List<File> tables) {
-        List<String> linkGroup = loadLinkGroup(tables);
-
-        return linkGroup.stream().map(link -> load(tables.get(0).getAbsolutePath(), link)).collect(Collectors.toList());
+    public static List<Table> loadFiles(File file) {
+        String folder = file.getParent() + File.separator;
+        List<String> linkGroup = loadLinkGroup(folder);
+        return linkGroup.stream().map(link -> load(folder, link)).collect(Collectors.toList());
     }
 
-    private static List<String> loadLinkGroup(List<File> tables) {
+    private static List<String> loadLinkGroup(String folder) {
         SAXParserImpl parser = null;
-        List <File> files = tables;
         List<String> links = new ArrayList<>();
 
         try {
@@ -36,12 +38,16 @@ public class Loader {
         }
 
         if (parser != null) {
+            // use the first file in the folder to grab the link group
+            File directory = new File(folder);
+            File file = directory.listFiles()[0];
 
             try {
-                parser.parse(tables.get(0), new DefaultHandler() {
+                parser.parse(file, new DefaultHandler() {
                     @Override
                     public void startElement(String uri, String localName,  String name, Attributes a) {
                         if (name.equalsIgnoreCase("link")) {
+
                             String link = a.getValue("target");
                             links.add(link);
                         }
@@ -55,6 +61,7 @@ public class Loader {
         return links;
     }
 
+
     public static Table load(String folder, String filename) {
         SAXParserImpl parser = null;
         Table table = new Table();
@@ -66,7 +73,7 @@ public class Loader {
         }
 
         if (parser != null) {
-            File file = new File(folder);
+            File file = new File(folder + filename);
             table.getMetadata().getSources().add(filename);
             final Boolean[] inCell = {false};
             final Boolean[] lbFound = {false};

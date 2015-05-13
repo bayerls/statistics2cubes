@@ -102,29 +102,28 @@ public class MainApp extends Application {
 
     public void openTables(File file) {
         tables.add(file);
+        String path = (new File(file.getParent())).getParent() + File.separator + "html";
+        File customDir = new File(path);
+        if(customDir.mkdirs()) {
+            System.out.println(customDir + "created");
+        }
+        htmlFolder = customDir.getAbsolutePath();
+
     }
 
     public void load() {
-        if(htmlFolder.equals("")) {
-            String path = System.getProperty("user.home");
-            path += File.separator + "htmlTables";
-            File customDir = new File(path);
-
-            if (customDir.exists()) {
-                System.out.println(customDir + " already exists");
-            } else if (customDir.mkdirs()) {
-                System.out.println(customDir + " was created");
-            } else {
-                System.out.println(customDir + " was not created");
-            }
-            htmlFolder = customDir.getAbsolutePath();
-        }
         transformationTable = Handler.load(tables, htmlFolder);
     }
 
     public void transform() {
-        correspondingFileNames.addAll(Handler.transform(transformationTable, transformations, htmlFolder));
-        updateWebView(correspondingFileNames.get(correspondingFileNames.size()-1));
+        correspondingFileNames.clear();
+        correspondingFileNames.addAll(Handler.transform(tables, transformations, htmlFolder));
+        File[] dir = (new File(htmlFolder)).listFiles();
+        for(File file : dir) {
+            if(file.getName().contains(correspondingFileNames.get(correspondingFileNames.size() - 1))) {
+                updateWebView(file.getName());
+            }
+        }
     }
 
     public String getInbetween(String toEdit, String start, String end) {

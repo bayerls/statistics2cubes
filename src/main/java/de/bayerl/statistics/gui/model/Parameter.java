@@ -46,7 +46,7 @@ public class Parameter {
     public Parameter(int intValue) {
         this.intValue = intValue;
         hasIntList = false;
-        hasString = true;
+        hasString = false;
         hasStringList = false;
         hasIntValue = true;
     }
