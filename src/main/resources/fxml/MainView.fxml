@@ -18,7 +18,7 @@
                            <children>
                               <BorderPane layoutX="205.0" layoutY="-86.0" prefHeight="39.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <left>
-                                    <ComboBox fx:id="transformationChoice" promptText="Transformation auswählen" BorderPane.alignment="CENTER">
+                                    <ComboBox fx:id="transformationChoice" promptText="Choose transformation" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </BorderPane.margin>
@@ -53,15 +53,29 @@
                                                    <children>
                                                       <VBox prefHeight="411.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <Hyperlink onAction="#showOriginal" text="Show original table" textAlignment="CENTER" />
+                                                            <Hyperlink fx:id="originalTable" disable="true" onAction="#showOriginal" text="Show original table" textAlignment="CENTER" />
                                                             <ListView fx:id="transformationListing" prefHeight="411.0" prefWidth="205.0" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
-                                              <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="30.0" prefWidth="160.0">
+                                              <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="65.0" prefWidth="160.0">
                                                    <children>
-                                                      <Button layoutX="8.0" layoutY="11.0" mnemonicParsing="false" onAction="#transform" prefHeight="46.0" prefWidth="184.0" text="Transformationen anwenden" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="30.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <items>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                               <children>
+                                                                  <Button mnemonicParsing="false" onAction="#transform" prefHeight="96.0" prefWidth="158.0" text="Transform" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                               <children>
+                                                                  <ComboBox fx:id="version" layoutY="2.0" prefHeight="28.0" prefWidth="65.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Button fx:id="exportButton" disable="true" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" onAction="#export" text="Export" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                        </items>
+                                                      </SplitPane>
                                                    </children>
                                                 </AnchorPane>
                                             </items>

@@ -44,6 +44,12 @@ public class MainViewController {
     private WebView webView;
     private static final String SPLITTER = "~#~LB~#~";
     private int dragStart;
+    @FXML
+    private ComboBox version;
+    @FXML
+    private Button exportButton;
+    @FXML
+    private Hyperlink originalTable;
 
     @FXML
     private void initialize() {
@@ -59,6 +65,9 @@ public class MainViewController {
         System.setOut(ps);
         System.setErr(ps);
         List<String> trans = getTransformationNames();
+        version.getItems().add("1.1");
+        version.getItems().add("1.2");
+        version.getSelectionModel().select(0);
         Collections.sort(trans);
         for(String tr : trans) {
             transformationChoice.getItems().add(tr);
@@ -82,6 +91,16 @@ public class MainViewController {
         } else {
             webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + fileName);
         }
+    }
+
+    @FXML
+    private void export() {
+        mainApp.export(version.getValue().toString());
+    }
+
+    public void enableControls() {
+        exportButton.setDisable(false);
+        originalTable.setDisable(false);
     }
 
     @FXML
@@ -162,6 +181,7 @@ public class MainViewController {
     private void transform() {
         mainApp.transform();
         transformationListing.getSelectionModel().select(null);
+
     }
 
     @FXML

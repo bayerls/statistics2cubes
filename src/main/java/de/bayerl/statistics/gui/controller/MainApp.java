@@ -2,6 +2,7 @@ package de.bayerl.statistics.gui.controller;
 import de.bayerl.statistics.gui.model.ListWrapper;
 import de.bayerl.statistics.gui.model.Parameter;
 import de.bayerl.statistics.gui.model.TransformationModel;
+import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -16,10 +17,7 @@ import javafx.stage.Stage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -33,8 +31,10 @@ public class MainApp extends Application {
     private List<File> tables;
     private Table transformationTable;
     private String htmlFolder = "";
+    private String cubeFolder = "";
     private MainViewController mainViewController;
     private List<String> correspondingFileNames;
+    private Table lastTransformation;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -108,16 +108,30 @@ public class MainApp extends Application {
             System.out.println(customDir + "created");
         }
         htmlFolder = customDir.getAbsolutePath();
-
+        cubeFolder = (new File(htmlFolder).getParent()) + File.separator + "n3";
     }
 
     public void load() {
         transformationTable = Handler.load(tables, htmlFolder);
+        mainViewController.enableControls();
+        transformations.add(new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
+        transformations.add(new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
+        transformations.add(new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+        correspondingFileNames.add("table_1");
+        correspondingFileNames.add("table_2");
+        correspondingFileNames.add("table_3");
+        Handler.transform(tables, transformations, htmlFolder);
+    }
+
+    public void export(String version) {
+        Handler.export(lastTransformation, version, cubeFolder);
     }
 
     public void transform() {
         correspondingFileNames.clear();
-        correspondingFileNames.addAll(Handler.transform(tables, transformations, htmlFolder));
+        List <Object> list = Handler.transform(tables, transformations, htmlFolder);
+        correspondingFileNames.addAll((List<String>) (list.get(1)));
+        lastTransformation = (Table) (list.get(0));
         File[] dir = (new File(htmlFolder)).listFiles();
         for(File file : dir) {
             if(file.getName().contains(correspondingFileNames.get(correspondingFileNames.size() - 1))) {

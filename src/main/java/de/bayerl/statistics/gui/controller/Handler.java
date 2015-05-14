@@ -2,12 +2,15 @@ package de.bayerl.statistics.gui.controller;
 
 import com.google.common.base.Stopwatch;
 import com.hp.hpl.jena.rdf.model.Model;
+import de.bayerl.statistics.converter.Table2CubeConverter;
 import de.bayerl.statistics.gui.model.TransformationModel;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.model.TableSliceType;
+import de.bayerl.statistics.transformer.AddRowColNumbers;
+import de.bayerl.statistics.transformer.DeleteRowColNumbers;
 import de.bayerl.statistics.transformer.Transformation;
 import org.apache.jena.riot.Lang;
 
@@ -34,6 +37,7 @@ public class Handler {
             table.getRows().addAll(t.getRows());
             table.getMetadata().getSources().add(t.getMetadata().getSources().get(0));
         }
+        table = (new AddRowColNumbers()).transform(table);
 
         System.out.println(tables.size() + 1 + " Table(s) loaded (and merged) in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
         singleStepWatch.reset();
@@ -44,7 +48,7 @@ public class Handler {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        for(File file : dir.listFiles()) {
+        for (File file : dir.listFiles()) {
             file.delete();
         }
 
@@ -53,7 +57,7 @@ public class Handler {
         return table;
     }
 
-    public static List<String> transform(List<File> files, List<TransformationModel> transformations, String htmlFolder) {
+    public static List<Object> transform(List<File> files, List<TransformationModel> transformations, String htmlFolder) {
         Stopwatch singleStepWatch = Stopwatch.createStarted();
         List<String> correspondingNames = new ArrayList<>();
         Table tTable = load(files, htmlFolder);
@@ -61,7 +65,7 @@ public class Handler {
         Class c;
         List<Object> parameterList = new ArrayList<>();
         Object[] parameters;
-        for(TransformationModel m : transformations) {
+        for (TransformationModel m : transformations) {
             StringBuilder builder = new StringBuilder();
             ++i;
             try {
@@ -81,7 +85,7 @@ public class Handler {
                             for (int g = 0; g < m.getAttributes().get(j).getStringList().size(); g++) {
                                 temp[g] = m.getAttributes().get(j).getStringList().get(g);
                                 builder.append(m.getAttributes().get(j).getStringList().get(g));
-                                if(g != m.getAttributes().get(j).getStringList().size()-1) {
+                                if (g != m.getAttributes().get(j).getStringList().size() - 1) {
                                     builder.append(",");
                                 }
                             }
@@ -95,7 +99,7 @@ public class Handler {
                         for (int g = 0; g < m.getAttributes().get(j).getIntList().size(); g++) {
                             temp[g] = m.getAttributes().get(j).getIntList().get(g);
                             builder.append(m.getAttributes().get(j).getIntList().get(g));
-                            if(g != m.getAttributes().get(j).getIntList().size()-1) {
+                            if (g != m.getAttributes().get(j).getIntList().size() - 1) {
                                 builder.append(",");
                             }
                         }
@@ -104,11 +108,11 @@ public class Handler {
                     } else if (m.getAttributes().get(j).hasIntValue() && c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("int")) {
                         parameterList.add(m.getAttributes().get(j).getIntValue());
                         builder.append("_" + m.getAttributes().get(j).getIntValue());
-                    } else if(c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("String")) {
+                    } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("String")) {
                         parameterList.add(m.getAttributes().get(j).getValue());
                         builder.append("_" + m.getAttributes().get(j).getValue());
-                    } else if(c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("TableSliceType")){
-                        if(m.getAttributes().get(j).getValue().equals("Row")) {
+                    } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("TableSliceType")) {
+                        if (m.getAttributes().get(j).getValue().equals("Row")) {
                             parameterList.add(TableSliceType.ROW);
                             builder.append("_" + "Row");
                         } else {
@@ -123,7 +127,7 @@ public class Handler {
                 }
                 parameterList.clear();
                 Transformation t;
-                if(parameters.length > 0) {
+                if (parameters.length > 0) {
                     t = (Transformation) c.getConstructors()[0].newInstance(parameters);
                 } else {
                     t = (Transformation) c.getConstructors()[0].newInstance();
@@ -148,46 +152,53 @@ public class Handler {
 
             }
         }
-            return correspondingNames;
 
+        List<Object> returnList = new ArrayList<>();
+        returnList.add(tTable);
+        returnList.add(correspondingNames);
+        return returnList;
+
+    }
+
+    public static void export(Table table, String version, String folder) {
+        Stopwatch singleStepWatch = Stopwatch.createStarted();
+        if (table.getHeaders().size() == 0) {
+            System.out.println("Headers are not set. Necessary for triplification.");
+        } else {
+            // remove line numbers
+            DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
+            table = deleteRowColNumbers.transform(table);
+
+            // convert to rdf
+            Converter table2CubeConverter = new Converter(table, version);
+            Model model = table2CubeConverter.convert();
+
+            System.out.println("Table converted in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
+            singleStepWatch.reset();
+            singleStepWatch.start();
+
+            // write to file
+            write2File(model, folder, version);
+            System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
         }
+    }
 
-//        if (table.getHeaders().size() == 0) {
-//            System.out.println("Headers are not set. Necessary for triplification.");
-//        } else {
-//            // remove line numbers
-//            DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
-//            table = deleteRowColNumbers.transform(table);
-//
-//            // convert to rdf
-//            Table2CubeConverter table2CubeConverter = new Table2CubeConverter(table);
-//            Model model = table2CubeConverter.convert();
-//
-//            System.out.println("Table converted in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-//            singleStepWatch.reset();
-//            singleStepWatch.start();
-//
-//            // write to file
-//            write2File(model, Config.CONVERSION);
-//            System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-//            System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
-//        }
-
-    private static void write2File(Model model, Conversion conversion) {
-        File folder = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3);
+    private static void write2File(Model model, String n3Folder, String version) {
+        File folder = new File(n3Folder);
 
         if (!folder.exists()) {
             folder.mkdir();
         }
         String filename = "dump";
-        if (Config.GENERATE_1_2) {
+        if (version.equals("1.2")) {
             filename += "_1.2";
         } else {
             filename += "_1.1";
         }
 
         filename += ".n3";
-        File output = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_N3 + filename);
+        File output = new File(n3Folder + File.separator + filename);
+        System.out.println(output.getAbsolutePath());
 
         try (FileWriter fw = new FileWriter(output)) {
             fw.write(convertModelToString(model));
@@ -202,24 +213,5 @@ public class Handler {
 
         return baos.toString();
     }
-
-        private static Table deepCopy(Table table) {
-            try {
-                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                final ObjectOutputStream oos = new ObjectOutputStream(baos);
-                oos.writeObject(table);
-                oos.close();
-
-                final ObjectInputStream ois = new ObjectInputStream(
-                        new ByteArrayInputStream(baos.toByteArray()));
-                final Table clone = (Table) ois.readObject();
-
-                return clone;
-            } catch (final Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Cloning failed");
-            }
-        }
-
 
 }

@@ -33,7 +33,7 @@ public class MenuBarController {
             mainApp.openTables(list.get(0));
             mainApp.load();
         }
-        mainApp.updateWebView("table_0_original.html");
+        mainApp.updateWebView("table_1_ResolveLinebreaks.html");
     }
 
     @FXML
