@@ -4,6 +4,7 @@ import de.bayerl.statistics.gui.model.Parameter;
 import de.bayerl.statistics.gui.model.TransformationModel;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.transformer.ResolveLinebreaks;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +27,6 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    final Desktop desktop = Desktop.getDesktop();
     private ObservableList<TransformationModel> transformations = FXCollections.observableArrayList();
     private List<File> tables;
     private Table transformationTable;
@@ -67,6 +67,13 @@ public class MainApp extends Application {
 
             MenuBarController controller = loader.getController();
             controller.setMainApp(this);
+
+            transformations.add(new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
+            transformations.add(new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
+            transformations.add(new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+            correspondingFileNames.add(null);
+            correspondingFileNames.add(null);
+            correspondingFileNames.add(null);
 
             primaryStage.show();
 
@@ -116,15 +123,19 @@ public class MainApp extends Application {
     public void load() {
         transformationTable = Handler.load(tables, htmlFolder);
         mainViewController.enableControls();
-        transformations.add(0, new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
-        transformations.add(1, new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
-        transformations.add(2, new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
-        correspondingFileNames.add(0, "table_1");
-        correspondingFileNames.add(1, "table_2");
-        correspondingFileNames.add(2, "table_3");
-        Handler.transform(tables, transformations, htmlFolder);
+        checkTransformationList();
+        List<TransformationModel> models = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            models.add(transformations.get(i));
+        }
+        correspondingFileNames.clear();
+        correspondingFileNames.addAll((List<String>)Handler.transform(tables, models, htmlFolder).get(1));
+        for(int i = 3; i < transformations.size(); i++) {
+            correspondingFileNames.add(null);
+        }
         this.metadata = false;
         this.headers = false;
+        updateWebView(new File(htmlFolder).listFiles()[2].getName());
     }
 
     public void export(String version) {
@@ -136,6 +147,34 @@ public class MainApp extends Application {
             alert.setHeaderText("Could not export data");
             alert.setContentText("You need to create headers and add metadata");
             alert.showAndWait();
+        }
+    }
+
+    private void checkTransformationList() {
+        boolean lB = false;
+        boolean rS = false;
+        boolean cS = false;
+        for(int i = 0; i < 3; i++) {
+            if(transformations.get(i).getName().equals("ResolveLinebreaks")) {
+                lB = true;
+            } else if(transformations.get(i).getName().equals("ResolveRowSpan")) {
+                rS = true;
+            } else if(transformations.get(i).getName().equals("ResolveColSpan")) {
+                cS = true;
+            }
+        }
+
+        if (!lB) {
+            transformations.add(0, new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
+            correspondingFileNames.add(null);
+        }
+        if (!rS) {
+            transformations.add(0, new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
+            correspondingFileNames.add(null);
+        }
+        if (!cS) {
+            transformations.add(0, new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+            correspondingFileNames.add(null);
         }
     }
 
@@ -210,8 +249,9 @@ public class MainApp extends Application {
                 line = br.readLine();
             }
             transformations.clear();
-            transformations.addAll(models);
             correspondingFileNames.clear();
+            transformations.addAll(models);
+            checkTransformationList();
             for(TransformationModel t : transformations) {
                 correspondingFileNames.add(null);
             }

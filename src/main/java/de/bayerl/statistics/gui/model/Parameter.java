@@ -10,11 +10,9 @@ public class Parameter {
     private List<String> stringList;
     private List<Integer> intList;
     private String value;
-    private int intValue;
     private boolean hasStringList;
     private boolean hasIntList;
     private boolean hasString;
-    private boolean hasIntValue;
 
     public Parameter() {
 
@@ -32,7 +30,6 @@ public class Parameter {
             hasString = false;
             hasStringList = false;
         }
-        hasIntValue = false;
     }
 
     public Parameter(String string) {
@@ -40,15 +37,6 @@ public class Parameter {
         hasIntList = false;
         hasString = true;
         hasStringList = false;
-        hasIntValue = false;
-    }
-
-    public Parameter(int intValue) {
-        this.intValue = intValue;
-        hasIntList = false;
-        hasString = false;
-        hasStringList = false;
-        hasIntValue = true;
     }
 
     public List<String> getStringList() {
@@ -99,19 +87,4 @@ public class Parameter {
         this.hasString = hasString;
     }
 
-    public boolean hasIntValue() {
-        return hasIntValue;
-    }
-
-    public void setHasIntValue(boolean hasIntValue) {
-        this.hasIntValue = hasIntValue;
-    }
-
-    public int getIntValue() {
-        return intValue;
-    }
-
-    public void setIntValue(int intValue) {
-        this.intValue = intValue;
-    }
 }

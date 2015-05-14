@@ -168,8 +168,6 @@ public class MainViewController {
                 }
                 Collections.sort(ints);
                 parameterValues.add(new Parameter(ints));
-            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int")){
-                parameterValues.add(new Parameter(Integer.parseInt((String) tempValues.get(i))));
             } else {
                 parameterValues.add(new Parameter((String) tempValues.get(i)));
             }
@@ -393,8 +391,6 @@ public class MainViewController {
                 for(Parameter att : attributes) {
                     if(att.hasString()) {
                         transformation.append(SPLITTER + att.getValue());
-                    } else if(att.hasIntValue()) {
-                        transformation.append(SPLITTER + att.getIntValue());
                     } else if(att.hasIntList() && att.getIntList().size() > 0){
                         transformation.append(SPLITTER + "{");
                         transformation.append(att.getIntList().get(0));

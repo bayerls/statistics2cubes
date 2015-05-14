@@ -58,6 +58,7 @@ public class Handler {
     }
 
     public static List<Object> transform(List<File> files, List<TransformationModel> transformations, String htmlFolder) {
+        Stopwatch stopWatch = Stopwatch.createStarted();
         Stopwatch singleStepWatch = Stopwatch.createStarted();
         List<String> correspondingNames = new ArrayList<>();
         Table tTable = load(files, htmlFolder);
@@ -105,9 +106,9 @@ public class Handler {
                         }
                         builder.append("}");
                         parameterList.add(temp);
-                    } else if (m.getAttributes().get(j).hasIntValue() && c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("int")) {
-                        parameterList.add(m.getAttributes().get(j).getIntValue());
-                        builder.append("_" + m.getAttributes().get(j).getIntValue());
+                    } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("int")) {
+                        parameterList.add(Integer.parseInt(m.getAttributes().get(j).getValue()));
+                        builder.append("_" + m.getAttributes().get(j).getValue());
                     } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("String")) {
                         parameterList.add(m.getAttributes().get(j).getValue());
                         builder.append("_" + m.getAttributes().get(j).getValue());
@@ -133,7 +134,7 @@ public class Handler {
                     t = (Transformation) c.getConstructors()[0].newInstance();
                 }
                 tTable = t.transform(tTable);
-                System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + c.getSimpleName());
+                System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + c.getSimpleName() + builder.toString());
                 singleStepWatch.reset();
                 singleStepWatch.start();
                 Printer.printHTML(tTable, i + "_" + c.getSimpleName() + builder.toString(), htmlFolder);
@@ -152,7 +153,8 @@ public class Handler {
 
             }
         }
-
+        System.out.println("Transformations executed in " + stopWatch.elapsed(TimeUnit.MILLISECONDS) + "ms.");
+        stopWatch.stop();
         List<Object> returnList = new ArrayList<>();
         returnList.add(tTable);
         returnList.add(correspondingNames);

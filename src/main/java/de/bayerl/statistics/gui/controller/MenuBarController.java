@@ -23,9 +23,9 @@ public class MenuBarController {
         FileChooser fileChooser = new FileChooser();
 
         // Set extension filter
-//        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-//                "TEI files (*.tei)", "*.tei");
-//        fileChooser.getExtensionFilters().add(extFilter);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "TEI files (*.tei)", "*.tei");
+        fileChooser.getExtensionFilters().add(extFilter);
 
         // Show save file dialog
         List<File> list = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
@@ -33,7 +33,6 @@ public class MenuBarController {
             mainApp.openTables(list.get(0));
             mainApp.load();
         }
-        mainApp.updateWebView("table_1_ResolveLinebreaks.html");
     }
 
     @FXML
