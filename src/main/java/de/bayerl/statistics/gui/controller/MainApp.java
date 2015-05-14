@@ -35,6 +35,8 @@ public class MainApp extends Application {
     private MainViewController mainViewController;
     private List<String> correspondingFileNames;
     private Table lastTransformation;
+    private boolean metadata;
+    private boolean headers;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -114,17 +116,27 @@ public class MainApp extends Application {
     public void load() {
         transformationTable = Handler.load(tables, htmlFolder);
         mainViewController.enableControls();
-        transformations.add(new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
-        transformations.add(new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
-        transformations.add(new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
-        correspondingFileNames.add("table_1");
-        correspondingFileNames.add("table_2");
-        correspondingFileNames.add("table_3");
+        transformations.add(0, new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
+        transformations.add(1, new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
+        transformations.add(2, new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+        correspondingFileNames.add(0, "table_1");
+        correspondingFileNames.add(1, "table_2");
+        correspondingFileNames.add(2, "table_3");
         Handler.transform(tables, transformations, htmlFolder);
+        this.metadata = false;
+        this.headers = false;
     }
 
     public void export(String version) {
-        Handler.export(lastTransformation, version, cubeFolder);
+        if(metadata && headers) {
+            Handler.export(lastTransformation, version, cubeFolder);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not export data");
+            alert.setContentText("You need to create headers and add metadata");
+            alert.showAndWait();
+        }
     }
 
     public void transform() {
@@ -136,6 +148,11 @@ public class MainApp extends Application {
         for(File file : dir) {
             if(file.getName().contains(correspondingFileNames.get(correspondingFileNames.size() - 1))) {
                 updateWebView(file.getName());
+            }
+            if(file.getName().contains("AddMetadata")) {
+                metadata = true;
+            } else if(file.getName().contains("CreateHeaders")) {
+                headers = true;
             }
         }
     }
@@ -192,17 +209,19 @@ public class MainApp extends Application {
                 }
                 line = br.readLine();
             }
-              transformations.clear();
-              transformations.addAll(models);
-              System.out.println("Transformation list loaded successfully");
+            transformations.clear();
+            transformations.addAll(models);
+            correspondingFileNames.clear();
+            for(TransformationModel t : transformations) {
+                correspondingFileNames.add(null);
+            }
+            System.out.println("Transformation list loaded successfully");
         } catch (Exception e) { // catches ANY exception
-            e.printStackTrace();
-            /*Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not load data");
             alert.setContentText("Could not load data from file:\n" + file.getPath());
-
-            alert.showAndWait();*/
+            alert.showAndWait();
         }
     }
 

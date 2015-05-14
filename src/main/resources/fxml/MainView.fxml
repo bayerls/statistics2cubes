@@ -14,30 +14,36 @@
                <children>
                   <SplitPane dividerPositions="0.1005" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="39.0" prefWidth="598.0">
+                      <AnchorPane minWidth="0.0" prefWidth="598.0">
                            <children>
-                              <BorderPane layoutX="205.0" layoutY="-86.0" prefHeight="39.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <BorderPane prefHeight="200.0" prefWidth="713.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <left>
-                                    <ComboBox fx:id="transformationChoice" promptText="Choose transformation" BorderPane.alignment="CENTER">
+                                    <AnchorPane prefHeight="47.0" prefWidth="180.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <ComboBox fx:id="transformationChoice" promptText="Choose transformation" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                                       </children>
                                        <BorderPane.margin>
-                                          <Insets left="5.0" right="5.0" />
+                                          <Insets right="5.0" />
                                        </BorderPane.margin>
-                                    </ComboBox>
+                                    </AnchorPane>
                                  </left>
-                                 <right>
-                                    <Button mnemonicParsing="false" onAction="#handleOk" text="✔" BorderPane.alignment="CENTER_LEFT">
-                                       <BorderPane.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </BorderPane.margin>
-                                    </Button>
-                                 </right>
                                  <center>
-                                    <HBox fx:id="task" prefHeight="100.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets top="7.0" />
-                                       </BorderPane.margin>
-                                    </HBox>
+                                    <AnchorPane prefHeight="47.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <HBox fx:id="task" prefHeight="47.0" prefWidth="333.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="11.0" />
+                                       </children>
+                                    </AnchorPane>
                                  </center>
+                                 <right>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#handleOk" text="✔" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                                       </children>
+                                       <BorderPane.margin>
+                                          <Insets left="5.0" />
+                                       </BorderPane.margin>
+                                    </AnchorPane>
+                                 </right>
                               </BorderPane>
                            </children>
                         </AnchorPane>
@@ -65,7 +71,7 @@
                                                         <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                <children>
-                                                                  <Button mnemonicParsing="false" onAction="#transform" prefHeight="96.0" prefWidth="158.0" text="Transform" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Button fx:id="transformButton" disable="true" mnemonicParsing="false" onAction="#transform" prefHeight="96.0" prefWidth="158.0" text="Transform" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

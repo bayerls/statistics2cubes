@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -50,6 +51,8 @@ public class MainViewController {
     private Button exportButton;
     @FXML
     private Hyperlink originalTable;
+    @FXML
+    private Button transformButton;
 
     @FXML
     private void initialize() {
@@ -101,6 +104,7 @@ public class MainViewController {
     public void enableControls() {
         exportButton.setDisable(false);
         originalTable.setDisable(false);
+        transformButton.setDisable(false);
     }
 
     @FXML
@@ -117,6 +121,8 @@ public class MainViewController {
                 } else {
                     tempValues.add(((TextField) parameters.get(i)).getText());
                 }
+            } else if(parameters.get(i) instanceof TextArea){
+                tempValues.add(((TextArea) parameters.get(i)).getText());
             } else {
                 tempValues.add(((ComboBox) parameters.get(i)).getValue());
             }
@@ -132,7 +138,7 @@ public class MainViewController {
         List<Parameter> parameterValues = new ArrayList<>();
         for(int i = 0; i < tempValues.size(); i++){
             if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")) {
-                String[] str = ((String) tempValues.get(i)).split(",");
+                String[] str = ((String) tempValues.get(i)).split("\\n");
                 List<String> list = new ArrayList<>();
                 for(String s : str) {
                     list.add(s);
@@ -214,13 +220,24 @@ public class MainViewController {
                         combo.getSelectionModel().select(0);
                         parameters.add(combo);
                     } else {
-                        TextField param = new TextField();
-                        Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
-                        param.setPromptText(((NameAnnotation) ann[0]).name());
-                        if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")){
-                            param.setPromptText(param.getPromptText() + "[]");
+                        if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")){
+                            TextArea param = new TextArea();
+                            Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
+                            param.setPromptText(((NameAnnotation) ann[0]).name());
+                            if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
+                                param.setPromptText(param.getPromptText() + "[]");
+                            }
+                            param.setMaxWidth(200);
+                            parameters.add(param);
+                        } else {
+                            TextField param = new TextField();
+                            Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
+                            param.setPromptText(((NameAnnotation) ann[0]).name());
+                            if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
+                                param.setPromptText(param.getPromptText() + "[]");
+                            }
+                            parameters.add(param);
                         }
-                        parameters.add(param);
                     }
                 }
             }
