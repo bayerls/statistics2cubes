@@ -77,7 +77,7 @@ public class Printer {
         }
 
         fileName += ".html";
-        File file = new File(folder.getAbsolutePath() + "\\" + fileName);
+        File file = new File(folder.getAbsolutePath() + File.separator + fileName);
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(file, "UTF-8");
