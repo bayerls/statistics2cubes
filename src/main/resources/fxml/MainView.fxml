@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.web.*?>
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane minHeight="0.0" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bayerl.statistics.gui.controller.MainViewController">
-   <children>
       <SplitPane dividerPositions="0.8" minHeight="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <items>
             <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
                   <SplitPane dividerPositions="0.1005" minHeight="0.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="598.0">
-                           <children>
                               <BorderPane prefHeight="200.0" prefWidth="713.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <left>
                                     <AnchorPane minHeight="0.0" prefHeight="47.0" prefWidth="180.0" BorderPane.alignment="CENTER">
-                                       <children>
                                           <ComboBox fx:id="transformationChoice" promptText="Choose transformation" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="10.0" />
-                                       </children>
                                        <BorderPane.margin>
                                           <Insets right="5.0" />
                                        </BorderPane.margin>
@@ -29,84 +21,51 @@
                                  </left>
                                  <center>
                                     <AnchorPane minHeight="0.0" prefHeight="47.0" BorderPane.alignment="CENTER">
-                                       <children>
                                           <HBox fx:id="task" minHeight="0.0" prefHeight="47.0" prefWidth="333.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="11.0" />
-                                       </children>
                                     </AnchorPane>
                                  </center>
                                  <right>
                                     <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                       <children>
                                           <Button mnemonicParsing="false" onAction="#handleOk" text="✔" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
-                                       </children>
                                        <BorderPane.margin>
                                           <Insets left="5.0" />
                                        </BorderPane.margin>
                                     </AnchorPane>
                                  </right>
                               </BorderPane>
-                           </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
                               <SplitPane dividerPositions="0.2953020134228188" layoutX="178.0" layoutY="14.0" prefHeight="373.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                       <children>
                                           <SplitPane dividerPositions="0.9002849002849003" layoutX="8.0" orientation="VERTICAL" prefHeight="332.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="184.0">
-                                                   <children>
                                                       <VBox minHeight="0.0" prefHeight="411.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
                                                             <Hyperlink fx:id="originalTable" disable="true" minHeight="0.0" onAction="#showOriginal" text="Show original table" textAlignment="CENTER" />
                                                             <ListView fx:id="transformationListing" minHeight="0.0" prefHeight="411.0" prefWidth="205.0" />
-                                                         </children>
                                                       </VBox>
-                                                   </children>
                                                 </AnchorPane>
                                               <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="65.0" prefWidth="160.0">
-                                                   <children>
                                                       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="30.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                        <items>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                               <children>
                                                                   <Button fx:id="transformButton" disable="true" mnemonicParsing="false" onAction="#transform" prefHeight="96.0" prefWidth="158.0" text="Transform" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                               </children>
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                               <children>
                                                                   <ComboBox fx:id="version" layoutY="2.0" prefHeight="28.0" prefWidth="65.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                   <Button fx:id="exportButton" disable="true" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" onAction="#export" text="Export" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                               </children>
                                                             </AnchorPane>
-                                                        </items>
                                                       </SplitPane>
-                                                   </children>
                                                 </AnchorPane>
-                                            </items>
                                           </SplitPane>
-                                       </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                       <children>
                                           <WebView fx:id="webView" prefHeight="449.0" prefWidth="498.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
                                     </AnchorPane>
-                                </items>
                               </SplitPane>
-                           </children>
                         </AnchorPane>
-                    </items>
                   </SplitPane>
-               </children>
             </AnchorPane>
             <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
                   <TextArea fx:id="consoleOutput" editable="false" minHeight="0.0" prefHeight="616.0" prefWidth="455.0" style="-fx-background-color: black;" stylesheets="@console.css" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
-               </children>
             </AnchorPane>
-         </items>
       </SplitPane>
-   </children>
 </AnchorPane>

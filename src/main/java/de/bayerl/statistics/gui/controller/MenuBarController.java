@@ -1,15 +1,11 @@
 package de.bayerl.statistics.gui.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by Alexander on 01.05.2015.
- */
 public class MenuBarController {
 
     private MainApp mainApp;

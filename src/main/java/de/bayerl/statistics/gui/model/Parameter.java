@@ -1,11 +1,7 @@
 package de.bayerl.statistics.gui.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alexander on 04.05.2015.
- */
 public class Parameter {
     private List<String> stringList;
     private List<Integer> intList;
@@ -15,9 +11,9 @@ public class Parameter {
     private boolean hasString;
 
     public Parameter() {
-
     }
 
+    @SuppressWarnings("unchecked")
     public Parameter(List list) {
         if(list.get(0).getClass().getSimpleName().equals("String")) {
             this.stringList = list;

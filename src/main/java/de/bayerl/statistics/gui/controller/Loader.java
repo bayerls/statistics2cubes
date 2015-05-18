@@ -1,7 +1,5 @@
 package de.bayerl.statistics.gui.controller;
 
-import de.bayerl.statistics.instance.Config;
-import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
@@ -9,7 +7,6 @@ import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -132,9 +129,7 @@ public class Loader {
 
                     @Override
                     public void endElement(String uri, String localName, String qName) {
-                        if (qName.equalsIgnoreCase("row")) {
-                            // nothing to do?
-                        } else if (qName.equalsIgnoreCase("cell")) {
+                        if (qName.equalsIgnoreCase("cell")) {
                             inCell[0] = false;
                         }
                     }

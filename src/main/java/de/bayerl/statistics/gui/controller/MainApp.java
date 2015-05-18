@@ -2,9 +2,7 @@ package de.bayerl.statistics.gui.controller;
 import de.bayerl.statistics.gui.model.ListWrapper;
 import de.bayerl.statistics.gui.model.Parameter;
 import de.bayerl.statistics.gui.model.TransformationModel;
-import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
-import de.bayerl.statistics.transformer.ResolveLinebreaks;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebEngine;
 import javafx.stage.Stage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +34,8 @@ public class MainApp extends Application {
     private boolean metadata;
     private boolean headers;
 
-	@Override
-	public void start(Stage primaryStage) {
+    @Override
+    public void start(Stage primaryStage) {
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Statistics2Cubes");
@@ -47,7 +43,7 @@ public class MainApp extends Application {
         correspondingFileNames = new ArrayList<>();
         initRootLayout();
         showMainView();
-	}
+    }
 
     /**
      * Initializes the root layout.
@@ -59,7 +55,7 @@ public class MainApp extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/fxml/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
@@ -68,9 +64,9 @@ public class MainApp extends Application {
             MenuBarController controller = loader.getController();
             controller.setMainApp(this);
 
-            transformations.add(new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
-            transformations.add(new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
-            transformations.add(new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+            transformations.add(new TransformationModel("ResolveLinebreaks", new ArrayList<>()));
+            transformations.add(new TransformationModel("ResolveRowSpan", new ArrayList<>()));
+            transformations.add(new TransformationModel("ResolveColSpan", new ArrayList<>()));
             correspondingFileNames.add(null);
             correspondingFileNames.add(null);
             correspondingFileNames.add(null);
@@ -87,7 +83,7 @@ public class MainApp extends Application {
             // Load mainview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/fxml/MainView.fxml"));
-            AnchorPane mainView = (AnchorPane) loader.load();
+            AnchorPane mainView = loader.load();
 
             // Set mainview into the center of root layout.
             rootLayout.setCenter(mainView);
@@ -101,9 +97,9 @@ public class MainApp extends Application {
         }
     }
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public Stage getPrimaryStage() {
         return primaryStage;
@@ -113,24 +109,25 @@ public class MainApp extends Application {
         tables.add(file);
         String path = (new File(file.getParent())).getParent() + File.separator + "html";
         File customDir = new File(path);
-        if(customDir.mkdirs()) {
+        if (customDir.mkdirs()) {
             System.out.println(customDir + "created");
         }
         htmlFolder = customDir.getAbsolutePath();
         cubeFolder = (new File(htmlFolder).getParent()) + File.separator + "n3";
     }
 
+    @SuppressWarnings("unchecked")
     public void load() {
         transformationTable = Handler.load(tables, htmlFolder);
         mainViewController.enableControls();
         checkTransformationList();
         List<TransformationModel> models = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             models.add(transformations.get(i));
         }
         correspondingFileNames.clear();
-        correspondingFileNames.addAll((List<String>)Handler.transform(tables, models, htmlFolder).get(1));
-        for(int i = 3; i < transformations.size(); i++) {
+        correspondingFileNames.addAll((List<String>) Handler.transform(tables, models, htmlFolder).get(1));
+        for (int i = 3; i < transformations.size(); i++) {
             correspondingFileNames.add(null);
         }
         this.metadata = false;
@@ -139,7 +136,7 @@ public class MainApp extends Application {
     }
 
     public void export(String version) {
-        if(metadata && headers) {
+        if (metadata && headers) {
             Handler.export(lastTransformation, version, cubeFolder);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -154,44 +151,48 @@ public class MainApp extends Application {
         boolean lB = false;
         boolean rS = false;
         boolean cS = false;
-        for(int i = 0; i < 3; i++) {
-            if(transformations.get(i).getName().equals("ResolveLinebreaks")) {
+        for (int i = 0; i < 3; i++) {
+            if (transformations.get(i).getName().equals("ResolveLinebreaks")) {
                 lB = true;
-            } else if(transformations.get(i).getName().equals("ResolveRowSpan")) {
+            } else if (transformations.get(i).getName().equals("ResolveRowSpan")) {
                 rS = true;
-            } else if(transformations.get(i).getName().equals("ResolveColSpan")) {
+            } else if (transformations.get(i).getName().equals("ResolveColSpan")) {
                 cS = true;
             }
         }
 
         if (!lB) {
-            transformations.add(0, new TransformationModel("ResolveLinebreaks", new ArrayList<Parameter>()));
+            transformations.add(0, new TransformationModel("ResolveLinebreaks", new ArrayList<>()));
             correspondingFileNames.add(null);
         }
         if (!rS) {
-            transformations.add(0, new TransformationModel("ResolveRowSpan", new ArrayList<Parameter>()));
+            transformations.add(0, new TransformationModel("ResolveRowSpan", new ArrayList<>()));
             correspondingFileNames.add(null);
         }
         if (!cS) {
-            transformations.add(0, new TransformationModel("ResolveColSpan", new ArrayList<Parameter>()));
+            transformations.add(0, new TransformationModel("ResolveColSpan", new ArrayList<>()));
             correspondingFileNames.add(null);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void transform() {
+        checkTransformationList();
         correspondingFileNames.clear();
-        List <Object> list = Handler.transform(tables, transformations, htmlFolder);
+        List<Object> list = Handler.transform(tables, transformations, htmlFolder);
         correspondingFileNames.addAll((List<String>) (list.get(1)));
         lastTransformation = (Table) (list.get(0));
         File[] dir = (new File(htmlFolder)).listFiles();
-        for(File file : dir) {
-            if(file.getName().contains(correspondingFileNames.get(correspondingFileNames.size() - 1))) {
-                updateWebView(file.getName());
-            }
-            if(file.getName().contains("AddMetadata")) {
-                metadata = true;
-            } else if(file.getName().contains("CreateHeaders")) {
-                headers = true;
+        if (dir != null) {
+            for (File file : dir) {
+                if (file.getName().contains(correspondingFileNames.get(correspondingFileNames.size() - 1))) {
+                    updateWebView(file.getName());
+                }
+                if (file.getName().contains("AddMetadata")) {
+                    metadata = true;
+                } else if (file.getName().contains("CreateHeaders")) {
+                    headers = true;
+                }
             }
         }
     }
@@ -200,22 +201,32 @@ public class MainApp extends Application {
         int startLength = start.length();
         int endLength = end.length();
         int startPos = 0;
-        for(int i = 0; i < toEdit.length(); i++) {
-            if(toEdit.charAt(i) == '<') {
+        for (int i = 0; i < toEdit.length(); i++) {
+            if (toEdit.charAt(i) == '<') {
                 startPos = i;
                 break;
             }
         }
 
         StringBuilder builder = new StringBuilder();
-        for(int i = startPos + startLength; i < toEdit.length() - endLength; i++) {
+        for (int i = startPos + startLength; i < toEdit.length() - endLength; i++) {
             builder.append(toEdit.charAt(i));
         }
         return builder.toString();
     }
 
+    private void fillLists(List<TransformationModel> models) {
+        transformations.clear();
+        correspondingFileNames.clear();
+        transformations.addAll(models);
+        checkTransformationList();
+        for (TransformationModel t : transformations) {
+            correspondingFileNames.add(null);
+        }
+    }
+
     public void loadTransformations(File file) {
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
             List<TransformationModel> models = new ArrayList<>();
             TransformationModel model = null;
@@ -223,39 +234,41 @@ public class MainApp extends Application {
             List<Integer> intList = new ArrayList<>();
             List<String> stringList = new ArrayList<>();
             while (line != null) {
-                if(line.replaceAll(" ", "").startsWith("<transformation>")) {
+                if (line.replaceAll(" ", "").startsWith("<transformation>")) {
                     model = new TransformationModel("", new ArrayList<>());
-                } else if(line.contains("<intList>")) {
+                } else if (line.contains("<intList>")) {
                     currentElement = "intList";
                     intList.add(Integer.parseInt(getInbetween(line, "<intList>", "</intList>")));
-                }else if(line.contains("<stringList>")) {
+                } else if (line.contains("<stringList>")) {
                     currentElement = "stringList";
                     stringList.add(getInbetween(line, "<stringList>", "</stringList>"));
-                } else if(line.contains("<value>")) {
+                } else if (line.contains("<value>")) {
                     currentElement = "value";
-                    model.getAttributes().add(new Parameter(getInbetween(line, "<value>", "</value>")));
-                } else if(line.contains("</attributes>")) {
-                    if(currentElement.equals("intList")) {
-                        model.getAttributes().add(new Parameter(intList));
+                    if (model != null && model.getAttributes() != null) {
+                        model.getAttributes().add(new Parameter(getInbetween(line, "<value>", "</value>")));
+                    }
+                } else if (line.contains("</attributes>")) {
+                    if (currentElement.equals("intList")) {
+                        if (model != null && model.getAttributes() != null) {
+                            model.getAttributes().add(new Parameter(intList));
+                        }
                         intList = new ArrayList<>();
-                    } else if(currentElement.equals("stringList")) {
-                        model.getAttributes().add(new Parameter(stringList));
+                    } else if (currentElement.equals("stringList")) {
+                        if (model != null && model.getAttributes() != null) {
+                            model.getAttributes().add(new Parameter(stringList));
+                        }
                         stringList = new ArrayList<>();
                     }
-                } else if(line.contains("<name>")) {
-                    model.setName(getInbetween(line.replaceAll(" ", ""), "<name>", "</name>"));
+                } else if (line.contains("<name>")) {
+                    if (model != null) {
+                        model.setName(getInbetween(line.replaceAll(" ", ""), "<name>", "</name>"));
+                    }
                     models.add(model);
                 }
                 line = br.readLine();
             }
-            transformations.clear();
-            correspondingFileNames.clear();
-            transformations.addAll(models);
-            checkTransformationList();
-            for(TransformationModel t : transformations) {
-                correspondingFileNames.add(null);
-            }
-            System.out.println("Transformation list loaded successfully");
+            fillLists(models);
+            System.out.println("Transformation list " + file.getName() + " loaded successfully");
         } catch (Exception e) { // catches ANY exception
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -323,35 +336,11 @@ public class MainApp extends Application {
         return transformations;
     }
 
-    public List<File> getTables() {
-        return tables;
-    }
-
-    public void setTables(List<File> tables) {
-        this.tables = tables;
-    }
-
-    public Table getTransformationTable() {
-        return transformationTable;
-    }
-
-    public void setTransformationTable(Table transformationTable) {
-        this.transformationTable = transformationTable;
-    }
-
     public String getHtmlFolder() {
         return htmlFolder;
     }
 
-    public void setHtmlFolder(String htmlFolder) {
-        this.htmlFolder = htmlFolder;
-    }
-
     public List<String> getCorrespondingFileNames() {
         return correspondingFileNames;
-    }
-
-    public void setCorrespondingFileNames(List<String> correspondingFileNames) {
-        this.correspondingFileNames = correspondingFileNames;
     }
 }

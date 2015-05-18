@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane minHeight="0.0" minWidth="-Infinity" prefHeight="570.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bayerl.statistics.gui.controller.MenuBarController">
     <top>
       <MenuBar minHeight="0.0" BorderPane.alignment="CENTER">
-        <menus>
           <Menu mnemonicParsing="false" text="File">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#openChooser" text="Choose Tables" />
-                  <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save Transformations" />
-                  <MenuItem mnemonicParsing="false" onAction="#loadTransformations" text="Load Transformations" />
-               </items>
+              <MenuItem mnemonicParsing="false" onAction="#openChooser" text="Choose Tables" />
+              <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save Transformations" />
+              <MenuItem mnemonicParsing="false" onAction="#loadTransformations" text="Load Transformations" />
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
-            <items>
               <MenuItem mnemonicParsing="false" text="About" />
-            </items>
           </Menu>
-        </menus>
       </MenuBar>
    </top>
 </BorderPane>

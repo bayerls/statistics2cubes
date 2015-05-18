@@ -4,47 +4,34 @@ import de.bayerl.statistics.gui.model.TransformationModel;
 import de.bayerl.statistics.transformer.MetaTransformation;
 import de.bayerl.statistics.transformer.NameAnnotation;
 import de.bayerl.statistics.transformer.Transformation;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.web.WebView;
-import javafx.util.Callback;
 import org.reflections.Reflections;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Created by Alexander on 28.04.2015.
- */
 public class MainViewController {
 
     @FXML
     private ComboBox transformationChoice;
     @FXML
     private HBox task;
-    private MainApp mainApp;
-    private List<Control> parameters;
-    private Reflections reflections = new Reflections("de.bayerl.statistics.transformer");
     @FXML
     private ListView<TransformationModel> transformationListing;
     @FXML
     private TextArea consoleOutput;
     @FXML
     private WebView webView;
-    private static final String SPLITTER = "~#~LB~#~";
-    private int dragStart;
     @FXML
     private ComboBox version;
     @FXML
@@ -53,39 +40,49 @@ public class MainViewController {
     private Hyperlink originalTable;
     @FXML
     private Button transformButton;
+    private MainApp mainApp;
+    private List<Control> parameters;
+    private Reflections reflections;
+    private static final String SPLITTER = "  ";
+    private int dragStart;
 
     @FXML
     private void initialize() {
-        transformationListing.setCellFactory(new Callback<ListView<TransformationModel>, ListCell<TransformationModel>>() {
-            @Override
-            public ListCell<TransformationModel> call(ListView<TransformationModel> param) {
-                return new MovableCell();
+        this.reflections = new Reflections("de.bayerl.statistics.transformer");
+        transformationListing.setCellFactory(list -> new MovableCell());
+        redirectOutput();
+        initializeTransformationChoice();
+        initializeVersion();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initializeTransformationChoice() {
+        List<String> trans = getTransformationNames();
+        Collections.sort(trans);
+        transformationChoice.getItems().addAll(trans);
+        transformationChoice.valueProperty().addListener((observable,oldValue, newValue) -> {
+            parameters = parameters(task, newValue);
+            if (parameters != null) {
+                for (Control c : parameters) {
+                    task.getChildren().add(c);
+                }
             }
         });
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initializeVersion() {
+        version.getItems().add("1.1");
+        version.getItems().add("1.2");
+        version.getSelectionModel().select(0);
+    }
+
+    private void redirectOutput() {
         consoleOutput.setStyle("-fx-color: black; -fx-text-fill: white;");
         Console console = new Console(consoleOutput);
         PrintStream ps = new PrintStream(console, true);
         System.setOut(ps);
         System.setErr(ps);
-        List<String> trans = getTransformationNames();
-        version.getItems().add("1.1");
-        version.getItems().add("1.2");
-        version.getSelectionModel().select(0);
-        Collections.sort(trans);
-        for(String tr : trans) {
-            transformationChoice.getItems().add(tr);
-        }
-        transformationChoice.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                parameters = parameters(task, newValue);
-                if (parameters != null) {
-                    for (int i = 0; i < parameters.size(); i++) {
-                        task.getChildren().add(parameters.get(i));
-                    }
-                }
-            }
-        });
     }
 
     public void updateWebView(String fileName) {
@@ -107,11 +104,8 @@ public class MainViewController {
         transformButton.setDisable(false);
     }
 
-    @FXML
-    private void handleOk() {
-        boolean ok = true;
+    private List<Object> computeAmountOfParameters() {
         List<Object> tempValues = new ArrayList<>();
-        String name = transformationChoice.getValue().toString();
         for(int i = 0; i< parameters.size(); i++) {
             if(parameters.get(i) instanceof TextField) {
                 if (((TextField) parameters.get(i)).getPromptText().equals("Role")) {
@@ -127,7 +121,68 @@ public class MainViewController {
                 tempValues.add(((ComboBox) parameters.get(i)).getValue());
             }
         }
+        return tempValues;
+    }
 
+    private List<String> createStringList(String[] str) {
+        List<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(str));
+        return list;
+    }
+
+    private List<Integer> reformatFromTo(String[] temp) {
+        List<Integer> reformattedInts = new ArrayList<>();
+        int start = Integer.parseInt(temp[0]);
+        int end = Integer.parseInt(temp[1]);
+        if(start >= end) {
+            int tempValue = start;
+            start = end;
+            end = tempValue;
+        }
+        for(int j = 0; j < end - start + 1; j++) {
+            reformattedInts.add(start + j);
+        }
+        return reformattedInts;
+    }
+
+    private List<Integer> createIntegerList(String[] str) {
+        List<Integer> ints = new ArrayList<>();
+        for(String s : str) {
+            if(!s.contains("-")) {
+                ints.add(Integer.parseInt(s));
+            } else {
+                String[] temp = s.split("-");
+                ints.addAll(reformatFromTo(temp));
+            }
+        }
+        Collections.sort(ints);
+        Set<Integer> set = new LinkedHashSet<>(ints);
+        ints = new ArrayList<>(set);
+        return ints;
+    }
+
+    private List<Parameter> createParameterList(List<Object> tempValues, Class c) {
+        List<Parameter> parameterValues = new ArrayList<>();
+        for(int i = 0; i < tempValues.size(); i++){
+            if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")) {
+                String[] str = ((String) tempValues.get(i)).split("\\n");
+                parameterValues.add(new Parameter(createStringList(str)));
+            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
+                String[] str = ((String) tempValues.get(i)).replaceAll(" ", "").split(",");
+                parameterValues.add(new Parameter(createIntegerList(str)));
+            } else {
+                parameterValues.add(new Parameter((String) tempValues.get(i)));
+            }
+        }
+
+        return parameterValues;
+    }
+
+    @FXML
+    private void handleOk() {
+        List<Object> tempValues = computeAmountOfParameters();
+
+        String name = transformationChoice.getValue().toString();
         String path = "de.bayerl.statistics.transformer." + name;
         Class c = null;
         try {
@@ -135,50 +190,10 @@ public class MainViewController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<Parameter> parameterValues = new ArrayList<>();
-        for(int i = 0; i < tempValues.size(); i++){
-            if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")) {
-                String[] str = ((String) tempValues.get(i)).split("\\n");
-                List<String> list = new ArrayList<>();
-                for(String s : str) {
-                    list.add(s);
-                }
-                Set<String> set = new LinkedHashSet<>(list);
-                list = new ArrayList<>(set);
-                parameterValues.add(new Parameter(list));
-            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
-                String[] str = ((String) tempValues.get(i)).replaceAll(" ", "").split(",");
-                List<Integer> ints = new ArrayList<>();
-                for(String s : str) {
-                    if(!s.contains("-")) {
-                        ints.add(Integer.parseInt(s));
-                    } else {
-                        String[] temp = s.split("-");
-                        int start = Integer.parseInt(temp[0]);
-                        int end = Integer.parseInt(temp[1]);
-                        if(start >= end) {
-                            int tempValue = start;
-                            start = end;
-                            end = tempValue;
-                        }
-                        for(int j = 0; j < end - start + 1; j++) {
-                            ints.add(start + j);
-                        }
-                    }
-                }
-                Collections.sort(ints);
-                parameterValues.add(new Parameter(ints));
-            } else {
-                parameterValues.add(new Parameter((String) tempValues.get(i)));
-            }
-        }
 
-        if(ok) {
-            mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
-            mainApp.getCorrespondingFileNames().add(null);
-        } else {
-            System.out.println("Please fill all parameters");
-        }
+        List<Parameter> parameterValues = createParameterList(tempValues, c);
+        mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
+        mainApp.getCorrespondingFileNames().add(null);
     }
 
     @FXML
@@ -193,54 +208,81 @@ public class MainViewController {
         webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + "table_0_original.html");
     }
 
-    private List<Control> parameters(HBox task, Object newValue) {
+    private List<TextField> createCellFields() {
+        List<TextField> cellAttributes = new ArrayList<>();
+        TextField param = new TextField();
+        TextField param2 = new TextField();
+        param.setPromptText("Role");
+        param2.setPromptText("Value");
+        cellAttributes.add(param);
+        cellAttributes.add(param2);
+        return cellAttributes;
+    }
 
-        task.getChildren().remove(0, task.getChildren().size());
-        Set<Class<? extends Transformation>> classes = reflections.getSubTypesOf(Transformation.class);
-        Iterator<Class<? extends Transformation>> it = classes.iterator();
-        Class<? extends Transformation> cl;
+    private ComboBox<String> createTableSliceTypeBox() {
+        ComboBox<String> combo = new ComboBox<>();
+        combo.getItems().addAll("Row","Column");
+        combo.getSelectionModel().select(0);
+        return combo;
+    }
+
+    private TextArea createTextArea(Class cl, int i) {
+        TextArea param = new TextArea();
+        //get fieldname from transformationclass
+        Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
+        param.setPromptText(((NameAnnotation) ann[0]).name());
+        if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
+            param.setPromptText(param.getPromptText() + "[]");
+            if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("String[]")) {
+                param.setPromptText(param.getPromptText() + "  Split by linebreak");
+
+            }
+        }
+        param.setMaxWidth(200);
+        return param;
+    }
+
+    private TextField createTextField(Class cl, int i) {
+        TextField param = new TextField();
+        //get fieldname from transformationclass
+        Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
+        param.setPromptText(((NameAnnotation) ann[0]).name());
+        if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
+            param.setPromptText(param.getPromptText() + "[]");
+        }
+        return param;
+    }
+
+    private List<Control> createParameterList(Iterator<Class<? extends Transformation>> it, Object newValue) {
         List<Control> parameters = new ArrayList<>();
         while (it.hasNext()) {
-            cl = it.next();
+            Class<? extends Transformation> cl = it.next();
+
+            //compare classname with chosen transformation-name
             if (cl.getSimpleName().equals(newValue)) {
                 int params = cl.getConstructors()[0].getParameterCount();
                 for (int i = 0; i < params; i++) {
                     if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Cell")) {
-                        TextField param = new TextField();
-                        TextField param2 = new TextField();
-                        param.setPromptText("Role");
-                        param2.setPromptText("Value");
-                        parameters.add(param);
-                        parameters.add(param2);
+                        parameters.addAll(createCellFields());
                     } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("TableSliceType")) {
-                        ComboBox<String> combo = new ComboBox<>();
-                        combo.getItems().addAll("Row","Column");
-                        combo.getSelectionModel().select(0);
-                        parameters.add(combo);
+                        parameters.add(createTableSliceTypeBox());
+                    } else if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")){
+                        parameters.add(createTextArea(cl, i));
                     } else {
-                        if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")){
-                            TextArea param = new TextArea();
-                            Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
-                            param.setPromptText(((NameAnnotation) ann[0]).name());
-                            if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
-                                param.setPromptText(param.getPromptText() + "[]");
-                            }
-                            param.setMaxWidth(200);
-                            parameters.add(param);
-                        } else {
-                            TextField param = new TextField();
-                            Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
-                            param.setPromptText(((NameAnnotation) ann[0]).name());
-                            if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
-                                param.setPromptText(param.getPromptText() + "[]");
-                            }
-                            parameters.add(param);
-                        }
+                        parameters.add(createTextField(cl, i));
                     }
                 }
             }
         }
         return parameters;
+    }
+
+    private List<Control> parameters(HBox task, Object newValue) {
+        //remove old parameter fields
+        task.getChildren().remove(0, task.getChildren().size());
+        //create class-iterator
+        Iterator<Class<? extends Transformation>> it = reflections.getSubTypesOf(Transformation.class).iterator();
+        return createParameterList(it, newValue);
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -250,24 +292,11 @@ public class MainViewController {
     }
 
     private List<String> getTransformationNames (){
-        List<String> nameList = new ArrayList<String>();
+        List<String> nameList = new ArrayList<>();
         Set<Class<? extends Transformation>> classes = reflections.getSubTypesOf(Transformation.class);
-        Iterator<Class<? extends Transformation>> it = classes.iterator();
-
-        while(it.hasNext()) {
-            Class<? extends  Transformation> cl = it.next();
-            nameList.add(cl.getSimpleName());
-        }
-
         Set<Class<? extends MetaTransformation>> classes2 = reflections.getSubTypesOf(MetaTransformation.class);
-        Iterator<Class<? extends MetaTransformation>> it2 = classes2.iterator();
-
-        while(it2.hasNext()) {
-
-            Class<? extends MetaTransformation> cl = it2.next();
-            nameList.add(cl.getSimpleName());
-
-        }
+        nameList.addAll(classes.stream().map(Class::getSimpleName).collect(Collectors.toList()));
+        nameList.addAll(classes2.stream().map(Class::getSimpleName).collect(Collectors.toList()));
         return nameList;
     }
 
@@ -277,7 +306,6 @@ public class MainViewController {
         private Button delete = new Button(" - ");
         private Pane pane ;
         private HBox hbox;
-        private String secretText;
 
         public MovableCell() {
             ListCell thisCell = this;
@@ -286,6 +314,7 @@ public class MainViewController {
             pane = new Pane();
             hbox.getChildren().addAll(label, pane, delete);
             HBox.setHgrow(pane, Priority.ALWAYS);
+
             setOnDragDetected(event -> {
                 if (getItem() == null) {
                     return;
@@ -304,10 +333,12 @@ public class MainViewController {
             setOnMouseClicked(event -> {
                 if(mainApp.getCorrespondingFileNames().get(transformationListing.getSelectionModel().getSelectedIndex()) != null) {
                     File[] dir = (new File(mainApp.getHtmlFolder())).listFiles();
-                    for (File file : dir) {
-                        if (file.getName().contains(mainApp.getCorrespondingFileNames()
-                                .get(transformationListing.getSelectionModel().getSelectedIndex()))) {
-                            updateWebView(file.getName());
+                    if(dir != null) {
+                        for (File file : dir) {
+                            if (file.getName().contains(mainApp.getCorrespondingFileNames()
+                                    .get(transformationListing.getSelectionModel().getSelectedIndex()))) {
+                                updateWebView(file.getName());
+                            }
                         }
                     }
                 }
@@ -348,13 +379,7 @@ public class MainViewController {
                     ObservableList<TransformationModel> items = getListView().getItems();
                     int draggedIdx = dragStart;
                     int thisIdx = items.indexOf(getItem());
-                    TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
-                    String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
-                    mainApp.getTransformations().set(draggedIdx, mainApp.getTransformations().get(thisIdx));
-                    mainApp.getCorrespondingFileNames().set(draggedIdx, mainApp.getCorrespondingFileNames().get(thisIdx));
-                    mainApp.getTransformations().set(thisIdx, temp);
-                    mainApp.getCorrespondingFileNames().set(thisIdx, tempString);
-
+                    reorganizeLists(thisIdx, draggedIdx);
                     success = true;
                 }
                 event.setDropCompleted(success);
@@ -365,62 +390,89 @@ public class MainViewController {
             setOnDragDone(DragEvent::consume);
         }
 
+        protected void reorganizeLists(int thisIdx, int draggedIdx) {
+            TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
+            String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
+            mainApp.getTransformations().set(draggedIdx, mainApp.getTransformations().get(thisIdx));
+            mainApp.getCorrespondingFileNames().set(draggedIdx, mainApp.getCorrespondingFileNames().get(thisIdx));
+            mainApp.getTransformations().set(thisIdx, temp);
+            mainApp.getCorrespondingFileNames().set(thisIdx, tempString);
+        }
+
+        protected String createIntListName(List<Integer> intList) {
+            StringBuilder intListBuilder = new StringBuilder();
+            intListBuilder.append(SPLITTER + "{");
+            intListBuilder.append(intList.get(0));
+            if(intList.size() > 1) {
+                intListBuilder.append(",");
+            }
+            for(int i = 1; i < intList.size() - 1; i++) {
+                intListBuilder.append(intList.get(i));
+                intListBuilder.append(",");
+            }
+            if(intList.size() > 1) {
+                intListBuilder.append(intList.get(intList.size() - 1));
+            }
+            intListBuilder.append("}");
+            return intListBuilder.toString();
+        }
+
+        protected String createStringListName(List<String> stringList) {
+            StringBuilder stringListBuilder = new StringBuilder();
+            stringListBuilder.append(SPLITTER);
+            stringListBuilder.append("{");
+            stringListBuilder.append(stringList.get(0));
+            if(stringList.size() > 1) {
+                stringListBuilder.append(",");
+            }
+            for(int i = 1; i < stringList.size() - 1; i++) {
+                stringListBuilder.append(stringList.get(i));
+                stringListBuilder.append(",");
+            }
+            if(stringList.size() > 1) {
+                stringListBuilder.append(stringList.get(stringList.size() - 1));
+            }
+            stringListBuilder.append("}");
+            return stringListBuilder.toString();
+        }
+
+        protected String createNameString(TransformationModel item) {
+            StringBuilder transformation = new StringBuilder(item.getName());
+            List<Parameter> attributes = item.getAttributes();
+            for(Parameter att : attributes) {
+                if(att.hasString()) {
+                    transformation.append(SPLITTER);
+                    transformation.append(att.getValue());
+                } else if(att.hasIntList() && att.getIntList().size() > 0){
+                    transformation.append(createIntListName(att.getIntList()));
+                } else if(att.hasStringList() && att.getStringList().size() > 0){
+                    transformation.append(createStringListName(att.getStringList()));
+                }
+            }
+            return transformation.toString();
+        }
+
+        protected void delete(TransformationModel item) {
+            String deleteMsg = label.getText() + " removed";
+            int index = 0;
+            for(int i = 0; i < mainApp.getTransformations().size(); i++) {
+                if(mainApp.getTransformations().get(i) == item) {
+                    index = i;
+                }
+            }
+            mainApp.getCorrespondingFileNames().remove(index);
+            mainApp.getTransformations().remove(item);
+            System.out.println(deleteMsg);
+        }
+
         @Override
         protected void updateItem(TransformationModel item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                delete.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-
-                        System.out.println(label.getText() + " removed");
-                        int index = 0;
-                        for(int i = 0; i < mainApp.getTransformations().size(); i++) {
-                            if(mainApp.getTransformations().get(i) == item) {
-                                index = i;
-                            }
-                        }
-                        mainApp.getCorrespondingFileNames().remove(index);
-                        mainApp.getTransformations().remove(item);
-                    }
-                });
-                StringBuilder transformation = new StringBuilder(item.getName());
-                List<Parameter> attributes = item.getAttributes();
-                for(Parameter att : attributes) {
-                    if(att.hasString()) {
-                        transformation.append(SPLITTER + att.getValue());
-                    } else if(att.hasIntList() && att.getIntList().size() > 0){
-                        transformation.append(SPLITTER + "{");
-                        transformation.append(att.getIntList().get(0));
-                        if(att.getIntList().size() > 1) {
-                            transformation.append(",");
-                        }
-                        for(int i = 1; i < att.getIntList().size() - 1; i++) {
-                            transformation.append(att.getIntList().get(i) + ",");
-                        }
-                        if(att.getIntList().size() > 1) {
-                            transformation.append(att.getIntList().get(att.getIntList().size() - 1));
-                        }
-                        transformation.append("}");
-                    } else if(att.hasStringList() && att.getStringList().size() > 0){
-                        transformation.append(SPLITTER + "{");
-                        transformation.append(att.getStringList().get(0));
-                        if(att.getStringList().size() > 1) {
-                            transformation.append(",");
-                        }
-                        for(int i = 1; i < att.getStringList().size() - 1; i++) {
-                            transformation.append(att.getStringList().get(i) + ",");
-                        }
-                        if(att.getStringList().size() > 1) {
-                            transformation.append(att.getStringList().get(att.getStringList().size() - 1));
-                        }
-                        transformation.append("}");
-                    }
-                }
-                secretText = transformation.toString();
-                label.setText(item != null ? secretText.replaceAll(SPLITTER, "  ") : "<null>");
+                delete.setOnAction(event -> delete(item));
+                label.setText(createNameString(item));
                 setGraphic(hbox);
             }
         }

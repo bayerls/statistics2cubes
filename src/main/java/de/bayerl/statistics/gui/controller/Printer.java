@@ -2,10 +2,7 @@ package de.bayerl.statistics.gui.controller;
 
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
-import de.bayerl.statistics.instance.Config;
-import de.bayerl.statistics.instance.Conversion;
 import de.bayerl.statistics.model.Cell;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -19,7 +16,6 @@ public class Printer {
     public static void print(Table table) {
         for (Row row : table.getRows()) {
             for (Cell cell : row.getCells()) {
-//                System.out.print(cell.getValue().getValue() + " -- ");
                 System.out.print(cell.getRows() + "/" + cell.getCols() + " -- ");
             }
             System.out.println();
@@ -29,7 +25,7 @@ public class Printer {
     public static void printHTML(Table table, String filenamePart, String htmlLocation) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n" +
-                "<de.bayerl.statistics.gui.html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
+                "<html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
         sb.append("<table>");
 
         for (Row row : table.getRows()) {
