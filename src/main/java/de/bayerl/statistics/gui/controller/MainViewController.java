@@ -145,11 +145,32 @@ public class MainViewController {
         return reformattedInts;
     }
 
+    private String combineIdentic(String s, char c) {
+        boolean detected = false;
+        StringBuilder combined = new StringBuilder();
+        for(int i = 0; i < s.length(); i++) {
+            if(!detected && s.charAt(i) == c) {
+                detected = true;
+                combined.append(s.charAt(i));
+            } else if(detected && s.charAt(i) != c) {
+                combined.append(s.charAt(i));
+                detected = false;
+            } else if(!detected && s.charAt(i) != c) {
+                combined.append(s.charAt(i));
+            } else if(detected && s.charAt(i) == c) {
+                detected = true;
+            }
+        }
+        return  combined.toString();
+    }
+
     private List<Integer> createIntegerList(String[] str) {
         List<Integer> ints = new ArrayList<>();
         for(String s : str) {
             if(!s.contains("-")) {
-                ints.add(Integer.parseInt(s));
+                if(s.length() != 0) {
+                    ints.add(Integer.parseInt(s));
+                }
             } else {
                 String[] temp = s.split("-");
                 ints.addAll(reformatFromTo(temp));
@@ -168,7 +189,10 @@ public class MainViewController {
                 String[] str = ((String) tempValues.get(i)).split("\\n");
                 parameterValues.add(new Parameter(createStringList(str)));
             } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
-                String[] str = ((String) tempValues.get(i)).replaceAll(" ", "").split(",");
+                String s = combineIdentic(((String) tempValues.get(i)), '-');
+                s = combineIdentic(s, ',');
+                s = s.replaceAll(" ","");
+                String[] str = s.split(",");
                 parameterValues.add(new Parameter(createIntegerList(str)));
             } else {
                 parameterValues.add(new Parameter((String) tempValues.get(i)));
@@ -176,6 +200,29 @@ public class MainViewController {
         }
 
         return parameterValues;
+    }
+
+    private boolean checkIntList(String s) {
+        for(int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) != '-' && s.charAt(i) != ',' && !Character.isDigit(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkEntries(List<Object> tempValues, Class c) {
+        for(int i = 0; i < tempValues.size(); i++){
+            if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
+                String s = combineIdentic(((String) tempValues.get(i)), '-');
+                s = combineIdentic(s, ',');
+                s = s.replaceAll(" ", "");
+                if(!checkIntList(s)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @FXML
@@ -191,9 +238,17 @@ public class MainViewController {
             e.printStackTrace();
         }
 
-        List<Parameter> parameterValues = createParameterList(tempValues, c);
-        mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
-        mainApp.getCorrespondingFileNames().add(null);
+        if(checkEntries(tempValues, c)) {
+            List<Parameter> parameterValues = createParameterList(tempValues, c);
+            mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
+            mainApp.getCorrespondingFileNames().add(null);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not add Transformation");
+            alert.setContentText("Please only enter numbers in formats: x or x-y separated by ','" );
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -253,7 +308,7 @@ public class MainViewController {
         return param;
     }
 
-    private List<Control> createParameterList(Iterator<Class<? extends Transformation>> it, Object newValue) {
+    private List<Control> createParameterFields(Iterator<Class<? extends Transformation>> it, Object newValue) {
         List<Control> parameters = new ArrayList<>();
         while (it.hasNext()) {
             Class<? extends Transformation> cl = it.next();
@@ -282,7 +337,7 @@ public class MainViewController {
         task.getChildren().remove(0, task.getChildren().size());
         //create class-iterator
         Iterator<Class<? extends Transformation>> it = reflections.getSubTypesOf(Transformation.class).iterator();
-        return createParameterList(it, newValue);
+        return createParameterFields(it, newValue);
     }
 
     public void setMainApp(MainApp mainApp) {

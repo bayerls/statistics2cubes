@@ -126,7 +126,9 @@ public class MainApp extends Application {
             models.add(transformations.get(i));
         }
         correspondingFileNames.clear();
-        correspondingFileNames.addAll((List<String>) Handler.transform(tables, models, htmlFolder).get(1));
+        List<Object> list = Handler.transform(tables, models, htmlFolder);
+        correspondingFileNames.addAll((List<String>) list.get(1));
+        lastTransformation = (Table) list.get(0);
         for (int i = 3; i < transformations.size(); i++) {
             correspondingFileNames.add(null);
         }
