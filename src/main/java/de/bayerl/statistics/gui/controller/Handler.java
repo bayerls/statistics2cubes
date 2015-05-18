@@ -9,6 +9,7 @@ import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.model.TableSliceType;
 import de.bayerl.statistics.transformer.AddRowColNumbers;
 import de.bayerl.statistics.transformer.DeleteRowColNumbers;
+import de.bayerl.statistics.transformer.MetaTransformation;
 import de.bayerl.statistics.transformer.Transformation;
 import org.apache.jena.riot.Lang;
 import java.io.*;
@@ -160,13 +161,23 @@ public class Handler {
                 for (int j = 0; j < parameterList.size(); j++) {
                     parameters[j] = parameterList.get(j);
                 }
-                Transformation t;
-                if (parameters.length > 0) {
-                    t = (Transformation) c.getConstructors()[0].newInstance(parameters);
+                if(!m.getName().contains("RowColNumbers")) {
+                    Transformation t;
+                    if (parameters.length > 0) {
+                        t = (Transformation) c.getConstructors()[0].newInstance(parameters);
+                    } else {
+                        t = (Transformation) c.getConstructors()[0].newInstance();
+                    }
+                    tTable = t.transform(tTable);
                 } else {
-                    t = (Transformation) c.getConstructors()[0].newInstance();
+                    MetaTransformation t;
+                    if (parameters.length > 0) {
+                        t = (MetaTransformation) c.getConstructors()[0].newInstance(parameters);
+                    } else {
+                        t = (MetaTransformation) c.getConstructors()[0].newInstance();
+                    }
+                    tTable = t.transform(tTable);
                 }
-                tTable = t.transform(tTable);
                 System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + c.getSimpleName() + fileName);
                 singleStepWatch.reset();
                 singleStepWatch.start();

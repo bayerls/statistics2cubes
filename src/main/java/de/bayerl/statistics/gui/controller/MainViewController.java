@@ -108,7 +108,7 @@ public class MainViewController {
         List<Object> tempValues = new ArrayList<>();
         for(int i = 0; i< parameters.size(); i++) {
             if(parameters.get(i) instanceof TextField) {
-                if (((TextField) parameters.get(i)).getPromptText().equals("Role")) {
+                if (((TextField) parameters.get(i)).getPromptText().equals("Role(String)")) {
                     tempValues.add(new String[]{((TextField) parameters.get(i)).getText(),
                             ((TextField) parameters.get(i + 1)).getText()});
                     ++i;
@@ -194,6 +194,8 @@ public class MainViewController {
                 s = s.replaceAll(" ","");
                 String[] str = s.split(",");
                 parameterValues.add(new Parameter(createIntegerList(str)));
+            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Cell")) {
+                parameterValues.add(new Parameter(createStringList((String[]) tempValues.get(i))));
             } else {
                 parameterValues.add(new Parameter((String) tempValues.get(i)));
             }
@@ -211,18 +213,26 @@ public class MainViewController {
         return true;
     }
 
-    private boolean checkEntries(List<Object> tempValues, Class c) {
+    private String checkEntries(List<Object> tempValues, Class c) {
+        String errorMsg = "noErrors";
         for(int i = 0; i < tempValues.size(); i++){
             if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
                 String s = combineIdentic(((String) tempValues.get(i)), '-');
                 s = combineIdentic(s, ',');
                 s = s.replaceAll(" ", "");
                 if(!checkIntList(s)) {
-                    return false;
+                    errorMsg = "Please only enter numbers in formats: x or x-y separated by ',' in fields described with (int[])";
+                }
+            } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int")) {
+                String s = (String) tempValues.get(i);
+                for(int j = 0 ; j < s.length(); j++) {
+                    if(!Character.isDigit(s.charAt(j))) {
+                        errorMsg = "Please only enter numbers in fields described with (int)";
+                    }
                 }
             }
         }
-        return true;
+        return errorMsg;
     }
 
     @FXML
@@ -238,7 +248,7 @@ public class MainViewController {
             e.printStackTrace();
         }
 
-        if(checkEntries(tempValues, c)) {
+        if(checkEntries(tempValues, c).equals("noErrors")) {
             List<Parameter> parameterValues = createParameterList(tempValues, c);
             mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
             mainApp.getCorrespondingFileNames().add(null);
@@ -246,7 +256,7 @@ public class MainViewController {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not add Transformation");
-            alert.setContentText("Please only enter numbers in formats: x or x-y separated by ','" );
+            alert.setContentText(checkEntries(tempValues, c));
             alert.showAndWait();
         }
     }
@@ -267,8 +277,8 @@ public class MainViewController {
         List<TextField> cellAttributes = new ArrayList<>();
         TextField param = new TextField();
         TextField param2 = new TextField();
-        param.setPromptText("Role");
-        param2.setPromptText("Value");
+        param.setPromptText("Role(String)");
+        param2.setPromptText("Value(String)");
         cellAttributes.add(param);
         cellAttributes.add(param2);
         return cellAttributes;
@@ -289,7 +299,7 @@ public class MainViewController {
         if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
             param.setPromptText(param.getPromptText() + "[]");
             if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("String[]")) {
-                param.setPromptText(param.getPromptText() + "  Split by linebreak");
+                param.setPromptText(param.getPromptText() + "  (Split by linebreak)");
 
             }
         }
@@ -303,7 +313,11 @@ public class MainViewController {
         Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
         param.setPromptText(((NameAnnotation) ann[0]).name());
         if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
-            param.setPromptText(param.getPromptText() + "[]");
+            param.setPromptText(param.getPromptText() + "(int[])");
+        } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("int")) {
+            param.setPromptText(param.getPromptText() + "(int)");
+        } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String")) {
+            param.setPromptText(param.getPromptText() + "(Str)");
         }
         return param;
     }

@@ -33,6 +33,7 @@ public class MainApp extends Application {
     private Table lastTransformation;
     private boolean metadata;
     private boolean headers;
+    private boolean normalize;
 
     @Override
     public void start(Stage primaryStage) {
@@ -134,17 +135,19 @@ public class MainApp extends Application {
         }
         this.metadata = false;
         this.headers = false;
-        updateWebView(new File(htmlFolder).listFiles()[2].getName());
+        this.normalize = false;
+        updateWebView(new File(htmlFolder).listFiles()[3].getName());
     }
 
     public void export(String version) {
-        if (metadata && headers) {
+        transform();
+        if (metadata && headers && normalize) {
             Handler.export(lastTransformation, version, cubeFolder);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not export data");
-            alert.setContentText("You need to create headers and add metadata");
+            alert.setContentText("You need to create headers, add metadata and normalize the table");
             alert.showAndWait();
         }
     }
@@ -153,7 +156,7 @@ public class MainApp extends Application {
         boolean lB = false;
         boolean rS = false;
         boolean cS = false;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3 && i < transformations.size(); i++) {
             if (transformations.get(i).getName().equals("ResolveLinebreaks")) {
                 lB = true;
             } else if (transformations.get(i).getName().equals("ResolveRowSpan")) {
@@ -177,6 +180,13 @@ public class MainApp extends Application {
         }
     }
 
+    private boolean checkHeaders() {
+        int cols = transformationTable.getRows().get(0).getCells().size();
+        for(int i = 0; i < transformations.size(); i++) {
+        }
+        return true;
+    }
+
     @SuppressWarnings("unchecked")
     public void transform() {
         checkTransformationList();
@@ -194,6 +204,8 @@ public class MainApp extends Application {
                     metadata = true;
                 } else if (file.getName().contains("CreateHeaders")) {
                     headers = true;
+                } else if (file.getName().contains("NormalizeTable")) {
+                    normalize = true;
                 }
             }
         }
