@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -9,7 +10,7 @@
       <SplitPane dividerPositions="0.8" minHeight="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0">
                   <SplitPane dividerPositions="0.1005" minHeight="0.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="598.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="40.0" prefWidth="598.0" SplitPane.resizableWithParent="false">
                               <BorderPane prefHeight="200.0" prefWidth="713.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <left>
                                     <AnchorPane minHeight="0.0" prefHeight="47.0" prefWidth="180.0" BorderPane.alignment="CENTER">
@@ -36,13 +37,11 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                               <SplitPane dividerPositions="0.2953020134228188" layoutX="178.0" layoutY="14.0" prefHeight="373.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                                           <SplitPane dividerPositions="0.9002849002849003" layoutX="8.0" orientation="VERTICAL" prefHeight="332.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="184.0">
-                                                      <VBox minHeight="0.0" prefHeight="411.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                            <Hyperlink fx:id="originalTable" disable="true" minHeight="0.0" onAction="#showOriginal" text="Show original table" textAlignment="CENTER" />
-                                                            <ListView fx:id="transformationListing" minHeight="0.0" prefHeight="411.0" prefWidth="205.0" />
-                                                      </VBox>
+                                                         <Hyperlink fx:id="originalTable" alignment="CENTER" disable="true" layoutX="10.0" maxHeight="25.0" minHeight="0.0" onAction="#showOriginal" prefHeight="25.0" prefWidth="195.0" text="Show original table" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                         <ListView fx:id="transformationListing" minHeight="0.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" />
                                                 </AnchorPane>
                                               <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="65.0" prefWidth="160.0">
                                                       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="30.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -50,8 +49,8 @@
                                                                   <Button fx:id="transformButton" disable="true" mnemonicParsing="false" onAction="#transform" prefHeight="96.0" prefWidth="158.0" text="Transform" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </AnchorPane>
                                                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                                                  <ComboBox fx:id="version" layoutY="2.0" prefHeight="28.0" prefWidth="65.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                  <Button fx:id="exportButton" disable="true" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" onAction="#export" text="Export" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <ComboBox fx:id="version" layoutY="2.0" prefHeight="28.0" prefWidth="75.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Button fx:id="exportButton" disable="true" layoutX="102.0" layoutY="2.0" mnemonicParsing="false" onAction="#export" text="Export" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </AnchorPane>
                                                       </SplitPane>
                                                 </AnchorPane>
@@ -64,7 +63,7 @@
                         </AnchorPane>
                   </SplitPane>
             </AnchorPane>
-            <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane minHeight="0.0" prefHeight="200.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
                   <TextArea fx:id="consoleOutput" editable="false" minHeight="0.0" prefHeight="616.0" prefWidth="455.0" style="-fx-background-color: black;" stylesheets="@console.css" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
             </AnchorPane>
       </SplitPane>

@@ -56,46 +56,6 @@ public class Handler {
         }
     }
 
-    private static String createFileName(TransformationModel m, Class c) {
-        StringBuilder builder = new StringBuilder();
-        for (int j = 0; j < m.getAttributes().size(); j++) {
-            if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("Cell")) {
-                builder.append("_{");
-                builder.append(m.getAttributes().get(j).getStringList().get(0));
-                builder.append(",");
-                builder.append(m.getAttributes().get(j).getStringList().get(1));
-                builder.append("}");
-            } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("String[]")) {
-                builder.append("_{");
-                for (int g = 0; g < m.getAttributes().get(j).getStringList().size(); g++) {
-                    builder.append(m.getAttributes().get(j).getStringList().get(g));
-                    if (g != m.getAttributes().get(j).getStringList().size() - 1) {
-                        builder.append(",");
-                    }
-                }
-                builder.append("}");
-
-            } else if (m.getAttributes().get(j).hasIntList() && c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("int[]")) {
-                builder.append("_{");
-                for (int g = 0; g < m.getAttributes().get(j).getIntList().size(); g++) {
-                    builder.append(m.getAttributes().get(j).getIntList().get(g));
-                    if (g != m.getAttributes().get(j).getIntList().size() - 1) {
-                        builder.append(",");
-                    }
-                }
-                builder.append("}");
-            } else if (c.getConstructors()[0].getParameterTypes()[j].getSimpleName().equals("TableSliceType")) {
-                builder.append("_");
-                builder.append(m.getAttributes().get(j).getValue());
-
-            } else {
-                builder.append("_");
-                builder.append(m.getAttributes().get(j).getValue());
-            }
-        }
-        return  builder.toString();
-    }
-
     private static Cell createCell(Parameter p) {
         Cell cell = new Cell();
         cell.setRole(p.getStringList().get(0));
@@ -155,7 +115,6 @@ public class Handler {
             ++i;
             try {
                 Class c = Class.forName("de.bayerl.statistics.transformer." + m.getName());
-                String fileName = createFileName(m, c);
                 List<Object> parameterList = fillParameterList(m, c);
                 Object[] parameters = new Object[parameterList.size()];
                 for (int j = 0; j < parameterList.size(); j++) {
@@ -178,10 +137,10 @@ public class Handler {
                     }
                     tTable = t.transform(tTable);
                 }
-                System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + c.getSimpleName() + fileName);
+                System.out.println("Table processed in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms. " + c.getSimpleName());
                 singleStepWatch.reset();
                 singleStepWatch.start();
-                Printer.printHTML(tTable, i + "_" + c.getSimpleName() + fileName, htmlFolder);
+                Printer.printHTML(tTable, i + "_" + c.getSimpleName(), htmlFolder);
                 correspondingNames.add("table_" + i);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();

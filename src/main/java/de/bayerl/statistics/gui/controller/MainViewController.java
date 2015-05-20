@@ -45,6 +45,8 @@ public class MainViewController {
     private Reflections reflections;
     private static final String SPLITTER = "  ";
     private int dragStart;
+    private int lastEditId = -1;
+    private int editId = -1;
 
     @FXML
     private void initialize() {
@@ -61,13 +63,21 @@ public class MainViewController {
         Collections.sort(trans);
         transformationChoice.getItems().addAll(trans);
         transformationChoice.valueProperty().addListener((observable,oldValue, newValue) -> {
-            parameters = parameters(task, newValue);
-            if (parameters != null) {
-                for (Control c : parameters) {
-                    task.getChildren().add(c);
-                }
-            }
+            setUpParameterFields((String) newValue);
         });
+        transformationChoice.setOnMouseClicked(event -> {
+            editId = -1;
+            lastEditId = -1;
+        });
+    }
+
+    private void setUpParameterFields(String s) {
+        parameters = parameters(task, s);
+        if (parameters != null) {
+            for (Control c : parameters) {
+                task.getChildren().add(c);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -250,8 +260,19 @@ public class MainViewController {
 
         if(checkEntries(tempValues, c).equals("noErrors")) {
             List<Parameter> parameterValues = createParameterList(tempValues, c);
-            mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
-            mainApp.getCorrespondingFileNames().add(null);
+            if(editId == -1) {
+                mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
+                mainApp.getCorrespondingFileNames().add(null);
+                System.out.println("Transformation" + mainApp.getTransformations().get(mainApp.getTransformations().size() - 1).getName()
+                        + " added successfully");
+            } else {
+                mainApp.getTransformations().remove(editId);
+                mainApp.getCorrespondingFileNames().remove(editId);
+                mainApp.getTransformations().add(editId, new TransformationModel(name, parameterValues));
+                mainApp.getCorrespondingFileNames().add(editId, null);
+                transformationChoice.getSelectionModel().select(null);
+                System.out.println("Transformation" + mainApp.getTransformations().get(editId).getName() + " edited successfully");
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -273,21 +294,33 @@ public class MainViewController {
         webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + "table_0_original.html");
     }
 
-    private List<TextField> createCellFields() {
+    private List<TextField> createCellFields(int i) {
         List<TextField> cellAttributes = new ArrayList<>();
         TextField param = new TextField();
         TextField param2 = new TextField();
         param.setPromptText("Role(String)");
         param2.setPromptText("Value(String)");
+        if(editId != -1) {
+            param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().get(0));
+            param2.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().get(1));
+        }
         cellAttributes.add(param);
         cellAttributes.add(param2);
         return cellAttributes;
     }
 
-    private ComboBox<String> createTableSliceTypeBox() {
+    private ComboBox<String> createTableSliceTypeBox(int i) {
         ComboBox<String> combo = new ComboBox<>();
         combo.getItems().addAll("Row","Column");
-        combo.getSelectionModel().select(0);
+        if(editId != -1) {
+            if(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue().equals("Column")) {
+                combo.getSelectionModel().select(1);
+            } else {
+                combo.getSelectionModel().select(0);
+            }
+        } else {
+            combo.getSelectionModel().select(0);
+        }
         return combo;
     }
 
@@ -303,6 +336,18 @@ public class MainViewController {
 
             }
         }
+        if(editId != -1) {
+            StringBuilder builder = new StringBuilder();
+            int j = 0;
+            for(String str: mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList()) {
+                builder.append(str);
+                if(j != mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().size() -1) {
+                    builder.append("\n");
+                }
+                j++;
+            }
+            param.setText(builder.toString());
+        }
         param.setMaxWidth(200);
         return param;
     }
@@ -314,10 +359,28 @@ public class MainViewController {
         param.setPromptText(((NameAnnotation) ann[0]).name());
         if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
             param.setPromptText(param.getPromptText() + "(int[])");
+            if(editId != -1) {
+                StringBuilder builder = new StringBuilder();
+                int j = 0;
+                for(int h : mainApp.getTransformations().get(editId).getAttributes().get(i).getIntList()) {
+                    builder.append(h);
+                    if(j != mainApp.getTransformations().get(editId).getAttributes().get(i).getIntList().size() -1) {
+                        builder.append(",");
+                    }
+                    j++;
+                }
+                param.setText(builder.toString());
+            }
         } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("int")) {
             param.setPromptText(param.getPromptText() + "(int)");
+            if(editId != -1) {
+                param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue());
+            }
         } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String")) {
             param.setPromptText(param.getPromptText() + "(Str)");
+            if(editId != -1) {
+                param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue());
+            }
         }
         return param;
     }
@@ -332,9 +395,9 @@ public class MainViewController {
                 int params = cl.getConstructors()[0].getParameterCount();
                 for (int i = 0; i < params; i++) {
                     if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Cell")) {
-                        parameters.addAll(createCellFields());
+                        parameters.addAll(createCellFields(i));
                     } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("TableSliceType")) {
-                        parameters.add(createTableSliceTypeBox());
+                        parameters.add(createTableSliceTypeBox(i));
                     } else if(cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")){
                         parameters.add(createTextArea(cl, i));
                     } else {
@@ -410,6 +473,12 @@ public class MainViewController {
                             }
                         }
                     }
+                }
+                lastEditId = editId;
+                editId = transformationListing.getSelectionModel().getSelectedIndex();
+                transformationChoice.getSelectionModel().select(mainApp.getTransformations().get(editId).getName());
+                if(lastEditId != -1 && mainApp.getTransformations().get(lastEditId).getName().equals(mainApp.getTransformations().get(editId).getName())) {
+                    setUpParameterFields((String) transformationChoice.getValue());
                 }
             });
 
