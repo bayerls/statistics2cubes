@@ -25,11 +25,11 @@ public class Printer {
     public static void printHTML(Table table, String filenamePart, String htmlLocation) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n" +
-                "<html><head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head><body>\n");
-        sb.append("<table>");
+                "<html>\n<head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head>\n<body>\n");
+        sb.append("<table>\n");
 
         for (Row row : table.getRows()) {
-            sb.append("<tr>");
+            sb.append("<tr>\n");
 
             for (Cell cell : row.getCells()) {
                 sb.append("<td ");
@@ -57,13 +57,13 @@ public class Printer {
 
                 sb.append(">");
                 sb.append(cell.getValue().getValue());
-                sb.append("</td>");
+                sb.append("</td>\n");
             }
 
-            sb.append("</tr>");
+            sb.append("</tr>\n");
         }
 
-        sb.append("</table></body></html>");
+        sb.append("</table>\n</body>\n</html>");
 
         writeContent("table_" + filenamePart, sb.toString(), htmlLocation);
     }

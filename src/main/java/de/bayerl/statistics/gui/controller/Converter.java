@@ -30,7 +30,7 @@ public class Converter {
 
     public Converter(Table table, String version) {
         this.version = version;
-        if (!(version.equals("1.1") || version.equals("1.2"))) {
+        if (version.equals("1.2")) {
             localNS = new Data42();
         } else {
             localNS = new CODE();

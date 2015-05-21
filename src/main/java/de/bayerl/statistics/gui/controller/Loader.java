@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class that loads different tei-tables of the same link-group
+ */
 public class Loader {
 
     public final static String PLACEHOLDER_LB = "##lb##";

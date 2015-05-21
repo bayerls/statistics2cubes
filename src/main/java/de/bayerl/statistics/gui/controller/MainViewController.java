@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -55,6 +56,7 @@ public class MainViewController {
         redirectOutput();
         initializeTransformationChoice();
         initializeVersion();
+       // mainApp.getControls().add(mainPane);
     }
 
     @SuppressWarnings("unchecked")
@@ -463,7 +465,8 @@ public class MainViewController {
             });
 
             setOnMouseClicked(event -> {
-                if(mainApp.getCorrespondingFileNames().get(transformationListing.getSelectionModel().getSelectedIndex()) != null) {
+                if(transformationListing.getSelectionModel().getSelectedIndex() != -1 &&
+                        mainApp.getCorrespondingFileNames().get(transformationListing.getSelectionModel().getSelectedIndex()) != null) {
                     File[] dir = (new File(mainApp.getHtmlFolder())).listFiles();
                     if(dir != null) {
                         for (File file : dir) {
@@ -476,7 +479,9 @@ public class MainViewController {
                 }
                 lastEditId = editId;
                 editId = transformationListing.getSelectionModel().getSelectedIndex();
-                transformationChoice.getSelectionModel().select(mainApp.getTransformations().get(editId).getName());
+                if(editId != -1) {
+                    transformationChoice.getSelectionModel().select(mainApp.getTransformations().get(editId).getName());
+                }
                 if(lastEditId != -1 && mainApp.getTransformations().get(lastEditId).getName().equals(mainApp.getTransformations().get(editId).getName())) {
                     setUpParameterFields((String) transformationChoice.getValue());
                 }
