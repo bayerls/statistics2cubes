@@ -15,7 +15,7 @@ public class Parameter {
 
     @SuppressWarnings("unchecked")
     public Parameter(List list) {
-        if(list.get(0).getClass().getSimpleName().equals("String")) {
+        if(!list.isEmpty() && list.get(0).getClass().getSimpleName().equals("String")) {
             this.stringList = list;
             hasIntList = false;
             hasString = false;

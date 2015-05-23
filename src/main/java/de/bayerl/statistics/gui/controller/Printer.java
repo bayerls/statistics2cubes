@@ -28,6 +28,7 @@ public class Printer {
                 "<html>\n<head><meta charset=\"utf-8\"/><style type=\"text/css\">td {border: 1px solid black;}</style></head>\n<body>\n");
         sb.append("<table>\n");
 
+        boolean king = false;
         for (Row row : table.getRows()) {
             sb.append("<tr>\n");
 

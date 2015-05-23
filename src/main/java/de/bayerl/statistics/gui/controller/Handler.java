@@ -168,18 +168,20 @@ public class Handler {
     /**
      * Executes the given list of Transformations on the given tables
      *
-     * @param files tables to transform
+     * @param table tables to transform
      * @param transformations list of transformations that shall be executed
      * @param htmlFolder filepath to save html-files
      * @return List that contains the table after the last transformation and a list of names of the created html-files
      */
-    public static List<Object> transform(List<File> files, List<TransformationModel> transformations, String htmlFolder) {
+    public static List<Object> transform(Table table, List<TransformationModel> transformations, String htmlFolder) {
+
+        TableCloner cloner = new TableCloner();
+        Table tTable = cloner.clone(table);
+
         Stopwatch stopWatch = Stopwatch.createStarted();
         Stopwatch singleStepWatch = Stopwatch.createStarted();
         List<String> correspondingNames = new ArrayList<>();
 
-        // load tables to transform
-        Table tTable = load(files, htmlFolder);
         int i = 0;
         for (TransformationModel m : transformations) {
             ++i;

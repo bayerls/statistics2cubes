@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -21,6 +20,10 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ *  Class that creates the user interface and redirects the user's actions to the Mainapp
+ */
 public class MainViewController {
 
     @FXML
@@ -50,38 +53,53 @@ public class MainViewController {
     private int editId = -1;
 
     @FXML
+    /**
+     * Initializes the mainview
+     */
     private void initialize() {
         this.reflections = new Reflections("de.bayerl.statistics.transformer");
         transformationListing.setCellFactory(list -> new MovableCell());
         redirectOutput();
         initializeTransformationChoice();
         initializeVersion();
-       // mainApp.getControls().add(mainPane);
     }
 
+    /**
+     * Fills the transformation- combobox with values and adds a listener to it
+     */
     @SuppressWarnings("unchecked")
     private void initializeTransformationChoice() {
         List<String> trans = getTransformationNames();
         Collections.sort(trans);
         transformationChoice.getItems().addAll(trans);
-        transformationChoice.valueProperty().addListener((observable,oldValue, newValue) -> {
-            setUpParameterFields((String) newValue);
-        });
+        transformationChoice.valueProperty().addListener((observable,oldValue, newValue) -> setUpParameterFields((String) newValue));
         transformationChoice.setOnMouseClicked(event -> {
             editId = -1;
             lastEditId = -1;
         });
     }
 
-    private void setUpParameterFields(String s) {
-        parameters = parameters(task, s);
+    /**
+     * Shows all controls needed for the current transformation
+     *
+     * @param transformationName Name of the current transformation
+     */
+    private void setUpParameterFields(String transformationName) {
+
+        // create Controls-array
+        parameters = parameters(task, transformationName);
         if (parameters != null) {
+
+            // add all controls to mainview
             for (Control c : parameters) {
                 task.getChildren().add(c);
             }
         }
     }
 
+    /**
+     * Fills the version-combobox
+     */
     @SuppressWarnings("unchecked")
     private void initializeVersion() {
         version.getItems().add("1.1");
@@ -89,6 +107,9 @@ public class MainViewController {
         version.getSelectionModel().select(0);
     }
 
+    /**
+     * Redirects the output, so that it's shown in a console window in the minview
+     */
     private void redirectOutput() {
         consoleOutput.setStyle("-fx-color: black; -fx-text-fill: white;");
         Console console = new Console(consoleOutput);
@@ -97,6 +118,11 @@ public class MainViewController {
         System.setErr(ps);
     }
 
+    /**
+     * Updates the webview to the file defined by "fileName"
+     *
+     * @param fileName html-file to be shown
+     */
     public void updateWebView(String fileName) {
         if(fileName.equals("table_0_original.html")) {
             showOriginal();
@@ -105,30 +131,50 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Redirects the user's export command to the mainApp
+     */
     @FXML
     private void export() {
         mainApp.export(version.getValue().toString());
     }
 
+    /**
+     * Enables Controls, when they can be used
+     */
     public void enableControls() {
         exportButton.setDisable(false);
         originalTable.setDisable(false);
         transformButton.setDisable(false);
     }
 
+    /**
+     * Computes the amount of parameters that are needed for the currently chosen transformation
+     *
+     * @return A list of the correct size, filled with temporary parameter values
+     */
     private List<Object> computeAmountOfParameters() {
         List<Object> tempValues = new ArrayList<>();
         for(int i = 0; i< parameters.size(); i++) {
+
             if(parameters.get(i) instanceof TextField) {
+
+                // Cell??
                 if (((TextField) parameters.get(i)).getPromptText().equals("Role(String)")) {
                     tempValues.add(new String[]{((TextField) parameters.get(i)).getText(),
                             ((TextField) parameters.get(i + 1)).getText()});
                     ++i;
+
+                // String??
                 } else {
                     tempValues.add(((TextField) parameters.get(i)).getText());
                 }
+
+            // String-array??
             } else if(parameters.get(i) instanceof TextArea){
                 tempValues.add(((TextArea) parameters.get(i)).getText());
+
+            // TableSliceType??
             } else {
                 tempValues.add(((ComboBox) parameters.get(i)).getValue());
             }
@@ -136,53 +182,107 @@ public class MainViewController {
         return tempValues;
     }
 
+    /**
+     * Converts the given String-array to a list
+     *
+     * @param str String-array to convert
+     * @return String-list
+     */
     private List<String> createStringList(String[] str) {
         List<String> list = new ArrayList<>();
         list.addAll(Arrays.asList(str));
         return list;
     }
 
+    /**
+     * Reformats Strings of the form "a-c" to Strings of the form "a,b,c,d" where a < b < c < d
+     *
+     * @param temp String to reformat
+     * @return reformatted list of sorted integers
+     */
     private List<Integer> reformatFromTo(String[] temp) {
         List<Integer> reformattedInts = new ArrayList<>();
         int start = Integer.parseInt(temp[0]);
         int end = Integer.parseInt(temp[1]);
+
+        // first value > second value => swap
         if(start >= end) {
             int tempValue = start;
             start = end;
             end = tempValue;
         }
+
+        // count up from start to end
         for(int j = 0; j < end - start + 1; j++) {
             reformattedInts.add(start + j);
         }
+
         return reformattedInts;
     }
 
-    private String combineIdentic(String s, char c) {
+    /**
+     * Combines sequences of identic "," or "-" signs within the users input in order to react to false input
+     *
+     * @param userInput The users input-string
+     * @param c Char to be checked
+     * @return String with combined char "c"
+     */
+    private String combineIdentic(String userInput, char c) {
         boolean detected = false;
+        boolean firstAppearenceFound = false;
         StringBuilder combined = new StringBuilder();
-        for(int i = 0; i < s.length(); i++) {
-            if(!detected && s.charAt(i) == c) {
+        for(int i = 0; i < userInput.length(); i++) {
+
+            if(!firstAppearenceFound && userInput.charAt(i) == c) {
+                firstAppearenceFound = true;
                 detected = true;
-                combined.append(s.charAt(i));
-            } else if(detected && s.charAt(i) != c) {
-                combined.append(s.charAt(i));
-                detected = false;
-            } else if(!detected && s.charAt(i) != c) {
-                combined.append(s.charAt(i));
-            } else if(detected && s.charAt(i) == c) {
-                detected = true;
+                combined.append(userInput.charAt(i));
+            } else if(!firstAppearenceFound && userInput.charAt(i) != c) {
+                combined.append(userInput.charAt(i));
+            }
+
+            if(firstAppearenceFound) {
+
+                // last char != c, this char == c
+                if (!detected && userInput.charAt(i) == c) {
+                    detected = true;
+                    combined.append(userInput.charAt(i));
+
+                    // last char == c, this char != c
+                } else if (detected && userInput.charAt(i) != c) {
+                    combined.append(userInput.charAt(i));
+                    detected = false;
+
+                    // last char != c, this char != c
+                } else if (!detected && userInput.charAt(i) != c) {
+                    combined.append(userInput.charAt(i));
+
+                    // last char == c, this char == c
+                } else if (detected && userInput.charAt(i) == c) {
+                    detected = true;
+                }
             }
         }
         return  combined.toString();
     }
 
+    /**
+     * Converts the given String-array to an int-list
+     *
+     * @param str String-array to convert
+     * @return int-list
+     */
     private List<Integer> createIntegerList(String[] str) {
         List<Integer> ints = new ArrayList<>();
         for(String s : str) {
+
+            // not in format "a-c"
             if(!s.contains("-")) {
                 if(s.length() != 0) {
                     ints.add(Integer.parseInt(s));
                 }
+
+            // in format "a-c"
             } else {
                 String[] temp = s.split("-");
                 ints.addAll(reformatFromTo(temp));
@@ -194,20 +294,36 @@ public class MainViewController {
         return ints;
     }
 
+    /**
+     * Takes a list of temporary parameter-objects and converts it to the list needed by the constructor of the chosen
+     * Transformation
+     *
+     * @param tempValues temporary parameters
+     * @param c class to derive correct parameter type from
+     * @return
+     */
     private List<Parameter> createParameterList(List<Object> tempValues, Class c) {
         List<Parameter> parameterValues = new ArrayList<>();
         for(int i = 0; i < tempValues.size(); i++){
+
+            // constructor needs string-array at position i
             if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String[]")) {
                 String[] str = ((String) tempValues.get(i)).split("\\n");
                 parameterValues.add(new Parameter(createStringList(str)));
+
+            // constructor needs int-array at position i
             } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
                 String s = combineIdentic(((String) tempValues.get(i)), '-');
                 s = combineIdentic(s, ',');
                 s = s.replaceAll(" ","");
                 String[] str = s.split(",");
                 parameterValues.add(new Parameter(createIntegerList(str)));
+
+            // constructor needs Cell at position i
             } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("Cell")) {
                 parameterValues.add(new Parameter(createStringList((String[]) tempValues.get(i))));
+
+            // constructor String, int or TableSliceType at position i
             } else {
                 parameterValues.add(new Parameter((String) tempValues.get(i)));
             }
@@ -216,6 +332,12 @@ public class MainViewController {
         return parameterValues;
     }
 
+    /**
+     * Check if the given string only consists of digits, "," and "-"
+     *
+     * @param s String to be checked
+     * @return true, if string meets the requirements, false otherwise
+     */
     private boolean checkIntList(String s) {
         for(int i = 0; i < s.length(); i++) {
             if(s.charAt(i) != '-' && s.charAt(i) != ',' && !Character.isDigit(s.charAt(i))) {
@@ -225,9 +347,18 @@ public class MainViewController {
         return true;
     }
 
+    /**
+     * Check if input meets the requirements
+     *
+     * @param tempValues list of user inputs
+     * @param c class to derive requirements from
+     * @return special errormsg, or "noErrors" if everything is correct
+     */
     private String checkEntries(List<Object> tempValues, Class c) {
         String errorMsg = "noErrors";
         for(int i = 0; i < tempValues.size(); i++){
+
+            // int[] required
             if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int[]")) {
                 String s = combineIdentic(((String) tempValues.get(i)), '-');
                 s = combineIdentic(s, ',');
@@ -235,6 +366,8 @@ public class MainViewController {
                 if(!checkIntList(s)) {
                     errorMsg = "Please only enter numbers in formats: x or x-y separated by ',' in fields described with (int[])";
                 }
+
+            // int required
             } else if(c.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("int")) {
                 String s = (String) tempValues.get(i);
                 for(int j = 0 ; j < s.length(); j++) {
@@ -247,10 +380,15 @@ public class MainViewController {
         return errorMsg;
     }
 
+    /**
+     * Checks user input and adds a transformation if input is correct
+     */
     @FXML
+    @SuppressWarnings("unchecked")
     private void handleOk() {
         List<Object> tempValues = computeAmountOfParameters();
 
+        // get class of selected transformation
         String name = transformationChoice.getValue().toString();
         String path = "de.bayerl.statistics.transformer." + name;
         Class c = null;
@@ -262,11 +400,15 @@ public class MainViewController {
 
         if(checkEntries(tempValues, c).equals("noErrors")) {
             List<Parameter> parameterValues = createParameterList(tempValues, c);
+
+            // add new transformation if none is selected
             if(editId == -1) {
                 mainApp.getTransformations().add(new TransformationModel(name, parameterValues));
                 mainApp.getCorrespondingFileNames().add(null);
                 System.out.println("Transformation" + mainApp.getTransformations().get(mainApp.getTransformations().size() - 1).getName()
                         + " added successfully");
+
+            // edit selected transformation otherwise
             } else {
                 mainApp.getTransformations().remove(editId);
                 mainApp.getCorrespondingFileNames().remove(editId);
@@ -275,6 +417,8 @@ public class MainViewController {
                 transformationChoice.getSelectionModel().select(null);
                 System.out.println("Transformation" + mainApp.getTransformations().get(editId).getName() + " edited successfully");
             }
+
+        // show error dialog
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -284,6 +428,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Redirect transform-command to mainApp and clear selections on transformation-list
+     */
     @FXML
     private void transform() {
         mainApp.transform();
@@ -291,17 +438,28 @@ public class MainViewController {
 
     }
 
+    /**
+     * Show the original table
+     */
     @FXML
     private void showOriginal() {
         webView.getEngine().load("file:///" + mainApp.getHtmlFolder() + File.separator + "table_0_original.html");
     }
 
+    /**
+     * Creates Cell-textfields with predefined values or an empty one
+     *
+     * @param i control to edit
+     * @return Cell textfields
+     */
     private List<TextField> createCellFields(int i) {
         List<TextField> cellAttributes = new ArrayList<>();
         TextField param = new TextField();
         TextField param2 = new TextField();
         param.setPromptText("Role(String)");
         param2.setPromptText("Value(String)");
+
+        // edit?? => set text
         if(editId != -1) {
             param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().get(0));
             param2.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().get(1));
@@ -311,9 +469,17 @@ public class MainViewController {
         return cellAttributes;
     }
 
+    /**
+     * Creates Combobox with predefined values or an empty one
+     *
+     * @param i control to edit
+     * @return Cell textfields
+     */
     private ComboBox<String> createTableSliceTypeBox(int i) {
         ComboBox<String> combo = new ComboBox<>();
         combo.getItems().addAll("Row","Column");
+
+        // edit?? => preselect correct value
         if(editId != -1) {
             if(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue().equals("Column")) {
                 combo.getSelectionModel().select(1);
@@ -326,11 +492,19 @@ public class MainViewController {
         return combo;
     }
 
+    /**
+     * Creates a textarea with predefined values or an empty one
+     *
+     * @param i control to edit
+     * @return Cell textfields
+     */
     private TextArea createTextArea(Class cl, int i) {
         TextArea param = new TextArea();
         //get fieldname from transformationclass
         Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
         param.setPromptText(((NameAnnotation) ann[0]).name());
+
+        // String[] as input required??
         if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
             param.setPromptText(param.getPromptText() + "[]");
             if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("String[]")) {
@@ -338,11 +512,15 @@ public class MainViewController {
 
             }
         }
+
+        // edit?? => set text
         if(editId != -1) {
             StringBuilder builder = new StringBuilder();
             int j = 0;
             for(String str: mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList()) {
                 builder.append(str);
+
+                // add every value in a new line
                 if(j != mainApp.getTransformations().get(editId).getAttributes().get(i).getStringList().size() -1) {
                     builder.append("\n");
                 }
@@ -354,18 +532,31 @@ public class MainViewController {
         return param;
     }
 
+    /**
+     * Creates a textfield with predefined values or an empty one
+     *
+     * @param i control to edit
+     * @return Cell textfields
+     */
     private TextField createTextField(Class cl, int i) {
         TextField param = new TextField();
+
         //get fieldname from transformationclass
         Annotation[] ann = cl.getConstructors()[0].getParameterAnnotations()[i];
         param.setPromptText(((NameAnnotation) ann[0]).name());
+
+        // int[] required
         if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("[]")) {
             param.setPromptText(param.getPromptText() + "(int[])");
+
+            // edit?? => set text
             if(editId != -1) {
                 StringBuilder builder = new StringBuilder();
                 int j = 0;
                 for(int h : mainApp.getTransformations().get(editId).getAttributes().get(i).getIntList()) {
                     builder.append(h);
+
+                    // add ints separeted by ","
                     if(j != mainApp.getTransformations().get(editId).getAttributes().get(i).getIntList().size() -1) {
                         builder.append(",");
                     }
@@ -373,13 +564,21 @@ public class MainViewController {
                 }
                 param.setText(builder.toString());
             }
+
+        // int required
         } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().contains("int")) {
             param.setPromptText(param.getPromptText() + "(int)");
+
+            // edit?? => set text
             if(editId != -1) {
                 param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue());
             }
+
+        // String required
         } else if (cl.getConstructors()[0].getParameterTypes()[i].getSimpleName().equals("String")) {
             param.setPromptText(param.getPromptText() + "(Str)");
+
+            // edit?? => set text
             if(editId != -1) {
                 param.setText(mainApp.getTransformations().get(editId).getAttributes().get(i).getValue());
             }
@@ -387,6 +586,13 @@ public class MainViewController {
         return param;
     }
 
+    /**
+     * Creates a list of Controls which are needed by the given class's constructor
+     *
+     * @param it Iterator that iterates through all classes that extend Transformation
+     * @param newValue currently chosen transformation
+     * @return List of Controls which are needed by the given class's constructor
+     */
     private List<Control> createParameterFields(Iterator<Class<? extends Transformation>> it, Object newValue) {
         List<Control> parameters = new ArrayList<>();
         while (it.hasNext()) {
@@ -411,6 +617,13 @@ public class MainViewController {
         return parameters;
     }
 
+    /**
+     * Shows all parameter-fields or controls needed by the current transformation
+     *
+     * @param task Container of the parameter-fields
+     * @param newValue transformationName
+     * @return List of parameter fields needed for the transformation
+     */
     private List<Control> parameters(HBox task, Object newValue) {
         //remove old parameter fields
         task.getChildren().remove(0, task.getChildren().size());
@@ -419,14 +632,26 @@ public class MainViewController {
         return createParameterFields(it, newValue);
     }
 
+    /**
+     * Sets the mainapp for this controller
+     *
+     * @param mainApp desired mainapp
+     */
     public void setMainApp(MainApp mainApp) {
 
         this.mainApp = mainApp;
         transformationListing.setItems(mainApp.getTransformations());
     }
 
+    /**
+     * Finds all currently available transformations
+     *
+     * @return list of available transformations
+     */
     private List<String> getTransformationNames (){
         List<String> nameList = new ArrayList<>();
+
+        // find transformations and metatransformations
         Set<Class<? extends Transformation>> classes = reflections.getSubTypesOf(Transformation.class);
         Set<Class<? extends MetaTransformation>> classes2 = reflections.getSubTypesOf(MetaTransformation.class);
         nameList.addAll(classes.stream().map(Class::getSimpleName).collect(Collectors.toList()));
@@ -434,6 +659,9 @@ public class MainViewController {
         return nameList;
     }
 
+    /**
+     * Class that defines a draggable listcell with a delete-button
+     */
     private class MovableCell extends ListCell<TransformationModel> {
 
         private Label label;
@@ -441,6 +669,10 @@ public class MainViewController {
         private Pane pane ;
         private HBox hbox;
 
+        /**
+         * Constructor for the custom ListCell
+         */
+        @SuppressWarnings("unchecked")
         public MovableCell() {
             ListCell thisCell = this;
             hbox = new HBox();
@@ -465,11 +697,15 @@ public class MainViewController {
             });
 
             setOnMouseClicked(event -> {
+
+                // Listitem clicked and html available
                 if(transformationListing.getSelectionModel().getSelectedIndex() != -1 &&
                         mainApp.getCorrespondingFileNames().get(transformationListing.getSelectionModel().getSelectedIndex()) != null) {
                     File[] dir = (new File(mainApp.getHtmlFolder())).listFiles();
                     if(dir != null) {
                         for (File file : dir) {
+
+                            // show file of given name
                             if (file.getName().contains(mainApp.getCorrespondingFileNames()
                                     .get(transformationListing.getSelectionModel().getSelectedIndex()))) {
                                 updateWebView(file.getName());
@@ -479,9 +715,13 @@ public class MainViewController {
                 }
                 lastEditId = editId;
                 editId = transformationListing.getSelectionModel().getSelectedIndex();
+
+                // edit?? => load transformation to edit
                 if(editId != -1) {
                     transformationChoice.getSelectionModel().select(mainApp.getTransformations().get(editId).getName());
                 }
+
+                //last transformation chosen == transformtation to edit => reload parameterfields
                 if(lastEditId != -1 && mainApp.getTransformations().get(lastEditId).getName().equals(mainApp.getTransformations().get(editId).getName())) {
                     setUpParameterFields((String) transformationChoice.getValue());
                 }
@@ -533,6 +773,12 @@ public class MainViewController {
             setOnDragDone(DragEvent::consume);
         }
 
+        /**
+         * Reorders lists by swapping their elements depending on the users dragging
+         *
+         * @param thisIdx position where drag is released
+         * @param draggedIdx position where drag started
+         */
         protected void reorganizeLists(int thisIdx, int draggedIdx) {
             TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
             String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
@@ -542,6 +788,12 @@ public class MainViewController {
             mainApp.getCorrespondingFileNames().set(thisIdx, tempString);
         }
 
+        /**
+         * Creates the string-representation for the given Intlist to show up in the listview
+         *
+         * @param intList intList to convert to string
+         * @return string representation of given list
+         */
         protected String createIntListName(List<Integer> intList) {
             StringBuilder intListBuilder = new StringBuilder();
             intListBuilder.append(SPLITTER + "{");
@@ -560,6 +812,12 @@ public class MainViewController {
             return intListBuilder.toString();
         }
 
+        /**
+         * Creates the string-representation for the given stringlist to show up in the listview
+         *
+         * @param stringList list to convert to string
+         * @return string representation of given list
+         */
         protected String createStringListName(List<String> stringList) {
             StringBuilder stringListBuilder = new StringBuilder();
             stringListBuilder.append(SPLITTER);
@@ -579,9 +837,17 @@ public class MainViewController {
             return stringListBuilder.toString();
         }
 
+        /**
+         * Creates the string-representation for the given transformation
+         *
+         * @param item transformation to convert to string
+         * @return string representation of given transformation
+         */
         protected String createNameString(TransformationModel item) {
             StringBuilder transformation = new StringBuilder(item.getName());
             List<Parameter> attributes = item.getAttributes();
+
+            // list all attribute values splitted by "  "
             for(Parameter att : attributes) {
                 if(att.hasString()) {
                     transformation.append(SPLITTER);
@@ -595,19 +861,42 @@ public class MainViewController {
             return transformation.toString();
         }
 
+        /**
+         * Deletes the chosen item from the list of transformtions and corresponding names
+         *
+         * @param item item to delete
+         */
         protected void delete(TransformationModel item) {
             String deleteMsg = label.getText() + " removed";
             int index = 0;
+
+            // find index of item
             for(int i = 0; i < mainApp.getTransformations().size(); i++) {
                 if(mainApp.getTransformations().get(i) == item) {
                     index = i;
                 }
             }
-            mainApp.getCorrespondingFileNames().remove(index);
             mainApp.getTransformations().remove(item);
+
+            // delete corresponding html
+            File[] dir = (new File(mainApp.getHtmlFolder())).listFiles();
+            if(dir != null) {
+                for (File file : dir) {
+                    if(file.getName().contains(mainApp.getCorrespondingFileNames().get(index))) {
+                        file.delete();
+                    }
+                }
+            }
+            mainApp.getCorrespondingFileNames().remove(index);
             System.out.println(deleteMsg);
         }
 
+        /**
+         * Update the ListCell on change
+         *
+         * @param item item of the cell
+         * @param empty cell empty??
+         */
         @Override
         protected void updateItem(TransformationModel item, boolean empty) {
             super.updateItem(item, empty);
@@ -621,14 +910,28 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Class that represents a console and redirects System.out to the given TextArea
+     */
     private static class Console extends OutputStream {
 
         private TextArea output;
 
+        /**
+         * Console constructor
+         *
+         * @param ta text-area to redirect output to
+         */
         public Console(TextArea ta) {
             this.output = ta;
         }
 
+        /**
+         *  writes text to the console
+         *
+         * @param i content
+         * @throws IOException
+         */
         @Override
         public void write(int i) throws IOException {
             output.appendText(String.valueOf((char) i));

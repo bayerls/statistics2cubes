@@ -28,13 +28,14 @@ public class MainApp extends Application {
     private BorderPane rootLayout;
     private ObservableList<TransformationModel> transformations = FXCollections.observableArrayList();
     private List<File> tables;
-    //private Table transformationTable;
+    private Table transformationTable;
     private String htmlFolder = "";
     private String cubeFolder = "";
     private MainViewController mainViewController;
     private Table lastTransformation;
     private boolean metadata;
     private boolean headers;
+    private boolean normalize;
 
     /**
      * list with filenames needed for reaction to clicks on transformationlist
@@ -149,7 +150,7 @@ public class MainApp extends Application {
      */
     @SuppressWarnings("unchecked")
     public void load() {
-        //transformationTable = Handler.load(tables, htmlFolder);
+        transformationTable = Handler.load(tables, htmlFolder);
         mainViewController.enableControls();
         checkTransformationList();
 
@@ -161,7 +162,7 @@ public class MainApp extends Application {
         correspondingFileNames.clear();
 
         // execute obligatory transformaitons
-        List<Object> list = Handler.transform(tables, models, htmlFolder);
+        List<Object> list = Handler.transform(transformationTable, models, htmlFolder);
         correspondingFileNames.addAll((List<String>) list.get(1));
         lastTransformation = (Table) list.get(0);
         for (int i = 3; i < transformations.size(); i++) {
@@ -169,6 +170,7 @@ public class MainApp extends Application {
         }
         this.metadata = false;
         this.headers = false;
+        this.normalize = false;
         updateWebView(new File(htmlFolder).listFiles()[3].getName());
     }
 
@@ -180,13 +182,13 @@ public class MainApp extends Application {
     public void export(String version) {
         // execute current transformations
         transform();
-        if (metadata && headers) {
+        if (metadata && headers && normalize) {
             Handler.export(lastTransformation, version, cubeFolder);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Could not export data");
-            alert.setContentText("You need to create headers and add metadata");
+            alert.setContentText("You need to create headers, add metadata and normalize table or compound tables");
             alert.showAndWait();
         }
     }
@@ -230,7 +232,7 @@ public class MainApp extends Application {
     public void transform() {
         checkTransformationList();
         correspondingFileNames.clear();
-        List<Object> list = Handler.transform(tables, transformations, htmlFolder);
+        List<Object> list = Handler.transform(transformationTable, transformations, htmlFolder);
         correspondingFileNames.addAll((List<String>) (list.get(1)));
         lastTransformation = (Table) (list.get(0));
         File[] dir = (new File(htmlFolder)).listFiles();
@@ -247,6 +249,8 @@ public class MainApp extends Application {
                     metadata = true;
                 } else if (file.getName().contains("CreateHeaders")) {
                     headers = true;
+                } else if (file.getName().contains("Normalize")) {
+                    normalize = true;
                 }
             }
         }
