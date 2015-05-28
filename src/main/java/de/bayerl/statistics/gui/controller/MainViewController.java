@@ -780,12 +780,8 @@ public class MainViewController {
          * @param draggedIdx position where drag started
          */
         protected void reorganizeLists(int thisIdx, int draggedIdx) {
-            TransformationModel temp = mainApp.getTransformations().get(draggedIdx);
-            String tempString = mainApp.getCorrespondingFileNames().get(draggedIdx);
-            mainApp.getTransformations().set(draggedIdx, mainApp.getTransformations().get(thisIdx));
-            mainApp.getCorrespondingFileNames().set(draggedIdx, mainApp.getCorrespondingFileNames().get(thisIdx));
-            mainApp.getTransformations().set(thisIdx, temp);
-            mainApp.getCorrespondingFileNames().set(thisIdx, tempString);
+            mainApp.getTransformations().add(thisIdx - 1, mainApp.getTransformations().remove(draggedIdx));
+            mainApp.getCorrespondingFileNames().add(thisIdx - 1, mainApp.getCorrespondingFileNames().remove(draggedIdx));
         }
 
         /**
