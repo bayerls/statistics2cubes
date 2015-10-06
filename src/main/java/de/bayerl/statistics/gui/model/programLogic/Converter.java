@@ -1,4 +1,4 @@
-package de.bayerl.statistics.gui.controller;
+package de.bayerl.statistics.gui.model.programLogic;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.*;

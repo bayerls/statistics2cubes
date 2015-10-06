@@ -1,6 +1,7 @@
 package de.bayerl.statistics.gui.controller;
-import de.bayerl.statistics.gui.model.Parameter;
-import de.bayerl.statistics.gui.model.TransformationModel;
+import de.bayerl.statistics.gui.MainApp;
+import de.bayerl.statistics.gui.model.storageStructure.Parameter;
+import de.bayerl.statistics.gui.model.storageStructure.TransformationModel;
 import de.bayerl.statistics.transformer.MetaTransformation;
 import de.bayerl.statistics.transformer.NameAnnotation;
 import de.bayerl.statistics.transformer.Transformation;

@@ -1,4 +1,4 @@
-package de.bayerl.statistics.gui.model;
+package de.bayerl.statistics.gui.model.storageStructure;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -6,22 +6,23 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransformationModel {
 
-    private final StringProperty name;
-    private ListProperty<Parameter> attributes;
+    private StringProperty name;
+    private List<Parameter> attributes;
 
     public TransformationModel() {
         this.name = new SimpleStringProperty();
-        this.attributes = new SimpleListProperty<>();
+        this.attributes = new ArrayList<>();
     }
 
     public TransformationModel(String name, List<Parameter> attributes) {
         this.name = new SimpleStringProperty(name);
-        ObservableList<Parameter> obs = FXCollections.observableArrayList(attributes);
-        this.attributes = new SimpleListProperty<>(obs);
+        this.attributes = attributes;
     }
 
     public String getName() {
@@ -36,15 +37,11 @@ public class TransformationModel {
         this.name.set(name);
     }
 
-    public ObservableList<Parameter> getAttributes() {
-        return attributes.get();
-    }
-
-    public ListProperty<Parameter> attributesProperty() {
+    public List<Parameter> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(ObservableList<Parameter> attributes) {
-        this.attributes.set(attributes);
+    public void setAttributes(List<Parameter> attributes) {
+        this.attributes = attributes;
     }
 }

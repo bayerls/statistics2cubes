@@ -1,4 +1,4 @@
-package de.bayerl.statistics.gui.controller;
+package de.bayerl.statistics.gui.model.programLogic;
 
 import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;

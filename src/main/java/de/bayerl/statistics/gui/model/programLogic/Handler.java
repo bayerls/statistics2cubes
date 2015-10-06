@@ -1,9 +1,9 @@
-package de.bayerl.statistics.gui.controller;
+package de.bayerl.statistics.gui.model.programLogic;
 
 import com.google.common.base.Stopwatch;
 import com.hp.hpl.jena.rdf.model.Model;
-import de.bayerl.statistics.gui.model.Parameter;
-import de.bayerl.statistics.gui.model.TransformationModel;
+import de.bayerl.statistics.gui.model.storageStructure.Parameter;
+import de.bayerl.statistics.gui.model.storageStructure.TransformationModel;
 import de.bayerl.statistics.model.Cell;
 import de.bayerl.statistics.model.Table;
 import de.bayerl.statistics.model.TableSliceType;

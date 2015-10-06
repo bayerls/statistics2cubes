@@ -1,4 +1,4 @@
-package de.bayerl.statistics.gui.model;
+package de.bayerl.statistics.gui.model.storageStructure;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

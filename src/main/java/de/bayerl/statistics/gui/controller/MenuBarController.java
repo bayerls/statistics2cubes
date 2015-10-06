@@ -1,10 +1,9 @@
 package de.bayerl.statistics.gui.controller;
 
+import de.bayerl.statistics.gui.MainApp;
 import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.List;
 

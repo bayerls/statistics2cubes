@@ -1,4 +1,4 @@
-package de.bayerl.statistics.gui.model;
+package de.bayerl.statistics.gui.model.storageStructure;
 
 import java.util.List;
 
