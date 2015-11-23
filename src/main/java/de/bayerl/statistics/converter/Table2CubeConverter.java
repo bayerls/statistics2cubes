@@ -27,7 +27,8 @@ public class Table2CubeConverter {
     private final static String VERSION_1_1 = "codeCube/1.1";
 
     private LocalNS localNS;
-
+    private Resource ds;
+    private List<Property> headers;
 
 
     public Table2CubeConverter(Table table) {
@@ -53,9 +54,31 @@ public class Table2CubeConverter {
         model.setNsPrefix(localNS.getPrefix(), localNS.getURI());
 
     }
+//
+    public Model getModel() {
+        return model;
+    }
+
+
+    public Model createStructure() {
+        ds = createDataset();
+        System.out.println(ds.toString());
+        addProvenanceInformation(ds);
+        headers = createDataStructureDefinition(ds);
+        return model;
+    }
+
+    public Model createObservations() {
+        this.model = ModelFactory.createDefaultModel();
+
+        setNamespaces();
+        createObservations(headers, ds);
+        return model;
+    }
 
     public Model convert() {
         Resource ds = createDataset();
+        System.out.println(ds.toString());
         addProvenanceInformation(ds);
         List<Property> headers = createDataStructureDefinition(ds);
         createObservations(headers, ds);
@@ -73,7 +96,7 @@ public class Table2CubeConverter {
         if (Config.GENERATE_1_2) {
             ds.addProperty(DC.format, VERSION_1_2);
         } else {
-            ds.addProperty(DC.format, VERSION_1_2);
+            ds.addProperty(DC.format, VERSION_1_1);
         }
 
         for (String source : table.getMetadata().getSources()) {

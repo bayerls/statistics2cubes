@@ -27,21 +27,21 @@ public class Example3 implements Conversion {
         transformations.add(new ResolveColSpan());
 
         int[] protectedRows = {};
-        transformations.add(new DeleteMatchingRow("Noch: ", protectedRows));
-        transformations.add(new DeleteMatchingRow("Summe ", protectedRows));
+        transformations.add(new DeleteMatchingRow("Noch: ", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Summe ", protectedRows, false));
 
         transformations.add(new DeleteRowByType("labelOrd"));
 
-        transformations.add(new DeleteMatchingRow("Seeverkehr in den Deutschen Hafenplätzen für das Jahr 1878.", protectedRows));
+        transformations.add(new DeleteMatchingRow("Seeverkehr in den Deutschen Hafenplätzen für das Jahr 1878.", protectedRows, false));
         transformations.add(new DeleteRowCol(TableSliceType.ROW, 0));
 
         transformations.add(new ResolveWrongLabels(2));
 
 
         int[] protectedHeader = {0,1,2};
-        transformations.add(new DeleteMatchingRow("Länder bezw. Küstenstrecken der Herkunft und Bestimmung.", protectedHeader));
-        transformations.add(new DeleteMatchingRow("(Fortsetzung.)", protectedHeader));
-        transformations.add(new DeleteMatchingRow("den Ländern (Küstenstrecken) der Herkunft und Bestimmung und nach den Flaggen.", protectedHeader));
+        transformations.add(new DeleteMatchingRow("Länder bezw. Küstenstrecken der Herkunft und Bestimmung.", protectedHeader, false));
+        transformations.add(new DeleteMatchingRow("(Fortsetzung.)", protectedHeader, false));
+        transformations.add(new DeleteMatchingRow("den Ländern (Küstenstrecken) der Herkunft und Bestimmung und nach den Flaggen.", protectedHeader, false));
 
 
 

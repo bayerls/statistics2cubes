@@ -25,11 +25,11 @@ public class Example2 implements Conversion {
 
         transformations.add(new DeleteRowCol(TableSliceType.ROW, 1));
         int[] rows = {0, 1};
-        transformations.add(new DeleteMatchingRow("Niederlage-Verkehr des Deutschen", rows));
-        transformations.add(new DeleteMatchingRow("Im Ganzen", rows));
+        transformations.add(new DeleteMatchingRow("Niederlage-Verkehr des Deutschen", rows, false));
+        transformations.add(new DeleteMatchingRow("Im Ganzen", rows, false));
 
-        transformations.add(new DeleteMatchingRow("Ctr.", rows));
-        transformations.add(new DeleteMatchingRow("Tonnen", rows));
+        transformations.add(new DeleteMatchingRow("Ctr.", rows, false));
+        transformations.add(new DeleteMatchingRow("Tonnen", rows, false));
 
         Cell cell = new Cell();
         cell.setRole("label");
@@ -37,7 +37,7 @@ public class Example2 implements Conversion {
         transformations.add(new AddColumn(0, cell));
         transformations.add(new SetValueIntervalColumn(0, 234, 241, "Tonnen"));
 
-        transformations.add(new DeleteMatchingRow("Bestand zu Anfang des Quartals", rows));
+        transformations.add(new DeleteMatchingRow("Bestand zu Anfang des Quartals", rows, false));
 
         transformations.add(new NormalizeCompoundTables("label", 2));
         transformations.add(new TrimValues());

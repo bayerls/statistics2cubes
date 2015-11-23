@@ -66,9 +66,13 @@ public class Analytics {
         System.out.println("#link groups with different size: " + grouped.size());
     }
 
+
+
     public void computeSimilarLinkGroups() {
         Map<Path, Map<Path, Integer>> filtered = filterFolders();
         List<String> titles = new ArrayList<>();
+
+        List<MetaTable> metaTables = new ArrayList<>();
 
         for (Path folder : filtered.keySet()) {
             //System.out.println("Folder: " + folder);
@@ -87,14 +91,29 @@ public class Analytics {
                 metaTable.setLinkGroupSize(filtered.get(folder).get(file));
                 metaTable.setTitle(table.getRows().get(1).getCells().get(1).getValue().getValue());
 
+                metaTables.add(metaTable);
+
 
                 titles.add(table.getRows().get(1).getCells().get(1).getValue().getValue());
             }
         }
 
 
-        Collections.sort(titles);
-        titles.forEach(s -> System.out.println(s));
+        metaTables = metaTables.stream().sorted((o1, o2) -> {
+//            return o1.getTitle().compareTo(o2.getTitle());
+            return Integer.compare(o1.getLinkGroupSize(), o2.getLinkGroupSize());
+
+        }).collect(Collectors.toList());
+
+        metaTables.forEach(m -> System.out.println(m.getLinkGroupSize() + "    " + m.getTitle() + "   " + m.getFile()));
+
+        int sum = 0;
+        for (MetaTable metaTable : metaTables) {
+            sum += metaTable.getLinkGroupSize();
+        }
+
+        System.out.println(sum);
+
     }
 
     public void getPreview() {
@@ -116,7 +135,7 @@ public class Analytics {
             }
         }
     }
-
+ 
     private Map<Path, Map<Path, Integer>> filterFolders() {
         Map<Path, Map<Path, Integer>> filteredMap = new HashMap<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(Config.FOLDER_UNZIP))) {
