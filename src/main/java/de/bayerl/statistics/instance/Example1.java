@@ -23,12 +23,12 @@ public class Example1 implements Conversion {
 
         transformations.add(new DeleteRowCol(TableSliceType.COLUMN, 5));
         int[] protectedRows = {0, 1, 2};
-        transformations.add(new DeleteMatchingRow("den freien Verkehr", protectedRows));
-        transformations.add(new DeleteMatchingRow("Nummern der Waarenverzeichnisse", protectedRows));
-        transformations.add(new DeleteMatchingRow("Die erste, laufende Nummer bezieht sich", protectedRows));
-        transformations.add(new DeleteMatchingRow("Zusammen Ctr.", protectedRows));
-        transformations.add(new DeleteMatchingRow("Soweit sie nicht unter", protectedRows));
-        transformations.add(new DeleteMatchingRow("Mit Ausn. der unter", protectedRows));
+        transformations.add(new DeleteMatchingRow("den freien Verkehr", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Nummern der Waarenverzeichnisse", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Die erste, laufende Nummer bezieht sich", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Zusammen Ctr.", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Soweit sie nicht unter", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Mit Ausn. der unter", protectedRows, false));
 
 
         transformations.add(new SetValue("31. (274.) Pos. 5 a.", 239, 0));
@@ -43,13 +43,13 @@ public class Example1 implements Conversion {
         transformations.add(new DeleteRowCol(TableSliceType.ROW, 816));
         transformations.add(new DeleteRowCol(TableSliceType.ROW, 815));
 
-        transformations.add(new DeleteMatchingRow("Zusammen a. Tonn.", protectedRows));
-        transformations.add(new DeleteMatchingRow("b. Kubikmeter", protectedRows));
-        transformations.add(new DeleteMatchingRow("Zusammen a. Ctr.", protectedRows));
-        transformations.add(new DeleteMatchingRow("b. Hektoliter", protectedRows));
-        transformations.add(new DeleteMatchingRow("c. Kubikmeter", protectedRows));
-        transformations.add(new DeleteMatchingRow("c. Stück", protectedRows));
-        transformations.add(new DeleteMatchingRow("b. Stck.", protectedRows));
+        transformations.add(new DeleteMatchingRow("Zusammen a. Tonn.", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("b. Kubikmeter", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("Zusammen a. Ctr.", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("b. Hektoliter", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("c. Kubikmeter", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("c. Stück", protectedRows, false));
+        transformations.add(new DeleteMatchingRow("b. Stck.", protectedRows, false));
         transformations.add(new SetValue("Berechneter Zollbetrag, Thlr.", 2348, 1));
         transformations.add(new SetValue("426. (80.) Pos. 39 b.", 3632, 0));
         transformations.add(new ResolveLabelUnits());
@@ -68,7 +68,7 @@ public class Example1 implements Conversion {
 
         String[] headerLabels = {"Anzahl", "Einfuhr oder Ausfuhr", "Quartal", "Ware", "Nummern der Waarenverzeichnisse resp. Tarifposition", "Gebiet", "Fakten Info"};
         transformations.add(new CreateHeaders(headerLabels));
-        transformations.add(new AddMetadata("In den freien Verkehr des Deutschen Zollgebiets getretene Waaren",
+        transformations.add(new AddMetadata("Demo-small-2: In den freien Verkehr des Deutschen Zollgebiets getretene Waaren",
                 "In den freien Verkehr des Deutschen Zollgebiets getretene Waaren; Einfuhr; 1. Quartal 1873 und 1872",
                 "https://github.com/bayerls"));
 

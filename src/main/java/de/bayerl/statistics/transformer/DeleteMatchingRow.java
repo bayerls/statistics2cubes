@@ -17,11 +17,15 @@ public class DeleteMatchingRow extends Transformation {
 
     private String term;
     private int[] protectedRows;
+    private boolean exact = false;
 
-    public DeleteMatchingRow(@NameAnnotation(name = "term") String term, @NameAnnotation(name = "protected") int[] protectedRows) {
+    public DeleteMatchingRow(@NameAnnotation(name = "term") String term, @NameAnnotation(name = "protected") int[] protectedRows, @NameAnnotation(name = "exact") boolean exact) {
         this.term = term;
         this.protectedRows = protectedRows;
+        this.exact = exact;
     }
+
+
 
     @Override
     public String getName() {
@@ -38,9 +42,17 @@ public class DeleteMatchingRow extends Transformation {
             for (int y = 0; y < row.getCells().size(); y++) {
                 Cell cell = row.getCells().get(y);
                 // check if the current value contains the term
-                if (cell.getValue().getValue().contains(term)) {
-                    rows.add(i);
-                    break;
+
+                if (exact) {
+                    if (cell.getValue().getValue().equals(term)) {
+                        rows.add(i);
+                        break;
+                    }
+                } else {
+                    if (cell.getValue().getValue().contains(term)) {
+                        rows.add(i);
+                        break;
+                    }
                 }
             }
         }

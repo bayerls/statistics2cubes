@@ -5,7 +5,11 @@ import com.hp.hpl.jena.rdf.model.Model;
 import de.bayerl.statistics.converter.Table2CubeConverter;
 import de.bayerl.statistics.instance.Config;
 import de.bayerl.statistics.instance.Conversion;
+import de.bayerl.statistics.model.Row;
 import de.bayerl.statistics.model.Table;
+import de.bayerl.statistics.persitance.BigdataEndpoint;
+import de.bayerl.statistics.persitance.ContentTypeRdf;
+import de.bayerl.statistics.persitance.VirtuosoDao;
 import de.bayerl.statistics.transformer.DeleteRowColNumbers;
 import de.bayerl.statistics.transformer.Transformation;
 import org.apache.jena.riot.Lang;
@@ -14,7 +18,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class TeiHandler {
@@ -35,6 +41,7 @@ public class TeiHandler {
         // Merge tables into the first table
         Table table = tables.remove(0);
         for (Table t : tables) {
+
             table.getRows().addAll(t.getRows());
             table.getMetadata().getSources().add(t.getMetadata().getSources().get(0));
         }
@@ -43,7 +50,7 @@ public class TeiHandler {
         singleStepWatch.reset();
         singleStepWatch.start();
 
-        // delete old de.bayerl.statistics.gui.html files before printing new ones
+        // delete old html files before printing new ones
         File dir = new File(Config.FOLDER + conversion.getFolder() + Config.FOLDER_HTML);
         for(File file : dir.listFiles()) {
             file.delete();
@@ -69,16 +76,44 @@ public class TeiHandler {
             DeleteRowColNumbers deleteRowColNumbers = new DeleteRowColNumbers();
             table = deleteRowColNumbers.transform(table);
 
+
+            List<Row> rows = new ArrayList<>();
+
+            for (int j = 0; j < 250; j++) {
+                rows.add(table.getRows().get(j));
+            }
+
+            table.setRows(rows);
+
+
+
             // convert to rdf
             Table2CubeConverter table2CubeConverter = new Table2CubeConverter(table);
-            Model model = table2CubeConverter.convert();
+            //Model model = table2CubeConverter.convert();
+
+//
+            Model structure =  table2CubeConverter.createStructure();
+            Model obs = table2CubeConverter.createObservations();
+            obs.add(structure);
 
             System.out.println("Table converted in " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
             singleStepWatch.reset();
             singleStepWatch.start();
 
+
+            String uuid = UUID.randomUUID().toString();
+            String context = "http://42-data.org/resource/cube/demo-small-" + uuid;
+            BigdataEndpoint bigdataEndpoint = new BigdataEndpoint();
+            bigdataEndpoint.persist(obs, ContentTypeRdf.N3, context);
+
+//            VirtuosoDao dao = new VirtuosoDao();
+//            dao.importUpload(structure, context);
+//            dao.importUpload(obs  , "http://42-data.org/resource/cube/demo");
+
             // write to file
-            write2File(model, conversion);
+
+
+            write2File(obs, conversion);
             System.out.println("Cube persisted " + singleStepWatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
             System.out.println("Done in (total): " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms.");
         }

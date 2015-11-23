@@ -31,10 +31,15 @@ public class ResolveColSpan extends Transformation {
                     Cell addCell = dcUtil.deepCopy(cell);
                     Row addAtRow = table.getRows().get(i + rows);
 
+
+
                     if (addAtRow.getCells().size() == y) {
                         addAtRow.getCells().add(addCell);
-                    } else {
+                    } else if (addAtRow.getCells().size() > y) {
+
                         addAtRow.getCells().add(y, addCell);
+                    } else {
+                        addAtRow.getCells().add(Math.min(y, addAtRow.getCells().size() - 1), addCell);
                     }
 
                     rows--;
